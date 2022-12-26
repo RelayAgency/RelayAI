@@ -130,7 +130,7 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
     loader(responseDiv);
 
 
-    const response = await fetch('http://localhost:5000', {
+    const response = await fetch('https://relayai.onrender.com', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
