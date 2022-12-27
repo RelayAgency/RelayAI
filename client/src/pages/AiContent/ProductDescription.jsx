@@ -25,7 +25,7 @@ function typeText(element, text, submitButton) {
 
   function printNextChar() {
     if (index < text.length) {
-      element.innerHTML += text.charAt(index);
+      element.innerHTML += text.charAt(index) === '\n' ? '<br>' : text.charAt(index);
       index++;
       timeout = setTimeout(printNextChar, 10);
     } else {
@@ -91,13 +91,13 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
     // Get AI response container.
     // responseContainer.innerHTML = "Success";
 
-    console.log("currentColor: " + currentColor);
+    // console.log("currentColor: " + currentColor);
 
-    console.log("chatContainer: ");
-    console.log(chatContainer);
+    // console.log("chatContainer: ");
+    // console.log(chatContainer);
 
-    console.log("responseConatiner: ");
-    console.log(responseContainer);
+    // console.log("responseConatiner: ");
+    // console.log(responseContainer);
 
     //Create the prompt from the user input.
     const prompt = "Write " + tonality + " product description for " + textarea;
@@ -148,10 +148,9 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
       const data = await response.json();
       const parseData = data.bot.trim();
       isLoading = false;
-      console.log("isLoading: " + isLoading)
 
       console.log("parseData: " + parseData)
-
+      console.log("isLoading: " + isLoading)
 
       typeText(responseDiv, parseData, submitButton);
 
@@ -328,7 +327,7 @@ const FormSubmit = (props) => {
         onClick={(e) => handleSubmit(e, currentColor, form, responseContainer, chatContainer, submitButton)}>
         Get AI Suggestions
       </button>
-{/* 
+      {/* 
       <div>
         {isLoading ? (
           <div className="flex justify-center">
