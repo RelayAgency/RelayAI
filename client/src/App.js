@@ -7,8 +7,8 @@ import { Navbar, Footer, Sidebar, ThemeSettings } from './components';
 import { Ecommerce, Orders, Calendar, Employees, Stacked, Pyramid, Customers, Kanban, Area, Bar, Pie, Financial, ColorPicker, ColorMapping, Editor, Line } from './pages';
 
 import {ProductDescription, ColdDM, FacebookPost, InstagramPost, LinkedinPost, TikTokScript, YoutubeIdea, ColdEmail, EmailMarketing, FollowUpEmail, PersonalizedEmail, SubjectLine, ImageAltText, Keywords, MetaDescription, TitlesHeadings, WebsiteCopy } from './pages';
-import { ProductDescriptionFunction } from './pages/AiContent/ProductDescription';
 
+import { UserProfile, UserPrompts } from './pages';
 
 import { useStateContext } from './contexts/ContextProvider';
 
@@ -100,6 +100,11 @@ const App = () => {
                 <Route path="/meta descriptions" element={<MetaDescription />} />
                 <Route path="/titles & headings" element={<TitlesHeadings />} />
                 <Route path="/website copy" element={<WebsiteCopy />} />
+
+
+                {/* USER */}
+                <Route path="/profile" element={<UserProfile />} />
+                <Route path="/prompts" element={<UserPrompts />} />
 
               </Routes >
             </div>

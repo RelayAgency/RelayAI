@@ -7,10 +7,13 @@ import { MdKeyboardArrowDown } from 'react-icons/md';
 import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 
 // import avatar from '../data/avatar.jpg';
-import duroAvatar from '../data/onyankopon.jpg';
 // import { Cart, Chat, Notification, UserProfile } from '.';
 import { UserProfile } from '.';
 import { useStateContext } from '../contexts/ContextProvider';
+
+import { useAuth0 } from '@auth0/auth0-react';
+import LoginButton from './LoginButton';
+
 
 const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
   <TooltipComponent content={title} position="BottomCenter">
@@ -31,6 +34,7 @@ const NavButton = ({ title, customFunc, icon, color, dotColor }) => (
 
 const Navbar = () => {
   const { currentColor, activeMenu, setActiveMenu, handleClick, isClicked, setScreenSize, screenSize } = useStateContext();
+  const { user, isAuthenticated, isLoading, error } = useAuth0();
 
   useEffect(() => {
     const handleResize = () => setScreenSize(window.innerWidth);
@@ -78,26 +82,43 @@ const Navbar = () => {
           color={currentColor}
           icon={<RiNotification3Line />}
         /> */}
+        {error ? <span className="text-gray-400 font-bold ml-1 text-14">
+          Authentication Error</span> : <>
+          {isLoading ? <span className="text-gray-400 font-bold ml-1 text-14">
+            Loading...</span> : <>
+            {isAuthenticated ?
+              <TooltipComponent content="Profile" position="BottomCenter">
+                <div
+                  className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
+                  onClick={() => handleClick('userProfile')}
+                >
 
-        <TooltipComponent content="Profile" position="BottomCenter">
-          <div
-            className="flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg"
-            onClick={() => handleClick('userProfile')}
-          >
-            <img
-              className="rounded-full w-8 h-8"
-              src={duroAvatar}
-              alt="user-profile"
-            />
-            <p>
-              <span className="text-gray-400 text-14">Hi,</span>{' '}
-              <span className="text-gray-400 font-bold ml-1 text-14">
-                Duro
-              </span>
-            </p>
-            <MdKeyboardArrowDown className="text-gray-400 text-14" />
-          </div>
-        </TooltipComponent>
+                  {user?.picture &&
+                    <img
+                      className="rounded-full h-8 w-8"
+                      src={user.picture}
+                      alt={user.name}
+                    />
+                  }
+                  <p>
+                    <span className="text-gray-400 text-14">Hi,</span>{' '}
+                    {user.name ? <span className="text-gray-400 font-bold ml-1 text-14">
+                      {user.name}
+                    </span> : <span className="text-gray-400 font-bold ml-1 text-14">
+                      {user.nickname}
+                    </span>}
+
+                  </p>
+                  <MdKeyboardArrowDown className="text-gray-400 text-14" />
+                </div>
+              </TooltipComponent>
+              : <LoginButton />
+            }
+          </>
+          }
+        </>
+        }
+
         {isClicked.userProfile && (<UserProfile />)}
       </div>
     </div>

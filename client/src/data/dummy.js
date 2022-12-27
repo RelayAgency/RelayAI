@@ -2,15 +2,15 @@ import React from 'react';
 // import { AiOutlineCalendar, AiOutlineShoppingCart, AiOutlineAreaChart, AiOutlineBarChart, AiOutlineStock, AiFillGoogleCircle, AiOutlineMail, AiOutlineFileText } from 'react-icons/ai';
 import { AiOutlineMail, AiOutlineFileText } from 'react-icons/ai';
 // import { FiShoppingBag, FiEdit, FiPieChart, FiBarChart, FiCreditCard, FiStar, FiShoppingCart, FiFacebook, FiInstagram, FiLinkedin, FiTablet, FiYoutube, FiInbox, FiVoicemail, FiFigma, FiHeadphones, FiKey } from 'react-icons/fi';
-import { FiShoppingBag, FiBarChart, FiCreditCard, FiStar, FiShoppingCart, FiInbox} from 'react-icons/fi';
+import { FiShoppingBag, FiBarChart, FiCreditCard, FiStar, FiShoppingCart, FiInbox } from 'react-icons/fi';
 
 // import { BsKanban, BsBarChart, BsBoxSeam, BsCurrencyDollar, BsShield, BsChatLeft, BsFileEarmarkText, BsGoogle, BsFacebook, BsInstagram, BsLinkedin, BsYoutube, BsPhone, BsEmojiAngryFill, BsSpellcheck, BsHandIndexThumb, BsShare, BsPerson, BsEyeglasses } from 'react-icons/bs';
-import { BsBoxSeam, BsCurrencyDollar, BsShield, BsChatLeft, BsShare, BsPerson} from 'react-icons/bs';
+import { BsBoxSeam, BsCurrencyDollar, BsShield, BsChatLeft, BsShare, BsPerson } from 'react-icons/bs';
 // import { BiColorFill, BiGlobe, BiGlobeAlt } from 'react-icons/bi';
 import { BiGlobe } from 'react-icons/bi';
 // import { IoMdContacts } from 'react-icons/io';
 // import { RiContactsLine, RiStockLine } from 'react-icons/ri';
-import { MdLensBlur, MdOutlineSupervisorAccount, MdTitle } from 'react-icons/md';
+import { MdLensBlur, MdMessage, MdOutlineSupervisorAccount, MdTitle } from 'react-icons/md';
 import { HiOutlineRefresh } from 'react-icons/hi';
 import { TiTick } from 'react-icons/ti';
 import { GiFishingHook } from 'react-icons/gi';
@@ -545,7 +545,7 @@ export const links = [
       },
       {
         name: 'instagram posts',
-        icon: <SiInstagram/>,
+        icon: <SiInstagram />,
       },
       {
         name: 'linkedin posts',
@@ -976,29 +976,30 @@ export const themeColors = [
     color: '#FB9678',
     name: 'orange-theme',
   },
+  {
+    color: '#f1ca37',
+    name: 'yellow-theme',
+  },
 ];
 
 export const userProfileData = [
   {
-    icon: <BsCurrencyDollar />,
+    icon: <BsPerson />,
     title: 'My Profile',
     desc: 'Account Settings',
     iconColor: '#03C9D7',
     iconBg: '#E5FAFB',
+    name: 'profile',
+
+
   },
   {
-    icon: <BsShield />,
-    title: 'My Inbox',
-    desc: 'Messages & Emails',
+    icon: <MdMessage />,
+    title: 'My Prompts',
+    desc: 'AI Generated Content',
     iconColor: 'rgb(0, 194, 146)',
     iconBg: 'rgb(235, 250, 242)',
-  },
-  {
-    icon: <FiCreditCard />,
-    title: 'My Tasks',
-    desc: 'To-do and Daily Tasks',
-    iconColor: 'rgb(255, 244, 229)',
-    iconBg: 'rgb(254, 201, 15)',
+    name: 'prompts',
   },
 ];
 
