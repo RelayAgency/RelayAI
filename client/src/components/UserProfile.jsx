@@ -3,8 +3,6 @@ import { MdOutlineCancel } from 'react-icons/md';
 
 import { Button } from '.';
 import { userProfileData } from '../data/dummy';
-// import avatar from '../data/avatar.jpg';
-
 
 import { useAuth0 } from '@auth0/auth0-react';
 import LoginButton from './LoginButton';

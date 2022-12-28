@@ -7,7 +7,8 @@ dotenv.config();
 
 console.log(process.env.OPENAI_API_KEY);
 
-
+const domain = process.env.AUTH0_DOMAIN;
+const clientId = process.env.AUTH0_CLIENT_ID;
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -39,13 +40,13 @@ app.post('/', async (req, res) => {
       presence_penalty: 0,
     })
 
-    const output = response.data.choices[0].text + "\n";
+    const output = response.data.choices[0].text;
     
     console.log("Prompt: " + prompt);
     console.log("Response: " + output);
 
     res.status(200).send({
-      bot: response.data.choices[0].text,
+      bot: output,
     });
   } catch (error) {
     console.log(error);

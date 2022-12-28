@@ -1,7 +1,5 @@
-import React, { useState } from 'react'
-import { BarLoader } from 'react-spinners'
+import React from 'react'
 import { useStateContext } from '../../contexts/ContextProvider';
-import bot from '../../data/bot.svg';
 
 let loadInterval;
 let isLoading = false;
@@ -50,25 +48,6 @@ function generateUniqueId() {
   return `id-${timestamp}-${hexadecimalString}`;
 }
 
-// function chatStripe(value, uniqueId) {
-//   return (
-//     `
-//           <div
-//             id=${uniqueId}
-//             className="message relative flex w-[calc(100%-50px)] md:flex-col lg:w-[calc(100%-115px)]"
-//           >
-//             <p
-//               className="text-m p-3"
-//               style={{ color: currentColor }}
-//             >
-//               ${value}
-//             </p>
-//           </div>
-//           <br>
-//     `
-//   )
-// }
-
 async function handleSubmit(e, currentColor, form, responseContainer, chatContainer, submitButton) {
   // Start by preventing the submission from reloading the page.
   e.preventDefault();
@@ -76,10 +55,8 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
   const data = new FormData(form);
 
   // Get user input from the form.
-  const textarea = data.get('productName');
-  const tonality = data.get('productTone');
-
-  // console.log(textarea, tonality, uniqueId);
+  const textarea = document.getElementById('productName').value;
+  const tonality = document.getElementById('productTone').value;
 
   //Clear the form. (Optional)
   // form.reset();
@@ -88,19 +65,8 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
   if (textarea.length <= 1000 && textarea.length > 0) {
     const uniqueId = generateUniqueId();
 
-    // Get AI response container.
-    // responseContainer.innerHTML = "Success";
-
-    // console.log("currentColor: " + currentColor);
-
-    // console.log("chatContainer: ");
-    // console.log(chatContainer);
-
-    // console.log("responseConatiner: ");
-    // console.log(responseContainer);
-
     //Create the prompt from the user input.
-    const prompt = "Write " + tonality + " product description for " + textarea;
+    const prompt = "Write " + tonality + " product description for " + textarea + "|END";
 
     // Console log the entire prompt.
     console.log("prompt: " + prompt)
@@ -126,9 +92,7 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
     submitButton.style.cursor = "wait";
 
     clearInterval(loadInterval);
-    responseDiv.innerHTML = responseDiv.innerHTML;
     loader(responseDiv);
-
 
     const response = await fetch('https://relayai.onrender.com', {
       method: 'POST',
@@ -143,7 +107,6 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
     clearInterval(loadInterval);
     responseDiv.innerHTML = "";
 
-
     if (response.ok) {
       const data = await response.json();
       const parseData = data.bot.trim();
@@ -153,8 +116,6 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
       console.log("isLoading: " + isLoading)
 
       typeText(responseDiv, parseData, submitButton);
-
-
     } else {
       const err = await response.texts();
 
@@ -166,7 +127,7 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
 
 }
 
-const DescriptionDiv = (props) => {
+const DescriptionDiv = () => {
   const { currentColor } = useStateContext();
   return (
     <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg h-30 rounded-xl w-full lg:w-full p-8 pt-9 m-3 bg-no-repeat bg-cover bg-center">
@@ -185,7 +146,7 @@ const DescriptionDiv = (props) => {
   )
 }
 
-const FormDiv = (props) => {
+const FormDiv = () => {
   const { currentColor } = useStateContext();
   function handleInput() {
     const textarea = document.getElementById("productName");
@@ -307,11 +268,6 @@ const FormSubmit = (props) => {
   const chatContainer = document.getElementById(props.chatContainerId);
   const openaiContainer = document.getElementById(props.openaiContainerId);
   const submitButton = document.getElementById("submit-button");
-  const [state, setState] = useState({
-    heading: 'The response from the AI will be Shown here',
-    response: '',
-    isLoading: false
-  });
   const form = document.getElementById(props.formId);
 
 
@@ -347,54 +303,6 @@ const FormSubmit = (props) => {
 
 }
 
-// function ChatStripe(avatarImage, currentColor, value, uniqueId) {
-//   let avatarStyle = {
-//     position: 'relative',
-//     height: '30px',
-//     width: '30px',
-//     padding: '1px',
-//     borderRadius: '0.25rem',
-//     color: 'white',
-//     display: 'flex',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//     backgroundColor: currentColor,
-//   };
-
-//   let imageStyle = {
-//     borderTopLeftRadius: '0.375rem',
-//     borderBottomLeftRadius: '0.375rem',
-//     height: '5px',
-//     width: '5px',
-//   };
-//   return (
-//     `
-//     <div class="flex text-base gap-4 md:gap-6 md:max-w-full lg:max-w-full xl:max-w-full  lg:px-0">
-//       <div class="w-[30px] flex flex-col relative">
-//         <div
-//         style=${avatarStyle}
-//         >
-//           <img
-//             id="avatarId"
-//             name="avatarId"
-//             style=${imageStyle}      
-//             src="${avatarImage}"
-//             alt="bot-avatar"
-//           />
-//         </div>
-//       </div>
-//       <div
-//         class="message" 
-//         id=${uniqueId}
-//       >
-//         ${value}
-//       </div>
-//       <br>
-//     </div>
-//     `
-//   );
-// }
-
 function ChatStripe(currentColor, value, uniqueId) {
   return (
     `
@@ -420,40 +328,7 @@ function ChatStripe(currentColor, value, uniqueId) {
   );
 }
 
-
-const ResponseDiv = (props) => {
-  const { currentColor } = useStateContext();
-  return (
-    <div
-      id="response-div"
-      name="response-div"
-      className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg h-30 rounded-xl w-full lg:w-full p-8 pt-9 m-3 bg-no-repeat bg-cover bg-center"
-    >
-      <div className="flex text-base gap-4 md:gap-6 md:max-w-full lg:max-w-full xl:max-w-full  lg:px-0">
-        <div className="w-[30px] flex flex-col relative ">
-          <button
-            style={{ background: currentColor, userSelect: 'none' }}
-            className="relative h-[30px] w-[30px] p-1 rounded-sm text-white flex items-center justify-center"
-          >
-            <img
-              id="avatarId"
-              nam="avatarId"
-              className="rounded-tl-md rounded-bl-md h-5 w-5"
-              src={bot}
-              alt="bot-avatar"
-            />
-          </button>
-        </div>
-        <div
-          id="response_container"
-          name="response_container"
-        />
-      </div>
-    </div>
-  )
-}
-
-const ResponseDiv2 = (props) => {
+const ResponseDiv2 = () => {
   return (
     <div
       id="response_div"
@@ -486,6 +361,5 @@ class ProductDescription extends React.Component {
     );
   }
 }
-
 
 export default ProductDescription;
