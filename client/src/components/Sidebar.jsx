@@ -22,7 +22,8 @@ const Sidebar = () => {
 
   function HandleReload() {
     useEffect(() => {
-      window.location.href = window.location.href;
+      // window.location.href = window.location.href;
+      window.location.replace(window.location.href);
     }, []);
     handleCloseSideBar();
   }

@@ -55,18 +55,18 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
   const data = new FormData(form);
 
   // Get user input from the form.
-  const textarea = document.getElementById('productName').value;
-  const tonality = document.getElementById('productTone').value;
+  const product = data.get('productName');
+  const tone = data.get('productTone');
 
   //Clear the form. (Optional)
   // form.reset();
 
   // If within the character limit when form is submitted.
-  if (textarea.length <= 1000 && textarea.length > 0) {
+  if (product.length <= 1000 && product.length > 0) {
     const uniqueId = generateUniqueId();
 
     //Create the prompt from the user input.
-    const prompt = "Write " + tonality + " product description for " + textarea + "|END";
+    const prompt = `Hello AI bot, I am looking to write a product description for ${product}. I prefer ${tone} tone. Thank you.`;
 
     // Console log the entire prompt.
     console.log("prompt: " + prompt)

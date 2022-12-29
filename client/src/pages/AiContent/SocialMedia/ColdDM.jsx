@@ -55,93 +55,99 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
   const data = new FormData(form);
 
   // Get user input from the form.
-  const platform = document.getElementById('mediaPlatform').value;
-  const conversationContextArea = document.getElementById('conversationContext').value;
-  const recieverContextArea = document.getElementById('receiverContext').value;
-  const intention = document.getElementById('intentionsInput').value;
-  const tonality = document.getElementById('messageTone').value;
+  const target = data.get('target-audience');
+  let purposeChecked = document.querySelectorAll('input[name="purpose"]');
+  let purposeR = [];
+  purposeChecked.forEach((checkbox) => {
+    if (checkbox.checked) {
+      purposeR.push(checkbox.value);
+    }
+  })
+  purposeR = purposeR.join(' and ');
+  const valueProposition = data.get('value-proposition');
+  const personalizationR = data.get('personalization');
+  const tone = data.get('tone-style');
+  const companyR = data.get('company');
 
-  console.log(recieverContextArea)
+
+  console.log("Target Audience: " + target);
+  console.log("Purpose: " + purposeR);
+  console.log("Value Proposition: " + valueProposition);
+  console.log("Personalization: " + personalizationR);
+  console.log("Tone: " + tone);
+  console.log("Company: " + companyR);
+
+
   //Clear the form. (Optional)
   // form.reset();
 
   // If within the character limit when form is submitted.
-  if (recieverContextArea.length > 0) {
 
-    const uniqueId = generateUniqueId();
+  const uniqueId = generateUniqueId();
 
-    //Create the prompt from the user input.
-    let prompt;
-    if (intention && conversationContextArea) {
-      prompt = "Write " + tonality + " chat reply" + platform + ", for this conversation: " + conversationContextArea + ".\n With the intention " + intention + ". To the recipient " + recieverContextArea + "|END";
-    } else if (conversationContextArea) {
-      prompt = "Write " + tonality + " chat reply" + platform + ", for this conversation: " + conversationContextArea + ". To the recipient " + recieverContextArea + "|END";
-    } else if (intention) {
-      prompt = "Write " + tonality + " greeting chat message" + platform + ".\n With the intention " + intention + ". To the recipient " + recieverContextArea + "|END";
-    }
-    else {
-      prompt = "Write " + tonality + " greeting chat message" + platform + ". To the recipient " + recieverContextArea + "|END";
-    }
+  //Create the prompt from the user input.
+  let prompt;
+  if (valueProposition) {
+    prompt = `Hello, I'm looking to send a cold DM to a potential client in the ${target} industry. My goal is to ${purposeR}  them. My service is ${valueProposition}. The recipient is ${personalizationR}. My company is ${companyR}. I would like to present myself as a reliable and professional resource, and I'm looking for a short direct message that could be sent on any social media platform. I prefer ${tone} tone. Don't write it like an email. Make it as if I was sending a message on Instagram for example.`
 
-    // Console log the entire prompt.
-    console.log("prompt: " + prompt)
+  } else {
+    prompt = `Hello, I'm looking to send a cold DM to a potential client${target}. My goal is to ${purposeR} them. The recipient is ${personalizationR}. My company is ${companyR}. I would like to present myself as a reliable and professional resource, and I'm looking for a short direct message that could be sent on any social media platform. I prefer ${tone} tone. Don't write it like an email. Make it as if I was sending a message on Instagram for example.`
+  }
 
-    // Append the response div with new responses
-    // responseContainer.innerHTML += chatStripe("", uniqueId);
-    responseContainer.innerHTML += ChatStripe(currentColor, "", uniqueId);
+  // Console log the entire prompt.
+  console.log("prompt: " + prompt)
 
-    //Console log the uniqueId
-    console.log("uniqueId: " + uniqueId)
+  // Append the response div with new responses
+  // responseContainer.innerHTML += chatStripe("", uniqueId);
+  responseContainer.innerHTML += ChatStripe(currentColor, "", uniqueId);
 
-    // Put the new response into view.
-    responseContainer.scrollTop = responseContainer.scrollHeight;
-    let responseDiv;
+  //Console log the uniqueId
+  console.log("uniqueId: " + uniqueId)
 
-    // Get the element Id of the newly created response.
-    responseDiv = document.getElementById(uniqueId);
-    console.log("responseDiv: " + responseDiv);
+  // Put the new response into view.
+  responseContainer.scrollTop = responseContainer.scrollHeight;
 
+  // Get the element Id of the newly created response.
+  const responseDiv = document.getElementById(uniqueId);
 
-    isLoading = true;
+  isLoading = true;
+  console.log("isLoading: " + isLoading)
+
+  submitButton.disabled = true;
+  submitButton.style.filter = "brightness(50%)";
+  submitButton.style.cursor = "wait";
+
+  clearInterval(loadInterval);
+  loader(responseDiv);
+
+  const response = await fetch('https://relayai.onrender.com', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      prompt: prompt
+    })
+  });
+
+  clearInterval(loadInterval);
+  responseDiv.innerHTML = "";
+
+  if (response.ok) {
+    const data = await response.json();
+    const parseData = data.bot.trim();
+    isLoading = false;
+
+    console.log("parseData: " + parseData)
     console.log("isLoading: " + isLoading)
 
-    submitButton.disabled = true;
-    submitButton.style.filter = "brightness(50%)";
-    submitButton.style.cursor = "wait";
+    typeText(responseDiv, parseData, submitButton);
+  } else {
+    const err = await response.texts();
 
-    clearInterval(loadInterval);
-    loader(responseDiv);
+    responseDiv.innerHTML = "Something went wrong";
 
-    const response = await fetch('https://relayai.onrender.com', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        prompt: prompt
-      })
-    });
-
-    clearInterval(loadInterval);
-    responseDiv.innerHTML = "";
-
-    if (response.ok) {
-      const data = await response.json();
-      const parseData = data.bot.trim();
-      isLoading = false;
-
-      console.log("parseData: " + parseData)
-      console.log("isLoading: " + isLoading)
-
-      typeText(responseDiv, parseData, submitButton);
-    } else {
-      const err = await response.texts();
-
-      responseDiv.innerHTML = "Something went wrong";
-
-      alert(err);
-    }
-
+    alert(err);
   }
 
 
@@ -149,16 +155,17 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
 
 const DescriptionDiv = () => {
   const { currentColor } = useStateContext();
+
   return (
     <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg h-30 rounded-xl w-full lg:w-full p-8 pt-9 m-3 bg-no-repeat bg-cover bg-center">
       <div className="flex justify-between items-center ">
         <div>
-          <p className="font-bold text-gray-700 dark:text-gray-200 text-left mb-2">Generate DMs</p>
+          <p className="font-bold text-gray-700 dark:text-gray-200 text-left mb-2">Create The Perfect Cold DM Script</p>
           <p
             className="text-s"
             style={{ color: currentColor }}
           >
-            Create effective replies to any conversation and craft engaging dialogue. Easily customize AI-generated copy to fit your unique style, and never worry about awkward pauses or missed opportunities in conversations again!
+            Let us help you save time and effort in crafting effective cold DM scripts that are sure to make an impact. With just a few clicks, you can create a compelling pitch that will get your message across quickly and effectively. No more spending hours trying to figure out what works - let our Relay AI do the hard work for you!
           </p>
         </div>
       </div>
@@ -168,27 +175,42 @@ const DescriptionDiv = () => {
 
 const FormDiv = () => {
   const { currentColor } = useStateContext();
+  const labelStyles = "block text-gray-700 text-sm font-bold mb-2 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg capitalize"
+  const detailStyles = "text-xs italic mb-2 font-bold"
+  const textInputStyles = "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white dark:text-gray-200 dark:bg-main-dark-bg h-10"
+  const textAreaStyles = "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white dark:text-gray-200 dark:bg-main-dark-bg h-32"
+  const dropwdownStyles = "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white dark:text-gray-200 dark:bg-main-dark-bg h-10"
+
+  const radioMenuStyles = "flex flex-wrap -mb-4 max-w-3xl"
+  const radioButtonStyles = "w-1/3 mb-4"
+  const radioLabelStyles = "p-2 text-gray-700 text-sm font-bold bg-white dark:bg-secondary-dark-bg capitalize"
+
+  const checkboxMenuStyles = "flex flex-wrap flex-row -mb-4 max-w-3xl"
+  const checkboxButtonStyles = "w-1/2 mb-4"
+  const checkboxLabelStyles = "p-2 inline-block text-gray-700 text-sm font-bold bg-white dark:bg-secondary-dark-bg capitalize"
+
+
   function handleInput() {
-    // const conversationContextArea = document.getElementById("conversationContext");
-    // const characterCount = document.getElementById("characterCount");
-    // const characterCountWarning = document.getElementById("characterCountWarning");
+    const textarea = document.getElementById("productName");
+    const characterCount = document.getElementById("characterCount");
+    const characterCountWarning = document.getElementById("characterCountWarning");
 
-    // characterCount.textContent = `${conversationContextArea.value.length}/1000`;
-    // if (conversationContextArea.value.length > 1000) {
-    //   characterCount.style.color = "#cc0000";
-    //   characterCount.textContent = `${conversationContextArea.value.length}/1000`;
-    // }
-    // else if (conversationContextArea.value.length < 40 && conversationContextArea.value.length > 0) {
-    //   characterCount.style.filter = "brightness(50%)";
-    //   characterCount.style.color = currentColor;
-    //   characterCountWarning.textContent = `⚠️ Short input. Try to provide more details for better copy results.
-    // `;
+    characterCount.textContent = `${textarea.value.length}/1000`;
+    if (textarea.value.length > 1000) {
+      characterCount.style.color = "#cc0000";
+      characterCount.textContent = `${textarea.value.length}/1000`;
+    }
+    else if (textarea.value.length < 40 && textarea.value.length > 0) {
+      characterCount.style.filter = "brightness(50%)";
+      characterCount.style.color = currentColor;
+      characterCountWarning.textContent = `⚠️ Short input. Try to provide more details for better copy results.
+    `;
 
-    // } else {
-    //   characterCountWarning.textContent = '';
-    //   characterCount.style.color = currentColor;
-    //   characterCount.style.filter = "brightness(100%)";
-    // }
+    } else {
+      characterCountWarning.textContent = '';
+      characterCount.style.color = currentColor;
+      characterCount.style.filter = "brightness(100%)";
+    }
   }
   return (
     <div className="flex justify-between items-center w-full">
@@ -197,16 +219,18 @@ const FormDiv = () => {
           className="max-w-full"
           id="form"
         >
-          {/* Labels and tooltips for user dropwdown menu */}
-          <div>
+          {/* Labels and tooltip for user input area */}
+          <div className="mt-4">
             <label
-              className="block text-gray-700 text-sm font-bold mb-2 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg">
-              What Social Media Platform Were You Using?
+              className={labelStyles}
+            >
+              Target audience?
             </label>
             <p
               style={{ color: currentColor }}
-              class="text-xs italic mb-2 font-bold">
-              Choose a platform
+              className={detailStyles}
+            >
+              It's important for the AI bot to know who you're targeting with your cold DMs.
             </p>
           </div>
 
@@ -215,158 +239,224 @@ const FormDiv = () => {
             class="inline-block relative w-full"
           >
             <select
-              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white dark:text-gray-200 dark:bg-main-dark-bg h-10 mb-4"
-              name="mediaPlatform"
-              id="mediaPlatform"
+              class={dropwdownStyles}
+              name="target-audience"
+              id="target-audience"
             >
               <option value="">🚫 Default</option>
-              <option value=" on facebook">Facebook</option>
-              <option value=" on instagram">Instagram</option>
-              <option value=" on twitter">Twitter</option>
-              <option value=" on linkedin">Linkedin</option>
-              <option value=" on discord">Discord</option>
+              <option value=" in the tech industry">⚙️ Technology</option>
+              <option value=" in the healthcare industry">❤️‍🩹 Healthcare</option>
+              <option value=" in the finance industry">💱 Finance</option>
+              <option value=" in the retail industry">🛒 Retail</option>
+              <option value=" in the real estate industry">🏠 Real Estate</option>
+              <option value=" in the construction industry">🏗️ Construction</option>
+              <option value=" in the hospitality and tourism industry">🏨 Hospitality and Tourism</option>
+              <option value=" in the media and entertainment industry">📸 Media and Entertainment</option>
+              <option value=" in the manufacturing industry">🏭 Manufacturing</option>
+              <option value=" in the energy industry">⚡ Energy</option>
+              <option value=" in the agriculture industry">🌱 Agriculture</option>
+              <option value=" in the government industry">🏛️ Government</option>
             </select>
             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
               <svg class="fill-current h-4 w-4 bg-white dark:text-gray-200 dark:bg-main-dark-bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
             </div>
           </div>
 
-          {/* Labels and tooltip for user text input area */}
-          <div>
+          {/* Labels and tooltip for user input area */}
+          <div className="mt-4">
             <label
-              className="block text-gray-700 text-sm font-bold mb-2 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg">
-              Give Some Context of The Conversation.
+              className={labelStyles}
+            >
+              Purpose of the message?
             </label>
             <p
               style={{ color: currentColor }}
-              class="text-xs italic mb-2 font-bold">
-              You can describe the conversation in your own words or just paste the entire conversation. *Optional
+              className={detailStyles}
+            >
+              State the purpose of your message and what you hope to accomplish.
             </p>
           </div>
 
-          {/* User text input area */}
-          <textarea onInput={handleInput}
-            id="conversationContext"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white dark:text-gray-200 dark:bg-main-dark-bg h-32"
+          {/* User Checkbox */}
+          <div
+            className={checkboxMenuStyles}
+          >
+            <div className={checkboxButtonStyles}>
+              <input
+                type="checkbox"
+                id="schedule-meeting"
+                name="purpose"
+                value="schedule a meeting with"
+                required
+              />
+              <label
+                className={checkboxLabelStyles}
+                style={{ color: currentColor }}
+                for="schedule-meeting"
+              >
+                Schedule a meeting
+              </label>
+            </div>
+
+            <div className={checkboxButtonStyles}>
+              <input
+                type="checkbox"
+                id="request-info"
+                name="purpose"
+                value="make an information request from"
+              />
+              <label
+                className={checkboxLabelStyles}
+                style={{ color: currentColor }}
+                for="request-info"
+              >
+                Request information
+              </label>
+            </div>
+
+            <div className={checkboxButtonStyles}>
+              <input
+                type="checkbox"
+                id="pitch-product"
+                name="purpose"
+                value="pitch our product to"
+              />
+              <label
+                className={checkboxLabelStyles}
+                style={{ color: currentColor }}
+                for="pitch-product"
+              >
+                Pitch a product or service
+              </label>
+            </div>
+
+            <div className={checkboxButtonStyles}>
+              <input
+                type="checkbox"
+                id="connection"
+                name="purpose"
+                value="establish a connection with"
+              />
+              <label
+                className={checkboxLabelStyles}
+                style={{ color: currentColor }}
+                for="connection"
+              >
+                Establish a connection
+              </label>
+            </div>
+
+            <div className={checkboxButtonStyles}>
+              <input
+                type="checkbox"
+                id="referral"
+                name="purpose"
+                value="request a referral or recommendation from"
+              />
+              <label
+                className={checkboxLabelStyles}
+                style={{ color: currentColor }}
+                for="referral"
+              >
+                Request a referral or recommendation
+              </label>
+            </div>
+
+            <div className={checkboxButtonStyles}>
+              <input
+                type="checkbox"
+                id="collaboration"
+                name="purpose"
+                value="partner or collaborate with"
+              />
+              <label
+                className={checkboxLabelStyles}
+                style={{ color: currentColor }}
+                for="collaboration"
+              >
+                Partner or collaborate
+              </label>
+            </div>
+
+            <div className={checkboxButtonStyles}>
+              <input
+                type="checkbox"
+                id="assist"
+                name="purpose"
+                value="offer assistance or expertise to"
+              />
+              <label
+                className={checkboxLabelStyles}
+                style={{ color: currentColor }}
+                for="assist"
+              >
+                Offer assistance or expertise
+              </label>
+            </div>
+
+          </div>
+
+          {/* Labels and tooltip for user input area */}
+          <div className="mt-4">
+            <label
+              className={labelStyles}
+            >
+              Value proposition?
+            </label>
+            <p
+              style={{ color: currentColor }}
+              className={detailStyles}
+            >
+              Briefly describe the benefits of your product or service in a few sentences
+            </p>
+          </div>
+
+          {/* User text input menu */}
+          <textarea
             type="text"
-            name="conversationContext"
-            placeholder="e.g. 
-            Elon Gated: Have you heard about Relay AI, it's a brilliant software that generates AI content
-            John Doe: Can you tell me more about it?"
+            id="value-proposition"
+            name="value-proposition"
+            className={textAreaStyles}
+            placeholder="e.g. "
           />
 
-          {/* Tooltips below text input area */}
-          <div
-            className="flex justify-between items-center mb-4"
-          >
-            {/* <div
-              id="characterCountWarning"
-              name="characterCountWarning"
-
-              class="text-xs font-bold text-left"
-            />
-            <div
-              id="characterCount"
-              class="text-xs font-bold text-right"
-              style={{ color: currentColor }}
-            >
-              0/1000
-            </div> */}
-          </div>
-
-          {/* Labels and tooltip for user text input area */}
-          <div>
+          {/* Labels and tooltip for user input area */}
+          <div className="mt-4">
             <label
-              className="block text-gray-700 text-sm font-bold mb-2 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg">
-              Give Some Context of The Reciever.
+              className={labelStyles}
+            >
+              Personalization?
             </label>
             <p
               style={{ color: currentColor }}
-              class="text-xs italic mb-2 font-bold">
-              Describe who you're chatting with for a more personalized response.
+              className={detailStyles}
+            >
+              Provide the recipient's name and any other relevant details
             </p>
           </div>
 
-          {/* User text input area */}
-          <textarea onInput={handleInput}
-            id="receiverContext"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white dark:text-gray-200 dark:bg-main-dark-bg h-32"
+          {/* User text input menu */}
+          <input
             type="text"
-            name="receiverContext"
-            placeholder="e.g. John Doe, he's a copy writer who's been trying to save time writing copy."
+            id="personalization"
+            name="personalization"
+            className={textInputStyles}
+            placeholder="e.g. John Doe, a Small Business Owner"
             required
           />
 
-          {/* Tooltips below text input area */}
-          <div
-            className="flex justify-between items-center mb-4"
-          >
-            {/* <div
-              id="characterCountWarning"
-              name="characterCountWarning"
-
-              class="text-xs font-bold text-left"
-            />
-            <div
-              id="characterCount"
-              class="text-xs font-bold text-right"
-              style={{ color: currentColor }}
-            >
-              0/1000
-            </div> */}
-          </div>
-
-          {/* Labels and tooltip for user text input area */}
-          <div>
+          {/* Labels and tooltip for user input area */}
+          <div className="mt-4">
             <label
-              className="block text-gray-700 text-sm font-bold mb-2 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg">
-              What's Your Intention?
+              className={labelStyles}
+            >
+              Desired tone and style?
             </label>
             <p
               style={{ color: currentColor }}
-              class="text-xs italic mb-2 font-bold">
-              Briefly describe your intentions in this conversation.
-            </p>
-          </div>
-
-          {/* User text input area */}
-          <input onInput={handleInput}
-            id="intentionsInput"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white dark:text-gray-200 dark:bg-main-dark-bg h-10"
-            type="text"
-            name="intentionsInput"
-            placeholder="e.g. To tell a friend the benefits of Relay AI, an AI content generator."
-          />
-
-          {/* Tooltips below text input area */}
-          <div
-            className="flex justify-between items-center mb-4"
-          >
-            {/* <div
-              id="characterCountWarning"
-              name="characterCountWarning"
-
-              class="text-xs font-bold text-left"
-            />
-            <div
-              id="characterCount"
-              class="text-xs font-bold text-right"
-              style={{ color: currentColor }}
+              class={detailStyles}
             >
-              0/1000
-            </div> */}
-          </div>
-
-          {/* Labels and tooltips for user dropwdown menu */}
-          <div>
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg">
-              Choose your reply tone
-            </label>
-            <p
-              style={{ color: currentColor }}
-              class="text-xs italic mb-2 font-bold">
-              Choose a preset tone
+              You may have a particular tone or style in mind for your cold email, such as formal, casual, or friendly.
             </p>
           </div>
 
@@ -375,11 +465,13 @@ const FormDiv = () => {
             class="inline-block relative w-full"
           >
             <select
-              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white dark:text-gray-200 dark:bg-main-dark-bg h-10"
-              name="messageTone"
-              id="messageTone"
+              class={dropwdownStyles}
+              name="tone-style"
+              id="tone-style"
             >
               <option value="a normal">🚫 Default</option>
+              <option value="a formal">🤵 Formal</option>
+              <option value="a casual">👕 Casual</option>
               <option value="a friendly">😊 Friendly</option>
               <option value="a luxury">💎 Luxury</option>
               <option value="a relaxed">😌 Relaxed</option>
@@ -395,6 +487,35 @@ const FormDiv = () => {
               <svg class="fill-current h-4 w-4 bg-white dark:text-gray-200 dark:bg-main-dark-bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
             </div>
           </div>
+
+          {/* Labels and tooltip for user input area */}
+          <div className="mt-4">
+            <label
+              className={labelStyles}
+            >
+              Your company or organization?
+            </label>
+            <p
+              style={{ color: currentColor }}
+              class={detailStyles}
+            >
+              Providing information about your company or organization will help the AI bot create a more professional and credible email.
+            </p>
+          </div>
+
+          {/* User text input menu */}
+          <input
+            type="text"
+            id="company"
+            name="company"
+            className={textInputStyles}
+            placeholder="e.g. Tesla"
+            required
+          />
+
+
+
+
         </form>
       </div>
     </div>
@@ -445,25 +566,25 @@ const FormSubmit = (props) => {
 function ChatStripe(currentColor, value, uniqueId) {
   return (
     `
-    <div class="text-base gap-4 md:gap-6 p-4 md:py-6 flex lg:px-0">
-      <div class="w-[30px] flex flex-col relative items-end">
-        <div class="relative h-[30px] w-[30px] p-2 rounded-sm text-white flex items-center justify-center" style="background-color: ${currentColor};">
-          <svg id="a" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21.18 25"><defs><style>.b{fill:#fff;}</style></defs><path class="b" d="M21.18,25h-5.05l-7.01-7.42-.3-4.82h1.93c2.52,0,4.56-2.04,4.56-4.56s-2.04-4.53-4.56-4.53H3.67V25H0V0H10.76c4.56,0,8.23,3.67,8.23,8.2,0,3.86-2.6,7.05-6.16,7.97l8.35,8.83Z"/></svg>
-        </div>
-      </div>
-      <div class="relative flex w-[calc(100%-50px)] md:flex-col lg:w-[calc(100%-115px)]">
-      <div
-        className="message" 
-        id=${uniqueId}
-      >
-        <p>
-          ${value}
-        </p>
-      </div>
-      </div>
-      <br />
-    </div>
-    `
+              <div class="text-base gap-4 md:gap-6 p-4 md:py-6 flex lg:px-0">
+                <div class="w-[30px] flex flex-col relative items-end">
+                  <div class="relative h-[30px] w-[30px] p-2 rounded-sm text-white flex items-center justify-center" style="background-color: ${currentColor};">
+                    <svg id="a" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21.18 25"><defs><style>.b{fill:#fff;}</style></defs><path class="b" d="M21.18,25h-5.05l-7.01-7.42-.3-4.82h1.93c2.52,0,4.56-2.04,4.56-4.56s-2.04-4.53-4.56-4.53H3.67V25H0V0H10.76c4.56,0,8.23,3.67,8.23,8.2,0,3.86-2.6,7.05-6.16,7.97l8.35,8.83Z" /></svg>
+                  </div>
+                </div>
+                <div class="relative flex w-[calc(100%-50px)] md:flex-col lg:w-[calc(100%-115px)]">
+                  <div
+                    className="message"
+                    id=${uniqueId}
+                  >
+                    <p>
+                      ${value}
+                    </p>
+                  </div>
+                </div>
+                <br />
+              </div>
+              `
   );
 }
 
