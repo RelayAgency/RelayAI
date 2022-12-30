@@ -48,8 +48,7 @@ function generateUniqueId() {
   return `id-${timestamp}-${hexadecimalString}`;
 }
 
-async function handleSubmit(e, currentColor, form, responseContainer, chatContainer, submitButton) 
-{
+async function handleSubmit(e, currentColor, form, responseContainer, chatContainer, submitButton) {
   // Start by preventing the submission from reloading the page.
   e.preventDefault();
   // Get the data from the form.
@@ -62,7 +61,7 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
   let goalsChecked = document.querySelectorAll('input[name="goals"]');
   let goalsR = [];
   goalsChecked.forEach((checkbox) => {
-    if(checkbox.checked) {
+    if (checkbox.checked) {
       goalsR.push(checkbox.value);
     }
   })
@@ -187,9 +186,12 @@ const FormDiv = () => {
   const radioButtonStyles = "w-1/3 mb-4"
   const radioLabelStyles = "p-2 text-gray-700 text-sm font-bold bg-white dark:bg-secondary-dark-bg capitalize"
 
-  const checkboxMenuStyles = "flex flex-wrap flex-row -mb-4 max-w-3xl"
-  const checkboxButtonStyles = "w-1/2 mb-4"
-  const checkboxLabelStyles = "p-2 inline-block text-gray-700 text-sm font-bold bg-white dark:bg-secondary-dark-bg capitalize"
+  const checkboxMenuStyles = "flex flex-wrap flex-row -mb-4 max-w-3xl items-center"
+  const checkboxDivStyles = "w-1/2 mb-2 flex items-center"
+  const temp2 = ""
+  const checkboxInputStyles = `w-4 h-4 text-[${currentColor}] bg-gray-100 rounded border-gray-300 focus:ring-[${currentColor}] dark:focus:ring-[${currentColor}] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600`
+  const checkboxLabelStyles = "p-2 ml-2 inline-block text-gray-700 dark:text-gray-200 text-sm font-medium bg-white dark:bg-secondary-dark-bg capitalize"
+  const temp1 = "inline-flex justify-between items-center p-2 m-2 w-full text-gray-700 bg-white rounded-lg border-2 border-gray-200 cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-200 dark:bg-secondary-dark-bg dark:hover:bg-gray-700"
 
 
   function handleInput() {
@@ -342,8 +344,9 @@ const FormDiv = () => {
           <div
             className={checkboxMenuStyles}
           >
-            <div className={checkboxButtonStyles}>
+            <div className={checkboxDivStyles}>
               <input
+                className={checkboxInputStyles}
                 type="checkbox"
                 id="schedule-meeting"
                 name="goals"
@@ -352,15 +355,16 @@ const FormDiv = () => {
               />
               <label
                 className={checkboxLabelStyles}
-                style={{ color: currentColor }}
+
                 for="schedule-meeting"
               >
                 Schedule a meeting
               </label>
             </div>
 
-            <div className={checkboxButtonStyles}>
+            <div className={checkboxDivStyles}>
               <input
+                className={checkboxInputStyles}
                 type="checkbox"
                 id="request-info"
                 name="goals"
@@ -368,15 +372,16 @@ const FormDiv = () => {
               />
               <label
                 className={checkboxLabelStyles}
-                style={{ color: currentColor }}
+
                 for="request-info"
               >
                 Request information
               </label>
             </div>
 
-            <div className={checkboxButtonStyles}>
+            <div className={checkboxDivStyles}>
               <input
+                className={checkboxInputStyles}
                 type="checkbox"
                 id="pitch-product"
                 name="goals"
@@ -384,15 +389,16 @@ const FormDiv = () => {
               />
               <label
                 className={checkboxLabelStyles}
-                style={{ color: currentColor }}
+
                 for="pitch-product"
               >
                 Pitch a product or service
               </label>
             </div>
 
-            <div className={checkboxButtonStyles}>
+            <div className={checkboxDivStyles}>
               <input
+                className={checkboxInputStyles}
                 type="checkbox"
                 id="connection"
                 name="goals"
@@ -400,15 +406,16 @@ const FormDiv = () => {
               />
               <label
                 className={checkboxLabelStyles}
-                style={{ color: currentColor }}
+
                 for="connection"
               >
                 Establish a connection
               </label>
             </div>
 
-            <div className={checkboxButtonStyles}>
+            <div className={checkboxDivStyles}>
               <input
+                className={checkboxInputStyles}
                 type="checkbox"
                 id="referral"
                 name="goals"
@@ -416,15 +423,16 @@ const FormDiv = () => {
               />
               <label
                 className={checkboxLabelStyles}
-                style={{ color: currentColor }}
+
                 for="referral"
               >
                 Request a referral or recommendation
               </label>
             </div>
 
-            <div className={checkboxButtonStyles}>
+            <div className={checkboxDivStyles}>
               <input
+                className={checkboxInputStyles}
                 type="checkbox"
                 id="collaboration"
                 name="goals"
@@ -432,15 +440,16 @@ const FormDiv = () => {
               />
               <label
                 className={checkboxLabelStyles}
-                style={{ color: currentColor }}
+
                 for="collaboration"
               >
                 Partner or collaborate
               </label>
             </div>
 
-            <div className={checkboxButtonStyles}>
+            <div className={checkboxDivStyles}>
               <input
+                className={checkboxInputStyles}
                 type="checkbox"
                 id="assist"
                 name="goals"
@@ -448,7 +457,7 @@ const FormDiv = () => {
               />
               <label
                 className={checkboxLabelStyles}
-                style={{ color: currentColor }}
+
                 for="assist"
               >
                 Offer assistance or expertise
