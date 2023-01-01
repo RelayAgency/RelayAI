@@ -41,6 +41,12 @@ mongoose.connect(mongoUrl, {
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 
 app.get('/', async (req, res) => {
   res.status(200).send({
@@ -117,7 +123,7 @@ app.post("/login-user", async (req, res) => {
     return res.json({ error: "User not found" });
   }
   if (await bcrypt.compare(password, user.password)) {
-    const token = jwt.sign({email:user.email}, JWT_SECRET);
+    const token = jwt.sign({ email: user.email }, JWT_SECRET);
 
     if (res.status(201)) {
       return res.json({ status: "ok", data: token });
