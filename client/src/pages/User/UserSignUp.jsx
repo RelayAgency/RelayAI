@@ -112,7 +112,7 @@ async function handleSubmit(e, form) {
   }
   else {
 
-    fetch(`https://relayai.onrender.com${SIGNUP_URL}`, {
+    fetch(`https://relayai-api.onrender.com${SIGNUP_URL}`, {
       method: 'POST',
       crossDomain: true,
       headers: {

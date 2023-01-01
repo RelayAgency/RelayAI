@@ -55,7 +55,7 @@ async function handleSubmit(e, form) {
     }, duration / 1000);
   }
 
-  fetch(`https://relayai.onrender.com${LOGIN_URL}`, {
+  fetch(`https://relayai-api.onrender.com${LOGIN_URL}`, {
     method: 'POST',
     crossDomain: true,
     headers: {

@@ -21,7 +21,7 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 // MongoDB connection
-const mongoUrl = "mongodb+srv://duropiri:DuroReliable2002@cluster1.gf1l1ic.mongodb.net/?retryWrites=true&w=majority"
+const mongoUrl = process.env.MONGO_URL
 
 mongoose.connect(mongoUrl, {
   useNewUrlParser: true,
