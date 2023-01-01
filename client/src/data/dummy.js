@@ -27,7 +27,7 @@ import product5 from './product5.jpg';
 import product6 from './product6.jpg';
 import product7 from './product7.jpg';
 // import product8 from './product8.jpg';
-import { SiFacebook, SiHtml5, SiInstagram, SiLinkedin, SiTiktok, SiYoutube } from 'react-icons/si';
+import { SiFacebook, SiHtml5, SiInstagram, SiLinkedin, SiScrollreveal, SiTiktok, SiYoutube } from 'react-icons/si';
 
 export const gridOrderImage = (props) => (
   <div>
@@ -608,6 +608,19 @@ export const links = [
       {
         name: 'website copy',
         icon: <BiGlobe />,
+      },
+    ]
+  },
+  {
+    title: 'User',
+    links: [
+      {
+        name: 'profile',
+        icon: <BsPerson />,
+      },
+      {
+        name: 'prompts',
+        icon: <SiScrollreveal />,
       },
     ]
   },

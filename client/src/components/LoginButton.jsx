@@ -4,11 +4,14 @@ import { useStateContext } from '../contexts/ContextProvider';
 import React from 'react'
 
 const LoginButton = () => {
-  const { loginWithRedirect, isAuthenticated } = useAuth0();
+  // const { loginWithRedirect, isAuthenticated } = useAuth0();
   const { currentColor } = useStateContext();
 
+  const loginWithRedirect = () => {
+    window.location.href = "./sign-in";
+  }
   return (
-    !isAuthenticated && (
+    // !isAuthenticated && (
       <button
         onClick={() => loginWithRedirect()}
         style={{
@@ -21,7 +24,7 @@ const LoginButton = () => {
       >
         Sign In
       </button>
-    )
+    // )
 
   )
 }

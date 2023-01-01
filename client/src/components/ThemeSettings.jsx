@@ -6,8 +6,20 @@ import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 import { themeColors } from '../data/dummy';
 import { useStateContext } from '../contexts/ContextProvider';
 
+import IconButton from '@mui/material/IconButton';
+import Box from '@mui/material/Box';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+
+
+
 const ThemeSettings = () => {
-  const { setColor, setMode, currentMode, currentColor, setThemeSettings } = useStateContext();
+  const { setColor, setMode, currentMode, currentColor, setThemeSettings, setCurrentMode } = useStateContext();
+
+
+  const toggleColorMode = () => {
+    currentMode === 'Light' ? setCurrentMode('Dark') : setCurrentMode('Light');
+  }
 
   return (
     <div className="bg-half-transparent w-screen fixed nav-item top-0 right-0">
@@ -27,7 +39,7 @@ const ThemeSettings = () => {
         <div className="flex-col border-t-1 border-color p-4 ml-4">
           <p className="font-semibold text-xl ">Theme Option</p>
 
-          <div className="mt-4">
+          {/* <div className="mt-4">
             <input
               type="radio"
               id="light"
@@ -37,7 +49,6 @@ const ThemeSettings = () => {
               onChange={setMode}
               checked={currentMode === 'Light'}
             />
-            {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
             <label htmlFor="light" className="ml-2 text-md cursor-pointer">
               Light
             </label>
@@ -52,11 +63,29 @@ const ThemeSettings = () => {
               className="cursor-pointer"
               checked={currentMode === 'Dark'}
             />
-            {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
             <label htmlFor="dark" className="ml-2 text-md cursor-pointer">
               Dark
             </label>
-          </div>
+          </div> */}
+          <Box
+            sx={{
+              display: 'flex',
+              width: '100%',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: 1,
+              p: 2,
+            }}
+          >
+
+            <IconButton
+              // sx={{ ml: 1 }}
+              onClick={toggleColorMode}
+              color="inherit"
+            >
+              {currentMode === 'Dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+            </IconButton>
+          </Box>
         </div>
         <div className="p-4 border-t-1 border-color ml-4">
           <p className="font-semibold text-xl ">Theme Colors</p>

@@ -6,16 +6,17 @@ import { TooltipComponent } from '@syncfusion/ej2-react-popups';
 import { Navbar, Footer, Sidebar, ThemeSettings } from './components';
 import { Ecommerce, Orders, Calendar, Employees, Stacked, Pyramid, Customers, Kanban, Area, Bar, Pie, Financial, ColorPicker, ColorMapping, Editor, Line } from './pages';
 
-import {ProductDescription, ColdDM, FacebookPost, InstagramPost, LinkedinPost, TikTokScript, YoutubeIdea, ColdEmail, EmailMarketing, FollowUpEmail, PersonalizedEmail, SubjectLine, ImageAltText, Keywords, MetaDescription, TitlesHeadings, WebsiteCopy } from './pages';
+import { ProductDescription, ColdDM, FacebookPost, InstagramPost, LinkedinPost, TikTokScript, YoutubeIdea, ColdEmail, EmailMarketing, FollowUpEmail, PersonalizedEmail, SubjectLine, ImageAltText, Keywords, MetaDescription, TitlesHeadings, WebsiteCopy } from './pages';
 
-import { UserProfile, UserPrompts } from './pages';
+import { UserProfile, UserPrompts, UserSignUp, UserSignIn } from './pages';
 
 import { useStateContext } from './contexts/ContextProvider';
 
 import './App.css'
 
 const App = () => {
-  const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings } = useStateContext();
+  const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings, setIsLoggedIn } = useStateContext();
+
 
   useEffect(() => {
     const currentThemeColor = localStorage.getItem('colorMode');
@@ -26,94 +27,104 @@ const App = () => {
     }
   }, []);
 
-
+  
+  const isLoggedIn = localStorage.getItem('loggedIn');
+  
 
   return (
     <div className={currentMode === 'Dark' ? 'dark' : ''}>
       <BrowserRouter>
         <div className="flex relative dark:bg-main-dark-bg">
           <div className="fixed right-4 bottom-4" style={{ zIndex: '1000' }}>
-            <TooltipComponent
-              content="Settings"
-              position="Top"
-            >
-              <button
-                type="button"
-                onClick={() => setThemeSettings(true)}
-                style={{ background: currentColor, borderRadius: '50%' }}
-                className="text-3xl text-white p-3 hover:drop-shadow-xl hover:bg-light-gray"
+            {isLoggedIn == "true" ?
+              <TooltipComponent
+                content="Settings"
+                position="Top"
               >
-                <FiSettings />
-              </button>
+                <button
+                  type="button"
+                  onClick={() => setThemeSettings(true)}
+                  style={{ background: currentColor, borderRadius: '50%' }}
+                  className="text-3xl text-white p-3 hover:drop-shadow-xl hover:bg-light-gray"
+                >
+                  <FiSettings />
+                </button>
 
-            </TooltipComponent>
+              </TooltipComponent> : <></>}
           </div>
-          {activeMenu ? (
-            <div className="w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white ">
-              <Sidebar />
-            </div>
-          ) : (
-            <div className="w-0 dark:bg-secondary-dark-bg">
-              <Sidebar />
-            </div>
-          )}
+          {isLoggedIn == "true" ?
+            <div>
+              {activeMenu ? (
+                <div className="w-72 fixed sidebar dark:bg-secondary-dark-bg bg-white ">
+                  <Sidebar />
+                </div>
+              ) : (
+                <div className="w-0 dark:bg-secondary-dark-bg">
+                  <Sidebar />
+                </div>
+              )}
+            </div> : <></>}
+
           <div
+          
             className={
-              activeMenu
-                ? 'dark:bg-main-dark-bg  bg-main-bg min-h-screen md:ml-72 w-full  '
-                : 'bg-main-bg dark:bg-main-dark-bg  w-full min-h-screen flex-2 '
+              activeMenu && isLoggedIn == "true"
+                ? 'dark:bg-main-dark-bg bg-main-bg min-h-screen w-full md:ml-72 '
+                : 'dark:bg-main-dark-bg bg-main-bg min-h-screen w-full flex-2 '
             }
           >
-            <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full ">
-              <Navbar />
-            </div>
-            {themeSettings && <ThemeSettings />}
+            {isLoggedIn == "true" ?
+              <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full ">
+                <Navbar />
+              </div> : <></>}
+            {isLoggedIn == "true" ? <div>{themeSettings && <ThemeSettings />}</div> : <></>}
 
             <div>
               <Routes>
                 {/* Dashboard */}
                 {/* <Route path="/" element={<Ecommerce />} /> */}
-                {/* <Route path="/" element={<Ecommerce />} /> */}
+                <Route path="/" element={isLoggedIn == "true" ? <UserProfile /> : <UserSignIn />} />
 
                 {/* Product Descriptions */}
-                <Route path="/" element={<ProductDescription />} />
-                <Route path="/product descriptions" element={<ProductDescription />} />
+                <Route path="/product descriptions" element={isLoggedIn == "true" ? <ProductDescription /> : <UserSignIn />} />
 
                 {/* Social Media */}
-                <Route path="/cold dms" element={<ColdDM />} />
-                <Route path="/facebook posts" element={<FacebookPost />} />
-                <Route path="/instagram posts" element={<InstagramPost />} />
-                <Route path="/linkedin posts" element={<LinkedinPost />} />
-                <Route path="/tiktok scripts" element={<TikTokScript />} />
-                <Route path="/youtube ideas" element={<YoutubeIdea />} />
+                <Route path="/cold dms" element={isLoggedIn == "true" ? <ColdDM /> : <UserSignIn />} />
+                <Route path="/facebook posts" element={isLoggedIn == "true" ? <FacebookPost /> : <UserSignIn />} />
+                <Route path="/instagram posts" element={isLoggedIn == "true" ? <InstagramPost /> : <UserSignIn />} />
+                <Route path="/linkedin posts" element={isLoggedIn == "true" ? <LinkedinPost /> : <UserSignIn />} />
+                <Route path="/tiktok scripts" element={isLoggedIn == "true" ? <TikTokScript /> : <UserSignIn />} />
+                <Route path="/youtube ideas" element={isLoggedIn == "true" ? <YoutubeIdea /> : <UserSignIn />} />
 
                 {/* Email/Letter */}
-                <Route path="/cold emails" element={<ColdEmail />} />
-                <Route path="/email marketing" element={<EmailMarketing />} />
-                <Route path="/follow up emails" element={<FollowUpEmail />} />
-                <Route path="/personalized emails" element={<PersonalizedEmail />} />
-                <Route path="/subject lines" element={<SubjectLine />} />
-                
+                <Route path="/cold emails" element={isLoggedIn == "true" ? <ColdEmail /> : <UserSignIn />} />
+                <Route path="/email marketing" element={isLoggedIn == "true" ? <EmailMarketing /> : <UserSignIn />} />
+                <Route path="/follow up emails" element={isLoggedIn == "true" ? <FollowUpEmail /> : <UserSignIn />} />
+                <Route path="/personalized emails" element={isLoggedIn == "true" ? <PersonalizedEmail /> : <UserSignIn />} />
+                <Route path="/subject lines" element={isLoggedIn == "true" ? <SubjectLine /> : <UserSignIn />} />
+
                 {/* SEO */}
-                <Route path="/image alt text" element={<ImageAltText />} />
-                <Route path="/keywords" element={<Keywords />} />
-                <Route path="/meta descriptions" element={<MetaDescription />} />
-                <Route path="/titles & headings" element={<TitlesHeadings />} />
-                <Route path="/website copy" element={<WebsiteCopy />} />
+                <Route path="/image alt text" element={isLoggedIn == "true" ? <ImageAltText /> : <UserSignIn />} />
+                <Route path="/keywords" element={isLoggedIn == "true" ? <Keywords /> : <UserSignIn />} />
+                <Route path="/meta descriptions" element={isLoggedIn == "true" ? <MetaDescription /> : <UserSignIn />} />
+                <Route path="/titles & headings" element={isLoggedIn == "true" ? <TitlesHeadings /> : <UserSignIn />} />
+                <Route path="/website copy" element={isLoggedIn == "true" ? <WebsiteCopy /> : <UserSignIn />} />
 
 
                 {/* USER */}
-                <Route path="/profile" element={<UserProfile />} />
-                <Route path="/prompts" element={<UserPrompts />} />
+                <Route path="/register" element={isLoggedIn == "true" ? <UserProfile /> : <UserSignUp />} />
+                <Route path="/sign-in" element={isLoggedIn == "true" ? <UserProfile /> : <UserSignIn />} />
+                <Route path="/profile" element={isLoggedIn == "true" ? <UserProfile /> : <UserSignIn />} />
+                <Route path="/prompts" element={isLoggedIn == "true" ? <UserPrompts /> : <UserSignIn />} />
 
               </Routes >
             </div>
             <Footer />
           </div>
         </div>
-        
+
       </BrowserRouter>
-      
+
     </div>
   )
 }

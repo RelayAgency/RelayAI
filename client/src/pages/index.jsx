@@ -21,6 +21,8 @@ export { default as MetaDescription } from './AiContent/SEO/MetaDescription';
 export { default as TitlesHeadings } from './AiContent/SEO/TitlesHeadings';
 export { default as WebsiteCopy } from './AiContent/SEO/WebsiteCopy';
 
+export { default as UserSignUp } from './User/UserSignUp';
+export { default as UserSignIn } from './User/UserSignIn';
 export { default as UserProfile } from './User/UserProfile';
 export { default as UserPrompts } from './User/UserPrompts';
 

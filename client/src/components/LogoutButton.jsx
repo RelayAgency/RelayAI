@@ -4,11 +4,15 @@ import { useStateContext } from '../contexts/ContextProvider';
 import React from 'react'
 
 const LogoutButton = () => {
-  const { logout, isAuthenticated } = useAuth0();
+  // const { logout, isAuthenticated } = useAuth0();
   const { currentColor } = useStateContext();
 
+  const logout = () => {
+    window.localStorage.clear();
+    window.location.href = './sign-in';
+  }
   return (
-    isAuthenticated && (
+    // isAuthenticated && (
       <button
         onClick={() => logout()}
         style={{
@@ -21,7 +25,7 @@ const LogoutButton = () => {
       >
         Sign Out
       </button>
-    )
+    // )
 
   )
 }
