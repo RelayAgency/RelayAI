@@ -107,7 +107,7 @@ app.post("/signup", async (req, res) => {
 
 import jwt from "jsonwebtoken";
 
-const JWT_SECRET = "sasd*&^&as&9sfsdf8sdfgasd6(*asufa6a7A";
+const JWT_SECRET = process.env.JWT_SECRET;
 
 app.post("/login-user", async (req, res) => {
   const { email, password } = req.body;
