@@ -2,6 +2,8 @@ import React, { useRef, useState, useEffect, useContext } from 'react'
 
 import { useStateContext } from '../../contexts/ContextProvider';
 
+const URL = "/userData"
+
 const LogoutButton = (props) => {
   const { currentColor } = useStateContext();
   const form = document.getElementById(props.formId);
@@ -41,7 +43,7 @@ class UserProfile extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`http://localhost:5000/userData`, {
+    fetch(`https://relayai.onrender.com${URL}`, {
       method: 'POST',
       crossDomain: true,
       headers: {

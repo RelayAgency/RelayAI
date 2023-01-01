@@ -8,7 +8,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
-const SIGNUP_URL = '/signup'
+const URL = '/signup'
 
 const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
@@ -112,7 +112,7 @@ async function handleSubmit(e, form) {
   }
   else {
 
-    fetch(`https://relayai.onrender.com${SIGNUP_URL}`, {
+    fetch(`https://relayai.onrender.com${URL}`, {
       method: 'POST',
       crossDomain: true,
       headers: {

@@ -14,7 +14,7 @@ import { useStateContext } from '../contexts/ContextProvider';
 import { useAuth0 } from '@auth0/auth0-react';
 import LoginButton from './LoginButton';
 
-
+const URL = "/userData"
 
 
 const NavButton = () => {
@@ -68,7 +68,7 @@ const ProfileButton = () => {
   const [userData, setUserData] = useState('');
 
   useEffect(() => {
-    fetch(`http://localhost:5000/userData`, {
+    fetch(`https://relayai.onrender.com${URL}`, {
       method: 'POST',
       crossDomain: true,
       headers: {

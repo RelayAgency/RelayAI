@@ -11,7 +11,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import GppBadIcon from '@mui/icons-material/GppBad';
 
 
-const LOGIN_URL = '/login-user'
+const URL = '/login-user'
 
 async function handleSubmit(e, form) {
   // Start by preventing the submission from reloading the page.
@@ -55,7 +55,7 @@ async function handleSubmit(e, form) {
     }, duration / 1000);
   }
 
-  fetch(`https://relayai.onrender.com${LOGIN_URL}`, {
+  fetch(`https://relayai.onrender.com${URL}`, {
     method: 'POST',
     crossDomain: true,
     headers: {

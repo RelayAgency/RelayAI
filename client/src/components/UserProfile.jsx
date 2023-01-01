@@ -12,6 +12,8 @@ import { useStateContext } from '../contexts/ContextProvider';
 
 import avatar from '../data/default-avatar.png';
 
+const URL = "/userData"
+
 const ProfileHeader = () => {
   return (
     <>
@@ -40,7 +42,7 @@ const ProfileCard = () => {
   const [userData, setUserData] = useState('');
 
   useEffect(() => {
-    fetch(`http://localhost:5000/userData`, {
+    fetch(`https://relayai.onrender.com${URL}`, {
       method: 'POST',
       crossDomain: true,
       headers: {
