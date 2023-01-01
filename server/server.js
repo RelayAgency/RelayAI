@@ -106,7 +106,6 @@ app.post("/signup", async (req, res) => {
 })
 
 import jwt from "jsonwebtoken";
-
 const JWT_SECRET = process.env.JWT_SECRET;
 
 app.post("/login-user", async (req, res) => {
