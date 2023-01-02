@@ -16,6 +16,40 @@ const url1 = `http://localhost:5000${URL}`;
 const url2 = `https://relayai.onrender.com${URL}`;
 const urls = [url1, url2];
 
+function createMessage(type, message, time) {
+  const errorMessageStyles = "h-[6rem] p-8 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg  rounded-xl w-full lg:w-full  m-3 bg-no-repeat bg-cover bg-center text-white text-center font-bold truncate";
+  let interval;
+  function fadeOut(element, duration) {
+    element.classList.add(`${type}-message`);
+
+    let opacity = 1;
+
+    interval = setInterval(function () {
+      opacity -= 0.01;
+      element.style.opacity = opacity;
+      if (opacity <= 0) {
+        clearInterval(interval);
+        element.remove();
+      }
+    }, duration / 1000);
+  }
+
+  const errorMessage = document.getElementById(`${type}-message`);
+  const copy = errorMessage.cloneNode(true);
+  copy.id = "new-id";
+  errorMessage.parentNode.appendChild(copy);
+
+  copy.setAttribute("class", errorMessageStyles)
+  copy.textContent = message;
+  clearInterval(interval);
+  copy.style.opacity = 1;
+  copy.scrollIntoView({ behavior: 'smooth' });
+  setTimeout(function () {
+    fadeOut(copy, 5000);
+  }, time * 1000);
+
+}
+
 async function handleSubmit(e, form) {
   // Start by preventing the submission from reloading the page.
   e.preventDefault();
@@ -83,33 +117,12 @@ async function handleSubmit(e, form) {
         // alert("login success");
         window.localStorage.setItem('token', data.data);
         window.localStorage.setItem('loggedIn', true);
-        const errorMessage = document.getElementById("error-message");
-        const copy = errorMessage.cloneNode(true);
-        copy.id = "new-id";
-        errorMessage.parentNode.appendChild(copy);
-        
-        copy.setAttribute("class", "h-[6rem] p-8 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg  rounded-xl w-full lg:w-full  m-3 bg-no-repeat bg-cover bg-center text-white text-center font-bold truncate")
-        copy.textContent = "Login Success";
-        clearInterval(interval);
-        copy.style.opacity = 1;
-        setTimeout(function () {
-          fadeOut(copy, 5000);
-        }, 1000);
+
+        createMessage("success", "Login Success", 10);
         window.location.href = "./profile";
 
       } else {
-        const errorMessage = document.getElementById("error-message");
-        const copy = errorMessage.cloneNode(true);
-        copy.id = "new-id";
-        errorMessage.parentNode.appendChild(copy);
-        
-        copy.setAttribute("class", "h-[6rem] p-8 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg  rounded-xl w-full lg:w-full  m-3 bg-no-repeat bg-cover bg-center text-white text-center font-bold truncate")
-        copy.textContent = "Check email and password";
-        clearInterval(interval);
-        copy.style.opacity = 1;
-        setTimeout(function () {
-          fadeOut(copy, 5000);
-        }, 1000);
+        createMessage("error", "Check email and password", 1);
       }
     })
 
@@ -265,15 +278,38 @@ const ToSignUp = () => {
 }
 
 const ErrorMessageDiv = () => {
-  const { currentColor } = useStateContext();
+  // const { currentColor } = useStateContext();
   return (
     <div
       id="error-message"
       name="error-message"
+      style={{ backgroundColor: "#ff3366" }}
+      className=""
+    />
+  )
+}
+
+const WarningMessageDiv = () => {
+  // const { currentColor } = useStateContext();
+  return (
+    <div
+      id="warning-message"
+      name="warning-message"
+      style={{ backgroundColor: "#ffcc55" }}
+      className=""
+    />
+  )
+}
+
+const SuccessMessageDiv = () => {
+  const { currentColor } = useStateContext();
+  return (
+    <div
+      id="success-message"
+      name="success-message"
       style={{ backgroundColor: currentColor }}
       className=""
     />
-
   )
 }
 
@@ -289,7 +325,7 @@ class UserSignIn extends React.Component {
             <FormSubmit
               formId="form"
             />
-            {/* <ToSignUp /> */}
+            <ToSignUp />
 
             {/* <section>
               <p ref={errRef} className={errMsg ? "errmsg" :
@@ -297,6 +333,8 @@ class UserSignIn extends React.Component {
             </section> */}
           </div>
           <ErrorMessageDiv />
+          <WarningMessageDiv />
+          <SuccessMessageDiv />
         </div>
       </div>
     );

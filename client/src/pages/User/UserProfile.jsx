@@ -2,37 +2,13 @@ import React, { useRef, useState, useEffect, useContext } from 'react'
 
 import { useStateContext } from '../../contexts/ContextProvider';
 
+import LogoutButton from '../../components/LogoutButton';
+
 const URL = "/userData"
 const url1 = `http://localhost:5000${URL}`;
 const url2 = `https://relayai.onrender.com${URL}`;
 const urls = [url1, url2];
 
-const LogoutButton = (props) => {
-  const { currentColor } = useStateContext();
-  const form = document.getElementById(props.formId);
-
-  const textLinkStyles = "cursor-pointer"
-
-  const logOut = () => {
-    window.localStorage.clear();
-    window.location.href = './sign-in';
-  }
-
-  return (
-    <div className="text-center">
-      <button
-        id="submit-button"
-        color="white"
-        style={{ backgroundColor: currentColor }}
-        type="submit"
-        className="text-m opacity-0.9 text-white hover:drop-shadow-xl rounded-xl p-4 mt-8"
-        onClick={(e) => logOut(e)}>
-        Log Out
-      </button>
-    </div>
-  )
-
-}
 
 class UserProfile extends React.Component {
   constructor(props) {

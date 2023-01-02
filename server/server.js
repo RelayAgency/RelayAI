@@ -88,7 +88,7 @@ import bcrypt from 'bcryptjs';
 
 import User from "./controllers/userDetails.js";
 app.post("/signup", async (req, res) => {
-  const { fname, lname, email, password } = req.body;
+  const { fname, lname, email, mobile, password } = req.body;
 
   const encryptedPassword = await bcrypt.hash(password, 10);
 
@@ -101,6 +101,7 @@ app.post("/signup", async (req, res) => {
       fname: fname,
       lname: lname,
       email: email,
+      mobile: mobile,
       password: encryptedPassword,
     })
     res.send({ status: "ok" })

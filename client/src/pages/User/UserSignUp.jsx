@@ -2,8 +2,12 @@ import React, { useRef, useState, useEffect, useContext } from 'react'
 
 import { useStateContext } from '../../contexts/ContextProvider';
 
+import app from './firebase_config.js';
+import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+
 import IconButton from '@mui/material/IconButton';
 import Input from '@mui/material/Input';
+import Button from '@mui/material/Button';
 import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
@@ -15,33 +19,52 @@ const urls = [url1, url2];
 
 const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
-async function handleSubmit(e, form) {
-  // Start by preventing the submission from reloading the page.
-  e.preventDefault();
-
-  // Get the data from the form.
-  const userInfo = new FormData(document.getElementById("form"));
-
-  // Get user input from the form.
-  const data = {
-    firstName: userInfo.get('firstName'),
-    lastName: userInfo.get('lastName'),
-    email: userInfo.get('email'),
-    password: userInfo.get('password'),
-    confirmPassword: userInfo.get('confirmPassword'),
-  }
 
 
+const auth = getAuth(app);
 
-  const fname = data.firstName;
-  const lname = data.lastName;
-  const email = data.email;
-  const password = data.password;
+function onCaptchaVerify(mobile) {
+  window.recaptchaVerifier = new RecaptchaVerifier(
+    'recaptcha-container',
+    {
+      'size': 'invisible',
+      'callback': (response) => {
+        // onSignInSubmit(mobile)
+        // reCAPTCHA solved, allow signInWithPhoneNumber.
+        // ...
+        console.log("reCAPTCHA solved, allow signInWithPhoneNumber");
+      },
+    }, auth);
+}
 
+function onSignInSubmit(mobile) {
+  onCaptchaVerify(mobile);
+  const phoneNumber = "+1" + mobile;
+  const appVerifier = window.recaptchaVerifier;
+  signInWithPhoneNumber(auth, phoneNumber, appVerifier)
+    .then((confirmationResult) => {
+      // SMS sent. Prompt user to type the code from the message, then sign the
+      // user in with confirmationResult.confirm(code).
+      window.confirmationResult = confirmationResult;
+
+      // Create message in error container.
+      createMessage("success", `Sent OTP to ${phoneNumber}`, 5);
+      // ...
+    }).catch((error) => {
+      // Error; SMS not sent
+      // ...
+      // console.log("OTP send failed\n" + error);
+      createMessage("error", `Please refresh the page`, 30);
+      createMessage("error", `${error}`, 5);
+
+    });
+}
+
+function createMessage(type, message, time) {
+  const errorMessageStyles = "h-[6rem] p-8 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg  rounded-xl w-full lg:w-full  m-3 bg-no-repeat bg-cover bg-center text-white text-center font-bold truncate";
   let interval;
-
   function fadeOut(element, duration) {
-    element.classList.add("error-message");
+    element.classList.add(`${type}-message`);
 
     let opacity = 1;
 
@@ -55,65 +78,96 @@ async function handleSubmit(e, form) {
     }, duration / 1000);
   }
 
-  // Check if all form fields have a value.
-  if (!data.firstName || !data.lastName || !data.email || !data.password || !data.confirmPassword) {
-    // Display an error message if any of the fields are empty.
-    const errorMessage = document.getElementById("error-message");
-    const copy = errorMessage.cloneNode(true);
-    copy.id = "new-id";
-    errorMessage.parentNode.appendChild(copy);
+  const errorMessage = document.getElementById(`${type}-message`);
+  const copy = errorMessage.cloneNode(true);
+  copy.id = "new-id";
+  errorMessage.parentNode.appendChild(copy);
 
-    copy.setAttribute("class", "h-[6rem] p-8 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg  rounded-xl w-full lg:w-full  m-3 bg-no-repeat bg-cover bg-center text-white text-center font-bold truncate")
-    copy.textContent = "Please fill out all form fields.";
-    clearInterval(interval);
-    copy.style.opacity = 1;
-    setTimeout(function () {
-      fadeOut(copy, 5000);
-    }, 5000);
-  } else if (data.password !== data.confirmPassword) {
-    // Display an error message if any of the fields are empty.
-    const errorMessage = document.getElementById("error-message");
-    const copy = errorMessage.cloneNode(true);
-    copy.id = "new-id";
-    errorMessage.parentNode.appendChild(copy);
+  copy.setAttribute("class", errorMessageStyles)
+  copy.textContent = message;
+  clearInterval(interval);
+  copy.style.opacity = 1;
+  copy.scrollIntoView({ behavior: 'smooth' });
+  setTimeout(function () {
+    fadeOut(copy, 5000);
+  }, time * 1000);
 
-    copy.setAttribute("class", "h-[6rem] p-8 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg  rounded-xl w-full lg:w-full  m-3 bg-no-repeat bg-cover bg-center text-white text-center font-bold truncate")
-    copy.textContent = "Passwords do not match.";
-    clearInterval(interval);
-    copy.style.opacity = 1;
-    setTimeout(function () {
-      fadeOut(copy, 5000);
-    }, 5000);
-  } else if (data.password.length < 8) {
-    // Display an error message if any of the fields are empty.
-    const errorMessage = document.getElementById("error-message");
-    const copy = errorMessage.cloneNode(true);
-    copy.id = "new-id";
-    errorMessage.parentNode.appendChild(copy);
+}
 
-    copy.setAttribute("class", "h-[6rem] p-8 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg  rounded-xl w-full lg:w-full  m-3 bg-no-repeat bg-cover bg-center text-white text-center font-bold truncate")
-    copy.textContent = "The password must be more than 8 characters.";
-    clearInterval(interval);
-    copy.style.opacity = 1;
-    setTimeout(function () {
-      fadeOut(copy, 5000);
-    }, 5000);
-  } else if (!emailRegex.test(data.email)) {
-    // Display an error message if any of the fields are empty.
-    const errorMessage = document.getElementById("error-message");
-    const copy = errorMessage.cloneNode(true);
-    copy.id = "new-id";
-    errorMessage.parentNode.appendChild(copy);
 
-    copy.setAttribute("class", "h-[6rem] p-8 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg  rounded-xl w-full lg:w-full  m-3 bg-no-repeat bg-cover bg-center text-white text-center font-bold truncate")
-    copy.textContent = "The email is not a valid email.";
-    clearInterval(interval);
-    copy.style.opacity = 1;
-    setTimeout(function () {
-      fadeOut(copy, 5000);
-    }, 5000);
+async function handleSubmit(e, form) {
+  // Start by preventing the submission from reloading the page.
+  e.preventDefault();
+
+  // Get the data from the form.
+  const userInfo = new FormData(document.getElementById("form"));
+
+
+  // Get user input from the form.
+  const data = {
+    firstName: userInfo.get('firstName'),
+    lastName: userInfo.get('lastName'),
+    email: userInfo.get('email'),
+    mobile: userInfo.get('mobile'),
+    password: userInfo.get('password'),
+    confirmPassword: userInfo.get('confirmPassword'),
   }
-  else {
+
+  const fname = data.firstName;
+  const lname = data.lastName;
+  const email = data.email;
+  const mobile = data.mobile;
+  const password = data.password;
+  const otp = userInfo.get('otp');
+
+  let validOtp = false;
+  if (otp && window.confirmationResult) {
+    window.confirmationResult
+      .confirm(otp)
+      .then((result) => {
+        // User signed in successfully.
+        const user = result.user;
+        // console.log(user);
+        validOtp = true;
+        console.log("Valid OTP: " + validOtp)
+
+        // ...
+      }).catch((error) => {
+
+        validOtp = false;
+        console.log("Invalid OTP: " + validOtp)
+        // User couldn't sign in (bad verification code?)
+        // ...
+      });
+  }
+
+  // Check if all form fields have a value.
+  if (!data.firstName || !data.lastName || !data.email || !data.password || !data.mobile || !otp || !data.confirmPassword) {
+    // Display a warning message if any of the fields are empty.
+    createMessage("warning", "Please fill out all form fields.", 1);
+
+  } else if (data.password !== data.confirmPassword) {
+    // Display a warning message if the passwords don't match.
+    createMessage("warning", "Passwords do not match.", 1);
+
+  } else if (data.password.length < 8) {
+    // Display a warning message if the password is less than 8 characters.
+    createMessage("warning", "The password must be more than 8 characters.", 1);
+
+  } else if (!emailRegex.test(data.email)) {
+    // Display a warning message if the email is invalid.
+    createMessage("warning", "The email is not a valid email.", 1);
+
+  } else if (!validOtp) {
+    // Display a warning message if the otp is invalid.
+    console.log(validOtp);
+    createMessage("warning", "The OTP is not valid.", 1);
+
+  } else if (!window.confirmationResult) {
+    // Display a warning message if the otp is invalid.
+    createMessage("warning", "Please request OTP", 1);
+
+  } else {
 
     fetch(urls[1], {
       method: 'POST',
@@ -127,6 +181,7 @@ async function handleSubmit(e, form) {
         fname,
         lname,
         email,
+        mobile,
         password,
       })
     })
@@ -137,37 +192,17 @@ async function handleSubmit(e, form) {
           fname,
           lname,
           email,
+          mobile,
           password,
         }))
-        if (data.status == "ok") {
+        if (data.status === "ok") {
           // alert("login success");
+          createMessage("success", "Sign Up Success, Please Login", 30);
           window.localStorage.setItem('token', data.data);
-          const errorMessage = document.getElementById("error-message");
-          const copy = errorMessage.cloneNode(true);
-          copy.id = "new-id";
-          errorMessage.parentNode.appendChild(copy);
 
-          copy.setAttribute("class", "h-[6rem] p-8 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg  rounded-xl w-full lg:w-full  m-3 bg-no-repeat bg-cover bg-center text-white text-center font-bold truncate")
-          copy.textContent = "Sign Up Success, Please Login";
-          clearInterval(interval);
-          copy.style.opacity = 1;
-          setTimeout(function () {
-            fadeOut(copy, 5000);
-          }, 30000);
         } else {
-          const errorMessage = document.getElementById("error-message");
-          const copy = errorMessage.cloneNode(true);
-          copy.id = "new-id";
-          errorMessage.parentNode.appendChild(copy);
-
-          copy.setAttribute("class", "h-[6rem] p-8 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg  rounded-xl w-full lg:w-full  m-3 bg-no-repeat bg-cover bg-center text-white text-center font-bold truncate")
           const error = data.error;
-          copy.textContent = `Sign Up Failed, ${error}`;
-          clearInterval(interval);
-          copy.style.opacity = 1;
-          setTimeout(function () {
-            fadeOut(copy, 5000);
-          }, 5000);
+          createMessage("error", `Sign Up Failed, ${error}`, 5);
         }
       })
   }
@@ -192,6 +227,8 @@ const DescriptionDiv = () => {
   )
 }
 
+
+
 const FormDiv = () => {
   const { currentColor } = useStateContext();
   const labelStyles = "block text-gray-700 text-sm font-bold  bg-white dark:text-gray-200 dark:bg-secondary-dark-bg capitalize"
@@ -205,6 +242,31 @@ const FormDiv = () => {
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+
+
+  const [showButton, setShowButton] = useState(false);
+  const [showOtp, setShowOtp] = useState(false);
+
+  let input;
+  function handleMobileInput(event) {
+    input = event.target.value;
+
+    if (input.length === 10) {
+      setShowButton(true);
+    } else {
+      setShowButton(false);
+    }
+  }
+
+  const mobileInput = useRef(null);
+
+  function HandleVerifyButton() {
+    const mobile = mobileInput.current.value;
+    // console.log(mobile);
+
+    setShowOtp(true);
+    onSignInSubmit(mobile);
+  }
 
   return (
     <div className="flex justify-between items-center w-full">
@@ -245,19 +307,7 @@ const FormDiv = () => {
             autoComplete="off"
             // onChange={(e) => setUser(e.target.value)}
             required
-          // aria-invalid={validName ? "false" : "true"}
-          // aria-describedby="uidnote"
-          // onFocus={setUserFocus(true)}
-          // onBlur={setUserFocus(false)}
           />
-
-          {/* <p id="uidnote" className={userFocus && user && !validName ? "instructions" : "offscreen"}>
-            <FontAwesomeIcon icon={faInfoCircle} />
-            4 to 24 characters.<br />
-            Must begin with a letter.<br />
-            Letters, numbers, underscores, hyphens allowed.
-          </p> */}
-
 
           {/* Labels and tooltip for user text input area */}
           <div className="mt-4">
@@ -314,6 +364,72 @@ const FormDiv = () => {
             <label
               className={labelStyles}
             >
+              Mobile Number
+            </label>
+            <p
+              style={{ color: currentColor }}
+              class={detailStyles}
+            >
+            </p>
+          </div>
+
+          {/* User text input area */}
+          <Input
+            inputRef={mobileInput}
+            id="mobile"
+            className={textInputStyles}
+            type="tel"
+            name="mobile"
+            placeholder="Phone Number"
+            autoComplete="off"
+            required
+            onChange={handleMobileInput}
+          />
+          {showButton ? (
+            <Button
+              id="verifyMobile"
+              name="verifyMobile"
+              type="button"
+              style={{ width: '100%', backgroundColor: currentColor }}
+              variant="contained"
+              onClick={HandleVerifyButton}
+            >
+              Send OTP
+            </Button>
+          ) : null}
+
+          {/* Labels and tooltip for user text input area */}
+          {showOtp ? (
+            <>
+              <div className="mt-4">
+                <label
+                  className={labelStyles}
+                >
+                  OTP
+                </label>
+                <p
+                  style={{ color: currentColor }}
+                  class={detailStyles}
+                >
+                </p>
+              </div>
+
+              <Input
+                id="otp"
+                className={textInputStyles}
+                type="number"
+                name="otp"
+                placeholder="OTP"
+                autoComplete="off"
+                required
+              />
+            </>) : null}
+
+          {/* Labels and tooltip for user text input area */}
+          <div className="mt-4">
+            <label
+              className={labelStyles}
+            >
               Password
             </label>
             <p
@@ -333,20 +449,6 @@ const FormDiv = () => {
             autoComplete="off"
             required
           />
-
-          {/* Labels and tooltip for user text input area */}
-          {/* <div className="mt-4">
-            <label
-              className={labelStyles}
-            >
-              Confirm Password
-            </label>
-            <p
-              style={{ color: currentColor }}
-              class={detailStyles}
-            >
-            </p>
-          </div> */}
 
           {/* User text input area */}
           <Input
@@ -370,6 +472,8 @@ const FormDiv = () => {
               </InputAdornment>
             }
           />
+
+
 
         </form>
       </div>
@@ -416,20 +520,44 @@ const FormSubmit = (props) => {
 }
 
 const ErrorMessageDiv = () => {
-  const { currentColor } = useStateContext();
+  // const { currentColor } = useStateContext();
   return (
     <div
       id="error-message"
       name="error-message"
+      style={{ backgroundColor: "#ff3366" }}
+      className=""
+    />
+  )
+}
+
+const WarningMessageDiv = () => {
+  // const { currentColor } = useStateContext();
+  return (
+    <div
+      id="warning-message"
+      name="warning-message"
+      style={{ backgroundColor: "#ffcc55" }}
+      className=""
+    />
+  )
+}
+
+const SuccessMessageDiv = () => {
+  const { currentColor } = useStateContext();
+  return (
+    <div
+      id="success-message"
+      name="success-message"
       style={{ backgroundColor: currentColor }}
       className=""
     />
-
   )
 }
 
 // Class-Based component
 class UserSignUp extends React.Component {
+
   render() {
     return (
       <div className="mt-10">
@@ -450,7 +578,10 @@ class UserSignUp extends React.Component {
             </section> */}
           </div>
           <ErrorMessageDiv />
+          <WarningMessageDiv />
+          <SuccessMessageDiv />
         </div>
+        <div id="recaptcha-container"></div>
       </div>
     );
   }
