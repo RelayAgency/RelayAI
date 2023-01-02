@@ -93,9 +93,13 @@ app.post("/signup", async (req, res) => {
   const encryptedPassword = await bcrypt.hash(password, 10);
 
   try {
-    const oldUser = await User.findOne({ email });
-    if (oldUser) {
+    const oldUserEmail = await User.findOne({ email });
+    const oldUserMobile = await User.findOne({ mobile });
+    if (oldUserEmail) {
       return res.send({ error: "User already exists" });
+    }
+    if (oldUserMobile) {
+      return res.send({ error: "Mobile already in use" });
     }
     await User.create({
       fname: fname,
@@ -124,7 +128,7 @@ app.post("/login-user", async (req, res) => {
     return res.json({ error: "User not found" });
   }
   if (await bcrypt.compare(password, user.password)) {
-    const token = jwt.sign({ email: user.email }, JWT_SECRET,{ expiresIn: "60d" });
+    const token = jwt.sign({ email: user.email }, JWT_SECRET, { expiresIn: "60d" });
 
 
     if (res.status(201)) {
@@ -142,15 +146,15 @@ app.post("/userData", async (req, res) => {
   const { token } = req.body;
 
   try {
-    const user = jwt.verify(token, JWT_SECRET, (err,res) => {
-      if(err){
+    const user = jwt.verify(token, JWT_SECRET, (err, res) => {
+      if (err) {
         return "token expired";
       }
       return res;
     });
     console.log(user);
-    if (user=="token expired") {
-    return res.send({ status: "error", data: "token expired" });
+    if (user == "token expired") {
+      return res.send({ status: "error", data: "token expired" });
 
     }
 
