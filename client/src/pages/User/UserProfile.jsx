@@ -3,6 +3,9 @@ import React, { useRef, useState, useEffect, useContext } from 'react'
 import { useStateContext } from '../../contexts/ContextProvider';
 
 const URL = "/userData"
+const url1 = `http://localhost:5000${URL}`;
+const url2 = `https://relayai.onrender.com${URL}`;
+const urls = [url1, url2];
 
 const LogoutButton = (props) => {
   const { currentColor } = useStateContext();
@@ -43,7 +46,7 @@ class UserProfile extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`https://relayai.onrender.com${URL}`, {
+    fetch(urls[1], {
       method: 'POST',
       crossDomain: true,
       headers: {
@@ -58,7 +61,11 @@ class UserProfile extends React.Component {
       .then((res) => res.json())
       .then((data) => {
         // console.log(data, "userData");
-        this.setState({ userData: data.data })
+        this.setState({ userData: data.data });
+        if (data.data == "token expired") {
+          window.localStorage.clear();
+          window.location.href = './sign-in';
+        }
       })
   }
 

@@ -9,6 +9,9 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 const URL = '/signup'
+const url1 = `http://localhost:5000${URL}`;
+const url2 = `https://relayai.onrender.com${URL}`;
+const urls = [url1, url2];
 
 const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
@@ -112,7 +115,7 @@ async function handleSubmit(e, form) {
   }
   else {
 
-    fetch(`https://relayai.onrender.com${URL}`, {
+    fetch(urls[1], {
       method: 'POST',
       crossDomain: true,
       headers: {

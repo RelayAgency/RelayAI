@@ -46,7 +46,7 @@ app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
-   
+
 
 app.get('/', async (req, res) => {
   res.status(200).send({
@@ -123,13 +123,15 @@ app.post("/login-user", async (req, res) => {
     return res.json({ error: "User not found" });
   }
   if (await bcrypt.compare(password, user.password)) {
-    const token = jwt.sign({ email: user.email }, JWT_SECRET);
+    const token = jwt.sign({ email: user.email }, JWT_SECRET,{ expiresIn: "60d" });
+
 
     if (res.status(201)) {
+      console.log("success");
       return res.json({ status: "ok", data: token });
     } else {
+      console.log("error");
       return res.json({ status: "error" });
-
     }
   }
   res.json({ status: "error", error: "Incorrect email or password" });
@@ -139,7 +141,18 @@ app.post("/userData", async (req, res) => {
   const { token } = req.body;
 
   try {
-    const user = jwt.verify(token, JWT_SECRET);
+    const user = jwt.verify(token, JWT_SECRET, (err,res) => {
+      if(err){
+        return "token expired";
+      }
+      return res;
+    });
+    console.log(user);
+    if (user=="token expired") {
+    return res.send({ status: "error", data: "token expired" });
+
+    }
+
     const useremail = user.email;
     User.findOne({ email: useremail })
       .then((data) => {

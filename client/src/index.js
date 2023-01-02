@@ -8,12 +8,13 @@ import { ContextProvider } from './contexts/ContextProvider';
 import { Auth0Provider } from '@auth0/auth0-react';
 
 ReactDOM.render(
-  <React.StrictMode>
+  // <React.StrictMode>
     
       <ContextProvider>
         <App />
       </ContextProvider>
     
-  </React.StrictMode>,
+  // </React.StrictMode>
+  ,
   document.getElementById('root'),
 )

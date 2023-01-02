@@ -12,6 +12,9 @@ import GppBadIcon from '@mui/icons-material/GppBad';
 
 
 const URL = '/login-user'
+const url1 = `http://localhost:5000${URL}`;
+const url2 = `https://relayai.onrender.com${URL}`;
+const urls = [url1, url2];
 
 async function handleSubmit(e, form) {
   // Start by preventing the submission from reloading the page.
@@ -55,7 +58,7 @@ async function handleSubmit(e, form) {
     }, duration / 1000);
   }
 
-  fetch(`https://relayai.onrender.com${URL}`, {
+  fetch(urls[1], {
     method: 'POST',
     crossDomain: true,
     headers: {
@@ -75,6 +78,7 @@ async function handleSubmit(e, form) {
         email,
         password,
       }))
+      
       if (data.status == "ok") {
         // alert("login success");
         window.localStorage.setItem('token', data.data);
