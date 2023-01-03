@@ -11,7 +11,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import GppBadIcon from '@mui/icons-material/GppBad';
 
 
-const URL = '/login-user'
+const URL = '/forgot-password'
 const url1 = `http://localhost:5000${URL}`;
 const url2 = `https://relayai.onrender.com${URL}`;
 const URLS = [url1, url2];
@@ -59,56 +59,49 @@ async function handleSubmit(e, form) {
   // Get user input from the form.
   const data = {
     email: userInfo.get('email'),
-    password: userInfo.get('password'),
+    confirmEmail: userInfo.get('confirmEmail'),
   }
 
   if (data.email == '') {
     document.getElementById("email").setAttribute("error", "")
   }
-  if (data.password == '') {
-    document.getElementById("password").setAttribute("error", "")
+  if (data.confirmEmail == '') {
+    document.getElementById("confirmEmail").setAttribute("error", "")
   }
 
   // console.log("Email: " + data.email);
   // console.log("Password: " + data.password);
 
   const email = data.email;
-  const password = data.password;
+  const confirmEmail = data.confirmEmail;
 
-  fetch(URLS[1], {
-    method: 'POST',
-    crossDomain: true,
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      'Access-Control-Allow-Origin': '*',
-    },
-    body: JSON.stringify({
-      email,
-      password,
-    })
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      console.log(data, "userSignup");
-      console.log(JSON.stringify({
+  if (email !== confirmEmail) {
+    // Display a warning message if the passwords don't match.
+    createMessage("warning", "Emails do not match.", 1);
+
+  } else {
+
+    fetch(URLS[1], {
+      method: 'POST',
+      crossDomain: true,
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      },
+      body: JSON.stringify({
         email,
-        password,
-      }))
-      
-      if (data.status == "ok") {
-        // alert("login success");
-        window.localStorage.setItem('token', data.data);
-        window.localStorage.setItem('loggedIn', true);
-
-        createMessage("success", "Login Success", 10);
-        window.location.href = "./profile";
-
-      } else {
-        createMessage("error", "Check email and password", 1);
-      }
+      })
     })
-
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data, "userRegister");
+        console.log(JSON.stringify({
+          email,
+        }))
+        createMessage("warning", `${data.status}`, 10);
+      })
+  }
 }
 
 const DescriptionDiv = () => {
@@ -117,12 +110,12 @@ const DescriptionDiv = () => {
     <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg h-30 rounded-xl w-full lg:w-full p-8 pt-9 m-3 bg-no-repeat bg-cover bg-center">
       <div className="flex justify-between items-center ">
         <div className="w-full">
-          <p className="font-bold text-gray-700 dark:text-gray-200 text-center mb-2">Sign In</p>
+          <p className="font-bold text-gray-700 dark:text-gray-200 text-center mb-2">Forgot Password</p>
           <p
             className="text-s text-center"
             style={{ color: currentColor }}
           >
-            Sign In to get started.
+            {/* Sign In to get started. */}
           </p>
         </div>
       </div>
@@ -135,14 +128,6 @@ const FormDiv = () => {
   const labelStyles = "block text-gray-700 text-sm font-bold  bg-white dark:text-gray-200 dark:bg-secondary-dark-bg capitalize"
   const detailStyles = "text-xs italic font-bold"
   const textInputStyles = "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white dark:text-gray-200 dark:bg-main-dark-bg h-10 mb-2 mt-2"
-
-  const [showPassword, setShowPassword] = React.useState(false);
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
 
   return (
     <div className="flex justify-between items-center w-full">
@@ -175,39 +160,13 @@ const FormDiv = () => {
             placeholder="Email"
           />
 
-          {/* Labels and tooltip for user text input area */}
-          <div className="mt-4">
-            <label
-              className={labelStyles}
-            >
-              Password
-            </label>
-            <p
-              style={{ color: currentColor }}
-              class={detailStyles}
-            >
-            </p>
-          </div>
-
           {/* User text input area */}
           <Input
-            id="password"
-            name="password"
+            id="confirmEmail"
+            name="confirmEmail"
             className={textInputStyles}
-            type={showPassword ? 'text' : 'password'}
-            placeholder="Password"
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  style={{ color: currentColor }}
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            }
+            type="email"
+            placeholder="Confirm Email"
           />
 
 
@@ -230,11 +189,34 @@ const FormSubmit = (props) => {
         type="submit"
         className="text-m opacity-0.9 text-white hover:drop-shadow-xl rounded-xl p-4 mt-8"
         onClick={(e) => handleSubmit(e, form)}>
-        Sign In
+        Submit
       </button>
     </div>
   )
 
+}
+
+const ToSignIn = () => {
+  const { currentColor } = useStateContext();
+  const textLinkStyles = "cursor-pointer"
+
+  const login = () => {
+    window.location.href = "./sign-in";
+  }
+
+  return (
+    <><div className="text-center mt-4">
+      <p>Need to sign in?
+        <a
+          onClick={login}
+          className={textLinkStyles}
+          style={{ color: currentColor }}
+        >
+          &nbsp;&nbsp;Sign In
+        </a>
+      </p>
+    </div></>
+  )
 }
 
 const ToSignUp = () => {
@@ -254,29 +236,6 @@ const ToSignUp = () => {
           style={{ color: currentColor }}
         >
           &nbsp;&nbsp;Sign Up
-        </a>
-      </p>
-    </div></>
-  )
-}
-
-const ToForgotPassword = () => {
-  const { currentColor } = useStateContext();
-  const textLinkStyles = "cursor-pointer"
-
-  const register = () => {
-    window.location.href = "./forgot-password";
-  }
-
-  return (
-    <><div className="text-center mt-4">
-      <p>
-        <a
-          onClick={register}
-          className={textLinkStyles}
-          style={{ color: currentColor }}
-        >
-          Forgot your password?
         </a>
       </p>
     </div></>
@@ -320,7 +279,7 @@ const SuccessMessageDiv = () => {
 }
 
 // Class-Based component
-class UserSignIn extends React.Component {
+class ForgotPassword extends React.Component {
   render() {
     return (
       <div className="mt-10">
@@ -331,8 +290,8 @@ class UserSignIn extends React.Component {
             <FormSubmit
               formId="form"
             />
+            <ToSignIn />
             <ToSignUp />
-            <ToForgotPassword />
 
             {/* <section>
               <p ref={errRef} className={errMsg ? "errmsg" :
@@ -349,4 +308,4 @@ class UserSignIn extends React.Component {
 
 }
 
-export default UserSignIn;
+export default ForgotPassword;

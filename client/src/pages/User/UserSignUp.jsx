@@ -15,7 +15,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 const URL = '/signup'
 const url1 = `http://localhost:5000${URL}`;
 const url2 = `https://relayai.onrender.com${URL}`;
-const urls = [url1, url2];
+const URLS = [url1, url2];
 
 const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
@@ -120,32 +120,13 @@ async function handleSubmit(e, form) {
   const password = data.password;
   const otp = userInfo.get('otp');
 
-  let validOtp = false;
-  if (otp && window.confirmationResult) {
-    window.confirmationResult
-      .confirm(otp)
-      .then((result) => {
-        // User signed in successfully.
-        const user = result.user;
-        // console.log(user);
-        validOtp = true;
-        console.log("Valid OTP: " + validOtp)
-
-        // ...
-      }).catch((error) => {
-
-        validOtp = false;
-        console.log("Invalid OTP: " + validOtp)
-        // User couldn't sign in (bad verification code?)
-        // ...
-      });
-  }
-
   // Check if all form fields have a value.
-  if (!data.firstName || !data.lastName || !data.email || !data.password || !data.mobile || !otp || !data.confirmPassword) {
+  if (!data.firstName || !data.lastName || !data.email || !data.password || !data.mobile || !data.confirmPassword) {
     // Display a warning message if any of the fields are empty.
     createMessage("warning", "Please fill out all form fields.", 1);
 
+  } else if (!otp) {
+    createMessage("warning", "Please fill out OTP.", 1);
   } else if (data.password !== data.confirmPassword) {
     // Display a warning message if the passwords don't match.
     createMessage("warning", "Passwords do not match.", 1);
@@ -158,54 +139,84 @@ async function handleSubmit(e, form) {
     // Display a warning message if the email is invalid.
     createMessage("warning", "The email is not a valid email.", 1);
 
-  } else if (!validOtp) {
-    // Display a warning message if the otp is invalid.
-    console.log(validOtp);
-    createMessage("warning", "The OTP is not valid.", 1);
-
   } else if (!window.confirmationResult) {
     // Display a warning message if the otp is invalid.
     createMessage("warning", "Please request OTP", 1);
 
   } else {
 
-    fetch(urls[1], {
-      method: 'POST',
-      crossDomain: true,
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-        'Access-Control-Allow-Origin': '*',
-      },
-      body: JSON.stringify({
-        fname,
-        lname,
-        email,
-        mobile,
-        password,
-      })
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data, "userSignup");
-        console.log(JSON.stringify({
-          fname,
-          lname,
-          email,
-          mobile,
-          password,
-        }))
-        if (data.status === "ok") {
-          // alert("login success");
-          createMessage("success", "Sign Up Success, Please Login", 30);
-          window.localStorage.setItem('token', data.data);
+    let validOtp = false;
+    // Check if otp is valid
+    async function checkOtpThenCreateUser() {
+      if (otp && window.confirmationResult && !validOtp) {
+        try {
+          await window.confirmationResult.confirm(otp)
+          // .then((result) => {
+          // User signed in successfully.
+          // const user = result.user;
+          // console.log(user);
+          validOtp = true;
+          console.log("Valid OTP: " + validOtp)
 
-        } else {
-          const error = data.error;
-          createMessage("error", `Sign Up Failed, ${error}`, 5);
+          // ...
+          // }).catch((error) => {
+        } catch (error) {
+
+          validOtp = false;
+          console.log("Invalid OTP: " + validOtp)
+          // User couldn't sign in (bad verification code?)
+          // ...
+          // });
         }
-      })
+      }
+
+      if (validOtp === false) {
+        // Display a warning message if the otp is invalid.
+        console.log(validOtp);
+        createMessage("warning", "The OTP is not valid.", 1);
+      } else {
+
+        fetch(URLS[1], {
+          method: 'POST',
+          crossDomain: true,
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            'Access-Control-Allow-Origin': '*',
+          },
+          body: JSON.stringify({
+            fname,
+            lname,
+            email,
+            mobile,
+            password,
+          })
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log(data, "userSignup");
+            console.log(JSON.stringify({
+              fname,
+              lname,
+              email,
+              mobile,
+              password,
+            }))
+            if (data.status === "ok") {
+              // alert("login success");
+              createMessage("success", "Sign Up Success, Please Login", 30);
+              window.localStorage.setItem('token', data.data);
+
+            } else {
+              const error = data.error;
+              createMessage("error", `Sign Up Failed, ${error}`, 5);
+            }
+          })
+      }
+    }
+    checkOtpThenCreateUser();
   }
+
 }
 
 const DescriptionDiv = () => {
@@ -226,8 +237,6 @@ const DescriptionDiv = () => {
     </div>
   )
 }
-
-
 
 const FormDiv = () => {
   const { currentColor } = useStateContext();
@@ -485,11 +494,6 @@ const FormSubmit = (props) => {
   const { currentColor } = useStateContext();
   const form = document.getElementById(props.formId);
 
-  const textLinkStyles = "cursor-pointer"
-
-  const login = () => {
-    window.location.href = "./sign-in";
-  }
   return (
     <div className="text-center">
       <button
@@ -502,21 +506,78 @@ const FormSubmit = (props) => {
         onClick={(e) => handleSubmit(e, form)}>
         Sign Up
       </button>
-
-      <div className="text-center mt-4">
-        <p>Need to sign in?
-          <a
-            onClick={login}
-            className={textLinkStyles}
-            style={{ color: currentColor }}
-          >
-            &nbsp;&nbsp;Sign In
-          </a>
-        </p>
-      </div>
     </div>
   )
 
+}
+
+const ToSignIn = () => {
+  const { currentColor } = useStateContext();
+  const textLinkStyles = "cursor-pointer"
+
+  const login = () => {
+    window.location.href = "./sign-in";
+  }
+
+  return (
+    <><div className="text-center mt-4">
+      <p>Need to sign in?
+        <a
+          onClick={login}
+          className={textLinkStyles}
+          style={{ color: currentColor }}
+        >
+          &nbsp;&nbsp;Sign In
+        </a>
+      </p>
+    </div></>
+  )
+}
+
+const ToSignUp = () => {
+  const { currentColor } = useStateContext();
+  const textLinkStyles = "cursor-pointer"
+
+  const register = () => {
+    window.location.href = "./register";
+  }
+
+  return (
+    <><div className="text-center mt-4">
+      <p>Don't have an account?
+        <a
+          onClick={register}
+          className={textLinkStyles}
+          style={{ color: currentColor }}
+        >
+          &nbsp;&nbsp;Sign Up
+        </a>
+      </p>
+    </div></>
+  )
+}
+
+const ToForgotPassword = () => {
+  const { currentColor } = useStateContext();
+  const textLinkStyles = "cursor-pointer"
+
+  const forgotP = () => {
+    window.location.href = "./forgot-password";
+  }
+
+  return (
+    <><div className="text-center mt-4">
+      <p>
+        <a
+          onClick={forgotP}
+          className={textLinkStyles}
+          style={{ color: currentColor }}
+        >
+          Forgot your password?
+        </a>
+      </p>
+    </div></>
+  )
 }
 
 const ErrorMessageDiv = () => {
@@ -571,6 +632,8 @@ class UserSignUp extends React.Component {
               chatContainerId="chat_container"
               openaiContainerId="openai_container"
             />
+            <ToSignIn />
+            <ToForgotPassword />
 
             {/* <section>
               <p ref={errRef} className={errMsg ? "errmsg" :

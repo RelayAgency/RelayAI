@@ -15,7 +15,7 @@ import avatar from '../data/default-avatar.png';
 const URL = "/userData"
 const url1 = `http://localhost:5000${URL}`;
 const url2 = `https://relayai.onrender.com${URL}`;
-const urls = [url1, url2];
+const URLS = [url1, url2];
 
 const ProfileHeader = () => {
   return (
@@ -45,7 +45,7 @@ const ProfileCard = () => {
   const [userData, setUserData] = useState('');
 
   useEffect(() => {
-    fetch(urls[1], {
+    fetch(URLS[1], {
       method: 'POST',
       crossDomain: true,
       headers: {

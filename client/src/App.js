@@ -8,7 +8,7 @@ import { Ecommerce, Orders, Calendar, Employees, Stacked, Pyramid, Customers, Ka
 
 import { ProductDescription, ColdDM, FacebookPost, InstagramPost, LinkedinPost, TikTokScript, YoutubeIdea, ColdEmail, EmailMarketing, FollowUpEmail, PersonalizedEmail, SubjectLine, ImageAltText, Keywords, MetaDescription, TitlesHeadings, WebsiteCopy } from './pages';
 
-import { UserProfile, UserPrompts, UserSignUp, UserSignIn } from './pages';
+import { UserProfile, UserPrompts, UserSignUp, UserSignIn, ForgotPassword } from './pages';
 
 import { useStateContext } from './contexts/ContextProvider';
 
@@ -116,6 +116,7 @@ const App = () => {
                 <Route path="/sign-in" element={isLoggedIn == "true" ? <UserProfile /> : <UserSignIn />} />
                 <Route path="/profile" element={isLoggedIn == "true" ? <UserProfile /> : <UserSignIn />} />
                 <Route path="/prompts" element={isLoggedIn == "true" ? <UserPrompts /> : <UserSignIn />} />
+                <Route path="/forgot-password" element={isLoggedIn == "true" ? <UserProfile /> : <ForgotPassword />} />
 
               </Routes >
             </div>

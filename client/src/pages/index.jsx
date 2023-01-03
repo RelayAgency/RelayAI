@@ -25,5 +25,7 @@ export { default as UserSignUp } from './User/UserSignUp';
 export { default as UserSignIn } from './User/UserSignIn';
 export { default as UserProfile } from './User/UserProfile';
 export { default as UserPrompts } from './User/UserPrompts';
+export { default as ForgotPassword } from './User/ForgotPassword';
+
 
 

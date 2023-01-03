@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script>
+    const url1 = `http://localhost:3000/`;
+    const url2 = `https://relay-ai.vercel.app/`;
+    const URLS = [url1, url2];
+    // Check if status is verified
+    const status = `<%- JSON.stringify(status) %>`;
+    console.log(status)
+    if (JSON.parse(status) == "verified") {
+      if (confirm("You will be redirected to the login page in 30 seconds. Do you want to go there now?")) {
+        window.location.href = URLS[1];
+      } else {
+        // store a value in sessionStorage to indicate that the user clicked "Cancel"
+        sessionStorage.setItem('redirectCancelled', 'true');
+
+        // set the initial countdown timer value
+        let countdown = 30;
+
+        // update the countdown timer every second
+        const countdownTimer = setInterval(function () {
+          // update the innerHTML of the div element
+          document.getElementById("page").innerHTML = `Redirecting to login in ${countdown}`;
+          console.log(`Redirecting to login in ${countdown}`);
+          // decrease the countdown timer by 1
+          countdown--;
+
+          // if the countdown timer reaches 0, clear the interval and redirect the page
+          if (countdown === 0) {
+            clearInterval(countdownTimer);
+            window.location.href = URLS[1];
+          }
+        }, 1000);
+      }
+    }
+
+  </script>
+</head>
+
+<body>
+  <div id="page">
+    <h1>
+      <%= email%>
+    </h1>
+    <!-- Create a simple form for user to reset password -->
+
+    <form action="" method="post" onsubmit="handleSubmit(event)">
+      <input type="password" name="password" id="password" placeholder="password" /><br />
+      <input type="password" name="confirm-password" id="confirm-password" placeholder="confirm-password" /><br />
+
+      <input type="hidden" name="status" value="<%- JSON.stringify(status) %>" />
+
+      <!-- After form submit go to the same url but with post method-->
+      <input type="submit" value="submit" />
+    </form>
+  </div>
+
+  <script>
+    function handleSubmit(event) {
+      // prevent default form submission behavior
+
+
+      // get the values of the password and confirm password fields
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+
+      // check if the passwords match
+      if (password === confirmPassword) {
+        // the passwords match, so you can submit the form
+        // or do whatever other processing you need to do
+      } else {
+        // the passwords do not match, so display an error message
+        event.preventDefault();
+        alert('The passwords do not match. Please try again.');
+      }
+    }
+  </script>
+</body>
+
+
+</html>
