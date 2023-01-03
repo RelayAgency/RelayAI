@@ -181,10 +181,6 @@ async function handleSubmit(e, form, submitButton) {
         createMessage("warning", "The OTP is not valid.", 1);
       } else {
 
-        submitButton.disabled = true;
-        submitButton.style.filter = "brightness(50%)";
-        submitButton.style.cursor = "wait";
-
         fetch(URLS[1], {
           method: 'POST',
           crossDomain: true,
@@ -219,9 +215,6 @@ async function handleSubmit(e, form, submitButton) {
             } else {
               const error = data.error;
               createMessage("error", `Sign Up Failed, ${error}`, 5);
-              submitButton.disabled = false;
-              submitButton.style.filter = "brightness(100%)";
-              submitButton.style.cursor = "pointer";
             }
           })
       }
