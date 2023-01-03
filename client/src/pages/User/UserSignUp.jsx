@@ -19,8 +19,6 @@ const URLS = [url1, url2];
 
 const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
-
-
 const auth = getAuth(app);
 
 async function onCaptchaVerify(mobile) {
@@ -98,7 +96,6 @@ function createMessage(type, message, time) {
   }, time * 1000);
 
 }
-
 
 async function handleSubmit(e, form, submitButton) {
   // Start by preventing the submission from reloading the page.
