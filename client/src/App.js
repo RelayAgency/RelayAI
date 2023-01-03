@@ -27,9 +27,9 @@ const App = () => {
     }
   }, []);
 
-  
+
   const isLoggedIn = localStorage.getItem('loggedIn');
-  
+
 
   return (
     <div className={currentMode === 'Dark' ? 'dark' : ''}>
@@ -63,10 +63,12 @@ const App = () => {
                   <Sidebar />
                 </div>
               )}
+              {/* <Sidebar /> */}
+
             </div> : <></>}
 
           <div
-          
+
             className={
               activeMenu && isLoggedIn == "true"
                 ? 'dark:bg-main-dark-bg bg-main-bg min-h-screen w-full md:ml-72 '
@@ -77,7 +79,9 @@ const App = () => {
               <div className="fixed md:static bg-main-bg dark:bg-main-dark-bg navbar w-full ">
                 <Navbar />
               </div> : <></>}
-            {isLoggedIn == "true" ? <div>{themeSettings && <ThemeSettings />}</div> : <></>}
+            {isLoggedIn == "true" ? <div>{themeSettings &&
+              <ThemeSettings />
+            }</div> : <></>}
 
             <div>
               <Routes>
