@@ -23,21 +23,25 @@ const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]
 
 const auth = getAuth(app);
 
-function onCaptchaVerify(mobile) {
-  window.recaptchaVerifier = new RecaptchaVerifier(
+async function onCaptchaVerify(mobile) {
+  console.log("captcha: ", mobile)
+
+  window.recaptchaVerifier = await new RecaptchaVerifier(
     'recaptcha-container',
     {
       'size': 'invisible',
       'callback': (response) => {
-        onSignInSubmit(mobile)
+        // onSignInSubmit(mobile)
         // reCAPTCHA solved, allow signInWithPhoneNumber.
         // ...
         console.log("reCAPTCHA solved, allow signInWithPhoneNumber");
       },
     }, auth);
+  onSignInSubmit(mobile)
 }
 
 function onSignInSubmit(mobile) {
+  console.log("signInSubmit: ", mobile)
   // onCaptchaVerify(mobile);
   const phoneNumber = "+1" + mobile;
   const appVerifier = window.recaptchaVerifier;
@@ -54,6 +58,7 @@ function onSignInSubmit(mobile) {
       // Error; SMS not sent
       // ...
       // console.log("OTP send failed\n" + error);
+      console.log("error: ", error);
       createMessage("error", `Please refresh the page`, 30);
       createMessage("error", `${error}`, 5);
 
