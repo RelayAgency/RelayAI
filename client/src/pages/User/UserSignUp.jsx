@@ -29,7 +29,7 @@ function onCaptchaVerify(mobile) {
     {
       'size': 'invisible',
       'callback': (response) => {
-        // onSignInSubmit(mobile)
+        onSignInSubmit(mobile)
         // reCAPTCHA solved, allow signInWithPhoneNumber.
         // ...
         console.log("reCAPTCHA solved, allow signInWithPhoneNumber");
@@ -38,7 +38,7 @@ function onCaptchaVerify(mobile) {
 }
 
 function onSignInSubmit(mobile) {
-  onCaptchaVerify(mobile);
+  // onCaptchaVerify(mobile);
   const phoneNumber = "+1" + mobile;
   const appVerifier = window.recaptchaVerifier;
   signInWithPhoneNumber(auth, phoneNumber, appVerifier)
@@ -274,7 +274,7 @@ const FormDiv = () => {
     // console.log(mobile);
 
     setShowOtp(true);
-    onSignInSubmit(mobile);
+    onCaptchaVerify(mobile);
   }
 
   return (
