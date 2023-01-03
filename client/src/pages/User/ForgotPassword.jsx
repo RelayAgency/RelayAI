@@ -291,7 +291,7 @@ class ForgotPassword extends React.Component {
               formId="form"
             />
             <ToSignIn />
-            <ToSignUp />
+            {/* <ToSignUp /> */}
 
             {/* <section>
               <p ref={errRef} className={errMsg ? "errmsg" :
