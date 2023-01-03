@@ -331,7 +331,7 @@ class UserSignIn extends React.Component {
             <FormSubmit
               formId="form"
             />
-            <ToSignUp />
+            {/* <ToSignUp /> */}
             <ToForgotPassword />
 
             {/* <section>
