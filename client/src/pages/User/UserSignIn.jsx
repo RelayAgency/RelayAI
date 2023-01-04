@@ -55,18 +55,12 @@ async function handleSubmit(e, form) {
   e.preventDefault();
   // Get the data from the form.
   const userInfo = new FormData(document.getElementById("form"));
+  const submitButton = document.getElementById("submit-button");
 
   // Get user input from the form.
   const data = {
     email: userInfo.get('email'),
     password: userInfo.get('password'),
-  }
-
-  if (data.email == '') {
-    document.getElementById("email").setAttribute("error", "")
-  }
-  if (data.password == '') {
-    document.getElementById("password").setAttribute("error", "")
   }
 
   // console.log("Email: " + data.email);
@@ -75,40 +69,55 @@ async function handleSubmit(e, form) {
   const email = data.email;
   const password = data.password;
 
-  fetch(URLS[1], {
-    method: 'POST',
-    crossDomain: true,
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
-      'Access-Control-Allow-Origin': '*',
-    },
-    body: JSON.stringify({
-      email,
-      password,
-    })
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      console.log(data, "userSignup");
-      console.log(JSON.stringify({
+  
+  // console.log(submitButton);
+
+  // Check if all form fields have a value.
+  if (!data.email || !data.password) {
+    // Display a warning message if any of the fields are empty.
+    createMessage("warning", "Please fill out all form fields.", 1);
+
+  } else {
+
+    disableSubmit(submitButton);
+    
+
+    fetch(URLS[1], {
+      method: 'POST',
+      crossDomain: true,
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      },
+      body: JSON.stringify({
         email,
         password,
-      }))
-      
-      if (data.status == "ok") {
-        // alert("login success");
-        window.localStorage.setItem('token', data.data);
-        window.localStorage.setItem('loggedIn', true);
-
-        createMessage("success", "Login Success", 10);
-        window.location.href = "./profile";
-
-      } else {
-        createMessage("error", "Check email and password", 1);
-      }
+      })
     })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data, "userSignup");
+        console.log(JSON.stringify({
+          email,
+          password,
+        }))
 
+        if (data.status == "ok") {
+          // alert("login success");
+          window.localStorage.setItem('token', data.data);
+          window.localStorage.setItem('loggedIn', true);
+
+          createMessage("success", "Login Success", 10);
+          window.location.href = "./profile";
+
+        } else {
+          createMessage("error", "Check email and password", 1);
+          enableSubmit(submitButton);
+          
+        }
+      })
+  }
 }
 
 const DescriptionDiv = () => {
@@ -217,22 +226,33 @@ const FormDiv = () => {
   )
 }
 
+function disableSubmit(submitButton) {
+  submitButton.disabled = true;
+  submitButton.style.filter = "brightness(50%)";
+  submitButton.style.cursor = "wait";
+}
+
+function enableSubmit(submitButton) {
+  submitButton.disabled = false;
+  submitButton.style.filter = "brightness(100%)";
+  submitButton.style.cursor = "pointer";
+}
+
 const FormSubmit = (props) => {
   const { currentColor } = useStateContext();
+
   const form = document.getElementById(props.formId);
 
   return (
-    <div className="text-center">
-      <button
-        id="submit-button"
-        color="white"
-        style={{ backgroundColor: currentColor }}
-        type="submit"
-        className="text-m opacity-0.9 text-white hover:drop-shadow-xl rounded-xl p-4 mt-8"
-        onClick={(e) => handleSubmit(e, form)}>
-        Sign In
-      </button>
-    </div>
+    <button
+      id="submit-button"
+      color="white"
+      style={{ backgroundColor: currentColor }}
+      type="submit"
+      className="text-m opacity-0.9 text-white hover:drop-shadow-xl rounded-xl p-4 mt-8"
+      onClick={(e) => handleSubmit(e, form)}>
+      Sign In
+    </button>
   )
 
 }
@@ -328,9 +348,11 @@ class UserSignIn extends React.Component {
           <DescriptionDiv />
           <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg h-30 rounded-xl w-full lg:w-full p-8 pt-9 m-3 bg-no-repeat bg-cover bg-center">
             <FormDiv />
-            <FormSubmit
-              formId="form"
-            />
+            <div className="text-center">
+              <FormSubmit
+                formId="form"
+              />
+            </div>
             {/* <ToSignUp /> */}
             <ToForgotPassword />
 

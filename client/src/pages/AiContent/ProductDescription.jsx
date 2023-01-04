@@ -76,7 +76,7 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
     responseContainer.innerHTML += ChatStripe(currentColor, "", uniqueId);
 
     //Console log the uniqueId
-    console.log("uniqueId: " + uniqueId)
+    // console.log("uniqueId: " + uniqueId)
 
     // Put the new response into view.
     responseContainer.scrollTop = responseContainer.scrollHeight;
@@ -85,7 +85,7 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
     const responseDiv = document.getElementById(uniqueId);
 
     isLoading = true;
-    console.log("isLoading: " + isLoading)
+    // console.log("isLoading: " + isLoading)
 
     submitButton.disabled = true;
     submitButton.style.filter = "brightness(50%)";
@@ -113,7 +113,7 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
       isLoading = false;
 
       console.log("parseData: " + parseData)
-      console.log("isLoading: " + isLoading)
+      // console.log("isLoading: " + isLoading)
 
       typeText(responseDiv, parseData, submitButton);
     } else {
@@ -267,9 +267,9 @@ const FormSubmit = (props) => {
   const responseContainer = document.getElementById(props.responseContainerId);
   const chatContainer = document.getElementById(props.chatContainerId);
   const openaiContainer = document.getElementById(props.openaiContainerId);
-  const submitButton = document.getElementById("submit-button");
-  const form = document.getElementById(props.formId);
 
+  const form = document.getElementById(props.formId);
+  const submitButton = document.getElementById("submit-button");
 
   return (
     <div>
@@ -278,8 +278,7 @@ const FormSubmit = (props) => {
         color="white"
         style={{ backgroundColor: currentColor }}
         type="submit"
-        className="text-m opacity-0.9 text-white hover:drop-shadow-xl rounded-xl p-4
-      mt-8"
+        className="text-m opacity-0.9 text-white hover:drop-shadow-xl rounded-xl p-4 mt-8"
         onClick={(e) => handleSubmit(e, currentColor, form, responseContainer, chatContainer, submitButton)}>
         Get AI Suggestions
       </button>

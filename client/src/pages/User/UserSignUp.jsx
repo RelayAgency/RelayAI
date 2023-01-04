@@ -23,6 +23,7 @@ const auth = getAuth(app);
 
 async function onCaptchaVerify(mobile) {
   console.log("captcha: ", mobile)
+  const otpButton = document.getElementById("verifyMobile");
 
   window.recaptchaVerifier = await new RecaptchaVerifier(
     'recaptcha-container',
@@ -33,6 +34,7 @@ async function onCaptchaVerify(mobile) {
         // reCAPTCHA solved, allow signInWithPhoneNumber.
         // ...
         console.log("reCAPTCHA solved, allow signInWithPhoneNumber");
+        waitButton(otpButton);
       },
     }, auth);
   onSignInSubmit(mobile)
@@ -40,6 +42,7 @@ async function onCaptchaVerify(mobile) {
 
 function onSignInSubmit(mobile) {
   console.log("signInSubmit: ", mobile)
+  const otpButton = document.getElementById("verifyMobile");
   // onCaptchaVerify(mobile);
   const phoneNumber = "+1" + mobile;
   const appVerifier = window.recaptchaVerifier;
@@ -51,6 +54,7 @@ function onSignInSubmit(mobile) {
 
       // Create message in error container.
       createMessage("success", `Sent OTP to ${phoneNumber}`, 5);
+      disableButton(otpButton);
       // ...
     }).catch((error) => {
       // Error; SMS not sent
@@ -59,6 +63,7 @@ function onSignInSubmit(mobile) {
       console.log("error: ", error);
       createMessage("error", `Please refresh the page`, 30);
       createMessage("error", `${error}`, 5);
+      enableButton(otpButton);
 
     });
 }
@@ -97,12 +102,14 @@ function createMessage(type, message, time) {
 
 }
 
-async function handleSubmit(e, form, submitButton) {
+async function handleSubmit(e, form) {
   // Start by preventing the submission from reloading the page.
   e.preventDefault();
 
   // Get the data from the form.
   const userInfo = new FormData(document.getElementById("form"));
+  const submitButton = document.getElementById("submit-button");
+  const otpButton = document.getElementById("verifyMobile");
 
 
   // Get user input from the form.
@@ -146,6 +153,7 @@ async function handleSubmit(e, form, submitButton) {
     createMessage("warning", "Please request OTP", 1);
 
   } else {
+    waitButton(submitButton);
 
     let validOtp = false;
     // Check if otp is valid
@@ -176,6 +184,7 @@ async function handleSubmit(e, form, submitButton) {
         // Display a warning message if the otp is invalid.
         console.log(validOtp);
         createMessage("warning", "The OTP is not valid.", 1);
+        enableButton(submitButton);
       } else {
 
         fetch(URLS[1], {
@@ -208,10 +217,11 @@ async function handleSubmit(e, form, submitButton) {
               // alert("login success");
               createMessage("success", "Sign Up Success, Please Login", 30);
               window.localStorage.setItem('token', data.data);
-
+              disableButton(submitButton);
             } else {
               const error = data.error;
               createMessage("error", `Sign Up Failed, ${error}`, 5);
+              enableButton(submitButton);
             }
           })
       }
@@ -273,8 +283,9 @@ const FormDiv = () => {
 
   function HandleVerifyButton() {
     const mobile = mobileInput.current.value;
+    const otpButton = document.getElementById("verifyMobile");
     // console.log(mobile);
-
+    waitButton(otpButton);
     setShowOtp(true);
     onCaptchaVerify(mobile);
   }
@@ -492,10 +503,27 @@ const FormDiv = () => {
   )
 }
 
+function waitButton(button) {
+  button.disabled = true;
+  button.style.filter = "brightness(50%)";
+  button.style.cursor = "wait";
+}
+
+function disableButton(button) {
+  button.disabled = true;
+  button.style.filter = "brightness(50%)";
+  button.style.cursor = "not-allowed";
+}
+
+function enableButton(button) {
+  button.disabled = false;
+  button.style.filter = "brightness(100%)";
+  button.style.cursor = "pointer";
+}
+
 const FormSubmit = (props) => {
   const { currentColor } = useStateContext();
   const form = document.getElementById(props.formId);
-  const submitButton = document.getElementById("submit-button");
 
   return (
     <div className="text-center">
@@ -506,7 +534,7 @@ const FormSubmit = (props) => {
         type="submit"
         className="text-m opacity-0.9 text-white hover:drop-shadow-xl rounded-xl p-4
     mt-8"
-        onClick={(e) => handleSubmit(e, form, submitButton)}>
+        onClick={(e) => handleSubmit(e, form)}>
         Sign Up
       </button>
     </div>
