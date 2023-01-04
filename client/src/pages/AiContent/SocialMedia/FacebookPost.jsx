@@ -1,5 +1,8 @@
 import React from 'react'
 import { useStateContext } from '../../../contexts/ContextProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import '../../../App.css';
 
 let loadInterval;
 let isLoading = false;
@@ -55,19 +58,20 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
   const data = new FormData(form);
 
   // Get user input from the form.
+  const mainMessage = data.get('main-message');
+  const specificInfo = data.get('specific-information');
+  const postFormat = data.get('post-format');
+  const tone = data.get('tone-style');
   const target = data.get('target-audience');
-  let purposeChecked = document.querySelectorAll('input[name="purpose"]');
-  let purposeR = [];
-  purposeChecked.forEach((checkbox) => {
+  let callToActionChecked = document.querySelectorAll('input[name="call-to-action"]');
+  let callToActionR = [];
+  callToActionChecked.forEach((checkbox) => {
     if (checkbox.checked) {
-      purposeR.push(checkbox.value);
+      callToActionR.push(checkbox.value);
     }
   })
-  purposeR = purposeR.join(' and ');
-  const valueProposition = data.get('value-proposition');
-  const personalizationR = data.get('personalization');
-  const tone = data.get('tone-style');
-  const companyR = data.get('company');
+  callToActionR = callToActionR.join(' and ');
+  const date = data.get('date-picker');
 
   //Clear the form. (Optional)
   // form.reset();
@@ -78,11 +82,14 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
 
   //Create the prompt from the user input.
   let prompt;
-  if (valueProposition) {
-    prompt= `Hello AI bot, I'd like to send a direct message to someone${target} on social media. The purpose of the message is to ${purposeR} them and I'd like to highlight the ${valueProposition} of my company. Details of the recipient include, ${personalizationR}, and I want the tone of the message to be ${tone} tone. My company is ${companyR}. Can you help me draft a message that will get their attention and interest?`
+  if (date) {
+    // prompt = `Hello AI bot, I'd like to send a direct message to someone${target} on social media. The call-to-action of the message is to ${callToActionR} them and I'd like to highlight the ${valueProposition} of my company. Details of the recipient include, ${personalizationR}, and I want the tone of the message to be ${tone} tone. My company is ${companyR}. Can you help me draft a message that will get their attention and interest?`
+    prompt = `Hello AI bot! I'd like you to create a promotional post about; ${mainMessage}. some more specific information; ${specificInfo}. My target audience is ${target}. I'd like the post to have ${tone} tone and include a call to action for users to ${callToActionR}. Please include relevant hashtags. The post should include ${postFormat} and should be scheduled to go live at ${date}. The post will also be going on Facebook so keep that in mind. Thank you!`
 
   } else {
-    prompt= `Hello AI bot, I'd like to send a direct message to someone${target} on social media. The purpose of the message is to ${purposeR} them. Details of the recipient include, ${personalizationR}, and I want the tone of the message to be ${tone} tone. My company is ${companyR}. Can you help me draft a message that will get their attention and interest?`
+    // prompt = `Hello AI bot, I'd like to send a direct message to someone${target} on social media. The call-to-action of the message is to ${callToActionR} them. Details of the recipient include, ${personalizationR}, and I want the tone of the message to be ${tone} tone. My company is ${companyR}. Can you help me draft a message that will get their attention and interest?`
+    prompt = `Hello AI bot! I'd like you to create a Facebook post about; ${mainMessage}. Some more specific information; ${specificInfo}. My target audience is ${target}. I'd like the post to have ${tone} tone and include a call to action for users to ${callToActionR}. Please include relevant hashtags. The post should include ${postFormat}. Thank you!`
+    
   }
 
   // Console log the entire prompt.
@@ -173,6 +180,10 @@ const FormDiv = () => {
   const checkboxInputStyles = `w-4 h-4 text-[${currentColor}] bg-gray-100 rounded border-gray-300 focus:ring-[${currentColor}] dark:focus:ring-[${currentColor}] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 flex-none`
   const checkboxLabelStyles = "p-2 ml-2 inline-block text-gray-700 dark:text-gray-200 text-sm font-medium bg-white dark:bg-secondary-dark-bg capitalize"
 
+  const dateInputStyles = "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white dark:text-gray-200 dark:bg-main-dark-bg h-12"
+
+  const dateValue = new Date(new Date().getFullYear(), new Date().getMonth, new Date().getDay);
+
   return (
     <div className="flex justify-between items-center w-full">
       <div className="w-full">
@@ -180,7 +191,409 @@ const FormDiv = () => {
           className="max-w-full"
           id="form"
         >
-          
+          {/* Labels and tooltip for user input area */}
+          <div className="mt-4">
+            <label
+              className={labelStyles}
+            >
+              Main Message or theme of the post?
+            </label>
+            <p
+              style={{ color: currentColor }}
+              class={detailStyles}
+            >
+              This will help the AI understand what you want the post to convey.
+            </p>
+          </div>
+
+          {/* User text input menu */}
+          <input
+            type="text"
+            id="main-message"
+            name="main-message"
+            className={textInputStyles}
+            placeholder="Enter the main message or theme of the post"
+            required
+          />
+
+
+          {/* Labels and tooltip for user input area */}
+          <div className="mt-4">
+            <label
+              className={labelStyles}
+            >
+              Specific information or details?
+            </label>
+            <p
+              style={{ color: currentColor }}
+              class={detailStyles}
+            >
+              For example, if you are promoting an event, you may want to include the date, time, and location.
+            </p>
+          </div>
+
+          {/* User text input menu */}
+          <textarea
+            type="text"
+            id="specific-information"
+            name="specific-information"
+            className={textAreaStyles}
+            placeholder="Enter any specific information or details to include in the post"
+          />
+
+
+          {/* Labels and tooltip for user input area */}
+          <div className="mt-4">
+            <label
+              className={labelStyles}
+            >
+              Format of the post?
+            </label>
+            <p
+              style={{ color: currentColor }}
+              class={detailStyles}
+            >
+              Do you want the AI to create a text-based post, or would you prefer a post that includes a mix of text and images?
+            </p>
+          </div>
+
+          {/* User dropwdown menu */}
+          <div className="inline-block relative w-full"
+          >
+            <select
+              class={dropwdownStyles}
+              name="post-format"
+              id="post-format"
+            >
+              <option value="text">🚫 Default</option>
+              <option value="text">Text</option>
+              <option value="text and a visually appealing image">Text and Images</option>
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <svg class="fill-current h-4 w-4 bg-white dark:text-gray-200 dark:bg-main-dark-bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+            </div>
+          </div>
+
+
+          {/* Labels and tooltip for user input area */}
+          <div className="mt-4">
+            <label
+              className={labelStyles}
+            >
+              Tone of the post?
+            </label>
+            <p
+              style={{ color: currentColor }}
+              class={detailStyles}
+            >
+              Should it be formal or casual, serious or humorous?
+            </p>
+          </div>
+
+          {/* User dropwdown menu */}
+          <div className="inline-block relative w-full"
+          >
+            <select
+              class={dropwdownStyles}
+              name="tone-style"
+              id="tone-style"
+            >
+              <option value="a normal">🚫 Default</option>
+              <option value="a formal">🤵 Formal</option>
+              <option value="a casual">👕 Casual</option>
+              <option value="a friendly">😊 Friendly</option>
+              <option value="a luxury">💎 Luxury</option>
+              <option value="a relaxed">😌 Relaxed</option>
+              <option value="a professional">💼 Professional</option>
+              <option value="a bold">💪 Bold</option>
+              <option value="an adventurous">⛺ Adventurous</option>
+              <option value="a witty">💡 Witty</option>
+              <option value="a persuasive">🧠 Persuasive</option>
+              <option value="an empathetic">🤗 Empathetic</option>
+              <option value="a short and snappy">🏃 In a Rush</option>
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <svg class="fill-current h-4 w-4 bg-white dark:text-gray-200 dark:bg-main-dark-bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+            </div>
+          </div>
+
+
+          {/* Labels and tooltip for user input area */}
+          <div className="mt-4">
+            <label
+              className={labelStyles}
+            >
+              Target audience?
+            </label>
+            <p
+              style={{ color: currentColor }}
+              class={detailStyles}
+            >
+              Understanding the demographics and interests of the intended audience will help the AI create content that resonates with them.
+            </p>
+          </div>
+
+          {/* User dropwdown menu */}
+          <div className="inline-block relative w-full"
+          >
+            <select
+              className={dropwdownStyles}
+              name="target-audience"
+              id="target-audience"
+            >
+              <option value=" any regular Facebook user">🚫 Default</option>
+              <option value=" in the tech industry">⚙️ Technology</option>
+              <option value=" in the healthcare industry">❤️‍🩹 Healthcare</option>
+              <option value=" in the finance industry">💱 Finance</option>
+              <option value=" in the retail industry">🛒 Retail</option>
+              <option value=" in the real estate industry">🏠 Real Estate</option>
+              <option value=" in the construction industry">🏗️ Construction</option>
+              <option value=" in the hospitality and tourism industry">🏨 Hospitality and Tourism</option>
+              <option value=" in the media and entertainment industry">📸 Media and Entertainment</option>
+              <option value=" in the manufacturing industry">🏭 Manufacturing</option>
+              <option value=" in the energy industry">⚡ Energy</option>
+              <option value=" in the agriculture industry">🌱 Agriculture</option>
+              <option value=" in the government industry">🏛️ Government</option>
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <svg class="fill-current h-4 w-4 bg-white dark:text-gray-200 dark:bg-main-dark-bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+            </div>
+          </div>
+
+
+          {/* Labels and tooltip for user input area */}
+          <div className="mt-4">
+            <label
+              className={labelStyles}
+            >
+              Call to action?
+            </label>
+            <p
+              style={{ color: currentColor }}
+              class={detailStyles}
+            >
+              What kind of action should the AI encourage (e.g. liking, commenting, sharing)?
+            </p>
+          </div>
+
+          {/* User Checkbox */}
+          <ul
+            className={checkboxMenuStyles}
+          >
+            <li className={checkboxDivStyles}>
+              <input
+                className={checkboxInputStyles}
+                type="checkbox"
+                id="like-and-share"
+                name="call-to-action"
+                value="like and share"
+                required
+              />
+              <label
+                className={checkboxLabelStyles}
+                for="like-and-share"
+              >
+                Like & Share
+              </label>
+            </li>
+
+            <li className={checkboxDivStyles}>
+              <input
+                className={checkboxInputStyles}
+                type="checkbox"
+                id="tag-a-friend"
+                name="call-to-action"
+                value="tag their friends"
+                required
+              />
+              <label
+                className={checkboxLabelStyles}
+                for="tag-a-friend"
+              >
+                Tag a friend
+              </label>
+            </li>
+
+            <li className={checkboxDivStyles}>
+              <input
+                className={checkboxInputStyles}
+                type="checkbox"
+                id="comment"
+                name="call-to-action"
+                value="comment with their thoughts"
+                required
+              />
+              <label
+                className={checkboxLabelStyles}
+                for="comment"
+              >
+                Comment
+              </label>
+            </li>
+
+            <li className={checkboxDivStyles}>
+              <input
+                className={checkboxInputStyles}
+                type="checkbox"
+                id="follow"
+                name="call-to-action"
+                value="follow our page"
+                required
+              />
+              <label
+                className={checkboxLabelStyles}
+                for="follow"
+              >
+                Follow
+              </label>
+            </li>
+
+            <li className={checkboxDivStyles}>
+              <input
+                className={checkboxInputStyles}
+                type="checkbox"
+                id="join-list"
+                name="call-to-action"
+                value="sign up for our newsletter"
+                required
+              />
+              <label
+                className={checkboxLabelStyles}
+                for="join-list"
+              >
+                Join mailing list
+              </label>
+            </li>
+
+            <li className={checkboxDivStyles}>
+              <input
+                className={checkboxInputStyles}
+                type="checkbox"
+                id="website"
+                name="call-to-action"
+                value="check out our website"
+                required
+              />
+              <label
+                className={checkboxLabelStyles}
+                for="website"
+              >
+                Go to website
+              </label>
+            </li>
+
+            <li className={checkboxDivStyles}>
+              <input
+                className={checkboxInputStyles}
+                type="checkbox"
+                id="store"
+                name="call-to-action"
+                value="visit our store"
+                required
+              />
+              <label
+                className={checkboxLabelStyles}
+                for="store"
+              >
+                Go to store
+              </label>
+            </li>
+
+            <li className={checkboxDivStyles}>
+              <input
+                className={checkboxInputStyles}
+                type="checkbox"
+                id="book"
+                name="call-to-action"
+                value="book a meeting/consultation"
+                required
+              />
+              <label
+                className={checkboxLabelStyles}
+                for="book"
+              >
+                Book a meeting/consultation
+              </label>
+            </li>
+
+            <li className={checkboxDivStyles}>
+              <input
+                className={checkboxInputStyles}
+                type="checkbox"
+                id="app"
+                name="call-to-action"
+                value="download our app"
+                required
+              />
+              <label
+                className={checkboxLabelStyles}
+                for="app"
+              >
+                Download app
+              </label>
+            </li>
+
+            <li className={checkboxDivStyles}>
+              <input
+                className={checkboxInputStyles}
+                type="checkbox"
+                id="event"
+                name="call-to-action"
+                value="join an event or webinar"
+                required
+              />
+              <label
+                className={checkboxLabelStyles}
+                for="event"
+              >
+                Join event/webinar
+              </label>
+            </li>
+
+            <li className={checkboxDivStyles}>
+              <input
+                className={checkboxInputStyles}
+                type="checkbox"
+                id="eBook"
+                name="call-to-action"
+                value="download our eBook"
+                required
+              />
+              <label
+                className={checkboxLabelStyles}
+                for="eBook"
+              >
+                Download eBook
+              </label>
+            </li>
+
+          </ul>
+
+          {/* Labels and tooltip for user input area */}
+          <div className="mt-4">
+            <label
+              className={labelStyles}
+            >
+              Scheduling
+            </label>
+            <p
+              style={{ color: currentColor }}
+              class={detailStyles}
+            >
+              The AI will need to know the desired time and time zone to ensure that the post is published at the appropriate time.
+            </p>
+          </div>
+
+          {/* User Date picker */}
+          <input
+            id="date-picker"
+            name="date-picker"
+            type="date"
+            class={dateInputStyles}
+            placeholder="Select the date and time you want the post to go live"
+          />
+
+
         </form>
       </div>
     </div>
@@ -258,12 +671,12 @@ class FacebookPost extends React.Component {
           <DescriptionDiv />
           <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg h-30 rounded-xl w-full lg:w-full p-8 pt-9 m-3 bg-no-repeat bg-cover bg-center">
             <FormDiv />
-            {/* <FormSubmit
+            <FormSubmit
               responseContainerId="response_div"
               formId="form"
               chatContainerId="chat_container"
               openaiContainerId="openai_container"
-            /> */}
+            />
           </div>
           <ResponseDiv2 />
         </div>

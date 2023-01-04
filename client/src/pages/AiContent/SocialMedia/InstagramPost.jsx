@@ -143,12 +143,12 @@ const DescriptionDiv = () => {
     <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg h-30 rounded-xl w-full lg:w-full p-8 pt-9 m-3 bg-no-repeat bg-cover bg-center">
       <div className="flex justify-between items-center ">
         <div>
-          <p className="font-bold text-gray-700 dark:text-gray-200 text-left mb-2">[Title Goes Here]</p>
+          <p className="font-bold text-gray-700 dark:text-gray-200 text-left mb-2">Create The Perfect Instagram Post</p>
           <p
             className="text-s"
             style={{ color: currentColor }}
           >
-            [Description Goes Here]
+            Relay AI's Instagram Post Generator Bot is the perfect tool for busy entrepreneurs, marketers and small business owners who want to quickly and easily create impactful posts on their Instagram page. Generate posts in a matter of seconds that will drive traffic, engage your followers and build your brand. Forget about spending hours crafting the perfect message - with Relay AI you can go from idea to post with lightning speed. Make your Instagram page stand out and give it a professional edge in no time at all!
           </p>
         </div>
       </div>
@@ -180,6 +180,115 @@ const FormDiv = () => {
           className="max-w-full"
           id="form"
         >
+          {/* Labels and tooltip for user input area */}
+          <div className="mt-4">
+            <label
+              className={labelStyles}
+            >
+              Main Message or theme of the post?
+            </label>
+            <p
+              style={{ color: currentColor }}
+              class={detailStyles}
+            >
+              This will help the AI understand what you want the post to convey.
+            </p>
+          </div>
+
+
+          {/* Labels and tooltip for user input area */}
+          <div className="mt-4">
+            <label
+              className={labelStyles}
+            >
+              Specific information or details?
+            </label>
+            <p
+              style={{ color: currentColor }}
+              class={detailStyles}
+            >
+              For example, if you are promoting an event, you may want to include the date, time, and location.
+            </p>
+          </div>
+
+
+          {/* Labels and tooltip for user input area */}
+          <div className="mt-4">
+            <label
+              className={labelStyles}
+            >
+              Format of the post?
+            </label>
+            <p
+              style={{ color: currentColor }}
+              class={detailStyles}
+            >
+              Do you want the AI to create a text-based post, or would you prefer a post that includes a mix of text and images?
+            </p>
+          </div>
+
+
+          {/* Labels and tooltip for user input area */}
+          <div className="mt-4">
+            <label
+              className={labelStyles}
+            >
+              Tone of the post?
+            </label>
+            <p
+              style={{ color: currentColor }}
+              class={detailStyles}
+            >
+              Should it be formal or casual, serious or humorous?
+            </p>
+          </div>
+
+
+          {/* Labels and tooltip for user input area */}
+          <div className="mt-4">
+            <label
+              className={labelStyles}
+            >
+              Target audience?
+            </label>
+            <p
+              style={{ color: currentColor }}
+              class={detailStyles}
+            >
+              Understanding the demographics and interests of the intended audience will help the AI create content that resonates with them.
+            </p>
+          </div>
+
+
+          {/* Labels and tooltip for user input area */}
+          <div className="mt-4">
+            <label
+              className={labelStyles}
+            >
+              Call to action?
+            </label>
+            <p
+              style={{ color: currentColor }}
+              class={detailStyles}
+            >
+              What kind of action should the AI encourage (e.g. liking, commenting, sharing)?
+            </p>
+          </div>
+
+          {/* Labels and tooltip for user input area */}
+          <div className="mt-4">
+            <label
+              className={labelStyles}
+            >
+              Scheduling
+            </label>
+            <p
+              style={{ color: currentColor }}
+              class={detailStyles}
+            >
+              The AI will need to know the desired time and time zone to ensure that the post is published at the appropriate time.
+            </p>
+          </div>
           
         </form>
       </div>

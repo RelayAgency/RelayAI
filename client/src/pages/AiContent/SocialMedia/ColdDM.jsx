@@ -196,11 +196,10 @@ const FormDiv = () => {
           </div>
 
           {/* User dropwdown menu */}
-          <div
-            class="inline-block relative w-full"
+          <div className="inline-block relative w-full"
           >
             <select
-              class={dropwdownStyles}
+              className={dropwdownStyles}
               name="target-audience"
               id="target-audience"
             >
@@ -218,7 +217,7 @@ const FormDiv = () => {
               <option value=" in the agriculture industry">🌱 Agriculture</option>
               <option value=" in the government industry">🏛️ Government</option>
             </select>
-            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
               <svg class="fill-current h-4 w-4 bg-white dark:text-gray-200 dark:bg-main-dark-bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
             </div>
           </div>
@@ -422,8 +421,7 @@ const FormDiv = () => {
           </div>
 
           {/* User dropwdown menu */}
-          <div
-            class="inline-block relative w-full"
+          <div className="inline-block relative w-full"
           >
             <select
               class={dropwdownStyles}
@@ -444,7 +442,7 @@ const FormDiv = () => {
               <option value="an empathetic">🤗 Empathetic</option>
               <option value="a short and snappy">🏃 In a Rush</option>
             </select>
-            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
               <svg class="fill-current h-4 w-4 bg-white dark:text-gray-200 dark:bg-main-dark-bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
             </div>
           </div>
