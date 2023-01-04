@@ -258,12 +258,12 @@ class FacebookPost extends React.Component {
           <DescriptionDiv />
           <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg h-30 rounded-xl w-full lg:w-full p-8 pt-9 m-3 bg-no-repeat bg-cover bg-center">
             <FormDiv />
-            <FormSubmit
+            {/* <FormSubmit
               responseContainerId="response_div"
               formId="form"
               chatContainerId="chat_container"
               openaiContainerId="openai_container"
-            />
+            /> */}
           </div>
           <ResponseDiv2 />
         </div>
