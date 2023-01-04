@@ -170,6 +170,25 @@ const FormDiv = () => {
       characterCount.style.filter = "brightness(100%)";
     }
   }
+
+  const labelStyles = "block text-gray-700 text-sm font-bold mb-2 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg capitalize"
+  const detailStyles = "text-xs italic mb-2 font-bold"
+  const textInputStyles = "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white dark:text-gray-200 dark:bg-main-dark-bg h-10"
+  const textAreaStyles = "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white dark:text-gray-200 dark:bg-main-dark-bg h-32"
+  const dropdownStyles = "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white dark:text-gray-200 dark:bg-main-dark-bg h-10"
+
+  const radioMenuStyles = "flex flex-wrap -mb-4 max-w-3xl"
+  const radioButtonStyles = "w-1/3 mb-4"
+  const radioLabelStyles = "p-2 text-gray-700 text-sm font-bold bg-white dark:bg-secondary-dark-bg capitalize"
+
+  const checkboxMenuStyles = "flex flex-wrap flex-row -mb-4 max-w-3xl items-center"
+  const checkboxDivStyles = "w-1/2 mb-2 flex items-center"
+  const checkboxInputStyles = `w-4 h-4 text-[${currentColor}] bg-gray-100 rounded border-gray-300 focus:ring-[${currentColor}] dark:focus:ring-[${currentColor}] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 flex-none`
+  const checkboxLabelStyles = "p-2 ml-2 inline-block text-gray-700 dark:text-gray-200 text-sm font-medium bg-white dark:bg-secondary-dark-bg capitalize"
+
+  const dateInputStyles = "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white dark:text-gray-200 dark:bg-main-dark-bg h-12"
+
+
   return (
     <div className="flex justify-between items-center w-full">
       <div className="w-full">
@@ -180,12 +199,12 @@ const FormDiv = () => {
           {/* Labels and tooltip for user text input area */}
           <div>
             <label
-              className="block text-gray-700 text-sm font-bold mb-2 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg">
+              className={labelStyles}>
               What Product Would You Like to get a description for?
             </label>
             <p
               style={{ color: currentColor }}
-              class="text-xs italic mb-2 font-bold">
+              class={detailStyles}>
               Enter as much information as possible for more accurate descriptions
             </p>
           </div>
@@ -193,7 +212,7 @@ const FormDiv = () => {
           {/* User text input area */}
           <textarea onInput={handleInput}
             id="productName"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white dark:text-gray-200 dark:bg-main-dark-bg h-32"
+            className={textAreaStyles}
             type="text"
             name="productName"
             placeholder="e.g. Relay AI"
@@ -221,12 +240,12 @@ const FormDiv = () => {
           {/* Labels and tooltips for user dropwdown menu */}
           <div>
             <label
-              className="block text-gray-700 text-sm font-bold mb-2 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg">
+              className={labelStyles}>
               Choose a tone
             </label>
             <p
               style={{ color: currentColor }}
-              class="text-xs italic mb-2 font-bold">
+              class={detailStyles}>
               Choose a preset tone
             </p>
           </div>
@@ -236,7 +255,7 @@ const FormDiv = () => {
             class="inline-block relative w-full"
           >
             <select
-              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white dark:text-gray-200 dark:bg-main-dark-bg h-10"
+              class={dropdownStyles}
               name="productTone"
               id="productTone"
             >
