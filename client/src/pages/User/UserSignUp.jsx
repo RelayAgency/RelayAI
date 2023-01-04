@@ -19,11 +19,14 @@ const URLS = [url1, url2];
 
 const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
+const errorMessageStyles = "h-[6rem] p-8 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg  rounded-xl w-full lg:w-full  m-3 bg-no-repeat bg-cover bg-center text-white text-center font-bold truncate";
+
 const auth = getAuth(app);
 
 async function onCaptchaVerify(mobile) {
   console.log("captcha: ", mobile)
   const otpButton = document.getElementById("verifyMobile");
+
 
   window.recaptchaVerifier = await new RecaptchaVerifier(
     'recaptcha-container',
@@ -34,7 +37,9 @@ async function onCaptchaVerify(mobile) {
         // reCAPTCHA solved, allow signInWithPhoneNumber.
         // ...
         console.log("reCAPTCHA solved, allow signInWithPhoneNumber");
+
         waitButton(otpButton);
+
       },
     }, auth);
   onSignInSubmit(mobile)
@@ -55,6 +60,7 @@ function onSignInSubmit(mobile) {
       // Create message in error container.
       createMessage("success", `Sent OTP to ${phoneNumber}`, 5);
       disableButton(otpButton);
+      document.getElementById("otp").focus();
       // ...
     }).catch((error) => {
       // Error; SMS not sent
@@ -69,7 +75,8 @@ function onSignInSubmit(mobile) {
 }
 
 function createMessage(type, message, time) {
-  const errorMessageStyles = "h-[6rem] p-8 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg  rounded-xl w-full lg:w-full  m-3 bg-no-repeat bg-cover bg-center text-white text-center font-bold truncate";
+  const submitButton = document.getElementById("submit-button");
+  console.log("createMessage");
   let interval;
   function fadeOut(element, duration) {
     element.classList.add(`${type}-message`);
@@ -96,10 +103,11 @@ function createMessage(type, message, time) {
   clearInterval(interval);
   copy.style.opacity = 1;
   copy.scrollIntoView({ behavior: 'smooth' });
+  waitButton(submitButton);
   setTimeout(function () {
     fadeOut(copy, 5000);
+    enableButton(submitButton);
   }, time * 1000);
-
 }
 
 async function handleSubmit(e, form) {
@@ -133,6 +141,10 @@ async function handleSubmit(e, form) {
   if (!data.firstName || !data.lastName || !data.email || !data.password || !data.mobile || !data.confirmPassword) {
     // Display a warning message if any of the fields are empty.
     createMessage("warning", "Please fill out all form fields.", 1);
+    const input = document.querySelector("Input");
+    if (input.value !== "") {
+      input.focus();
+    }
 
   } else if (!otp) {
     createMessage("warning", "Please fill out OTP.", 1);
@@ -217,6 +229,7 @@ async function handleSubmit(e, form) {
               // alert("login success");
               createMessage("success", "Sign Up Success, Please Login", 30);
               window.localStorage.setItem('token', data.data);
+              window.location.href = "./sign-in";
               disableButton(submitButton);
             } else {
               const error = data.error;
@@ -284,6 +297,7 @@ const FormDiv = () => {
   function HandleVerifyButton() {
     const mobile = mobileInput.current.value;
     const otpButton = document.getElementById("verifyMobile");
+
     // console.log(mobile);
     waitButton(otpButton);
     setShowOtp(true);
@@ -416,7 +430,7 @@ const FormDiv = () => {
               variant="contained"
               onClick={HandleVerifyButton}
             >
-              Send OTP
+              Verify Phone Number
             </Button>
           ) : null}
 
@@ -441,9 +455,10 @@ const FormDiv = () => {
                 className={textInputStyles}
                 type="number"
                 name="otp"
-                placeholder="OTP"
+                placeholder="One-time password"
                 autoComplete="off"
                 required
+                onWheel={(e) => e.target.blur()}
               />
             </>) : null}
 

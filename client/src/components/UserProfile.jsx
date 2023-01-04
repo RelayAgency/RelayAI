@@ -18,17 +18,20 @@ const url2 = `https://relayai.onrender.com${URL}`;
 const URLS = [url1, url2];
 
 const ProfileHeader = () => {
+  const { currentColor, activeMenu, setActiveMenu, handleClick, isClicked, setScreenSize, screenSize, activeProfile, setActiveProfile } = useStateContext();
   return (
     <>
       <div className="flex justify-between items-center">
         <p className="font-semibold text-lg dark:text-gray-200">User Profile</p>
-        <Button
-          icon={<MdOutlineCancel />}
-          color="rgb(153, 171, 180)"
-          bgHoverColor="light-gray"
-          size="2xl"
-          borderRadius="50%"
-        />
+        <div onClick={() => setActiveProfile(!activeProfile)}>
+          <Button
+            icon={<MdOutlineCancel />}
+            color="rgb(153, 171, 180)"
+            bgHoverColor="light-gray"
+            size="2xl"
+            borderRadius="50%"
+          />
+        </div>
       </div></>
   )
 }
@@ -100,7 +103,7 @@ const ProfileCard = () => {
               </p>
 
             </NavLink>
-            
+
             <p className={userRoleStyles}>
               Member
             </p>
@@ -117,7 +120,7 @@ const ProfileCard = () => {
 }
 
 const ProfileMenuButtons = () => {
-  const { currentColor, activeMenu, setActiveMenu, screenSize, currentMode } = useStateContext();
+  const { currentColor, activeMenu, setActiveMenu, screenSize, currentMode, activeProfile, setActiveProfile } = useStateContext();
 
   const handleCloseSideBar = () => {
     if (activeMenu !== undefined && screenSize <= 900) {
@@ -128,30 +131,32 @@ const ProfileMenuButtons = () => {
     <>
       <div>
         {userProfileData.map((item, index) => (
-          <NavLink
-            to={`/${item.name}`}
-            key={item.name}
-            onClick={handleCloseSideBar}
-          >
-            <div key={index}
-              className="flex gap-5 border-b-1 border-color p-4 hover:bg-light-gray cursor-pointer  dark:hover:bg-[#42464D]"
-
+          <div onClick={() => setActiveProfile(!activeProfile)}>
+            <NavLink
+              to={`/${item.name}`}
+              key={item.name}
+              onClick={handleCloseSideBar}
             >
-              <button
-                type="button"
-                style={{ color: item.iconColor, backgroundColor: item.iconBg }}
-                className=" text-xl rounded-lg p-3 hover:bg-light-gray"
+              <div key={index}
+                className="flex gap-5 border-b-1 border-color p-4 hover:bg-light-gray cursor-pointer  dark:hover:bg-[#42464D]"
 
               >
-                {item.icon}
-              </button>
+                <button
+                  type="button"
+                  style={{ color: item.iconColor, backgroundColor: item.iconBg }}
+                  className=" text-xl rounded-lg p-3 hover:bg-light-gray"
 
-              <div>
-                <p className="font-semibold dark:text-gray-200 ">{item.title}</p>
-                <p className="text-gray-500 text-sm dark:text-gray-400"> {item.desc} </p>
+                >
+                  {item.icon}
+                </button>
+
+                <div>
+                  <p className="font-semibold dark:text-gray-200 ">{item.title}</p>
+                  <p className="text-gray-500 text-sm dark:text-gray-400"> {item.desc} </p>
+                </div>
               </div>
-            </div>
-          </NavLink>
+            </NavLink>
+          </div>
         ))}
       </div></>
   )

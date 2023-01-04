@@ -15,7 +15,7 @@ import { useStateContext } from './contexts/ContextProvider';
 import './App.css'
 
 const App = () => {
-  const { setCurrentColor, setCurrentMode, currentMode, activeMenu, currentColor, themeSettings, setThemeSettings, setIsLoggedIn } = useStateContext();
+  const { setCurrentColor, setCurrentMode, currentMode, activeMenu, setActiveMenu, currentColor, themeSettings, setThemeSettings, setIsLoggedIn, activeProfile, setActiveProfile } = useStateContext();
 
 
   useEffect(() => {
@@ -41,15 +41,18 @@ const App = () => {
                 content="Settings"
                 position="Top"
               >
-                <button
-                  type="button"
-                  onClick={() => setThemeSettings(true)}
-                  style={{ background: currentColor, borderRadius: '50%' }}
-                  className="text-3xl text-white p-3 hover:drop-shadow-xl hover:bg-light-gray"
-                >
-                  <FiSettings />
-                </button>
+                <div onClick={() => setActiveMenu(false)}>
+                  <button
+                    type="button"
+                    onClick={() => setThemeSettings(true)}
+                    style={{ background: currentColor, borderRadius: '50%' }}
+                    className="text-3xl text-white p-3 hover:drop-shadow-xl hover:bg-light-gray"
+                  >
 
+                    <FiSettings />
+
+                  </button>
+                </div>
               </TooltipComponent> : <></>}
           </div>
           {isLoggedIn == "true" ?
@@ -80,11 +83,15 @@ const App = () => {
                 <Navbar />
               </div> : <></>}
             {isLoggedIn == "true" ? <div>{themeSettings &&
-              <ThemeSettings />
+
+              <div onClick={() => setActiveProfile(false)}>
+                <ThemeSettings />
+              </div>
+
             }</div> : <></>}
 
-            <div>
-              <Routes>
+            <div onClick={() => setActiveMenu(false)}>
+              <Routes >
                 {/* Dashboard */}
                 {/* <Route path="/" element={<Ecommerce />} /> */}
                 <Route path="/" element={isLoggedIn == "true" ? <UserProfile /> : <UserSignIn />} />
