@@ -196,30 +196,31 @@ app.post("/forgot-password", async (req, res) => {
     // Create a unique link
     const link = `${LOCALORSERVERS[1]}/reset-password/${oldUser._id}/${token}`;
     //////////////////////////////////////////////////////////////////
-    // var transporter = nodemailer.createTransport({
-    //   service: 'gmail',
-    //   auth: {
-    //     user: adminEmail,
-    //     pass: pass
-    //   }
-    // });
+    var transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: adminEmail,
+        pass: pass
+      }
+    });
 
-    // var mailOptions = {
-    //   from: adminEmail,
-    //   to: oldUser.email,
-    //   subject: 'Password Reset',
-    //   text: link
-    // };
+    var mailOptions = {
+      from: adminEmail,
+      to: oldUser.email,
+      subject: 'Password Reset',
+      text: link
+    };
 
-    // transporter.sendMail(mailOptions, function (error, info) {
-    //   if (error) {
-    //     console.log(error);
-    //   } else {
-    //     console.log('Email sent: ' + info.response);
-    //   }
-    // });
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('Email sent: ' + info.response);
+      }
+    });
     //////////////////////////////////////////////////////////////////
     console.log(link);
+    return res.json({ status: "ok", data: token });
   } catch (error) {
 
   }

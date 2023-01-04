@@ -38,10 +38,6 @@ module.exports = {
       minHeight: {
         590: '590px',
       },
-      backgroundImage: {
-        'hero-pattern':
-          "url('https://i.ibb.co/MkvLDfb/Rectangle-4389.png')",
-      },
     },
   },
   plugins: [],

@@ -79,7 +79,7 @@ async function handleSubmit(e, form) {
 
   } else {
 
-    disableSubmit(submitButton);
+    waitButton(submitButton);
     
 
     fetch(URLS[1], {
@@ -113,7 +113,7 @@ async function handleSubmit(e, form) {
 
         } else {
           createMessage("error", "Check email and password", 1);
-          enableSubmit(submitButton);
+          enableButton(submitButton);
           
         }
       })
@@ -226,16 +226,22 @@ const FormDiv = () => {
   )
 }
 
-function disableSubmit(submitButton) {
-  submitButton.disabled = true;
-  submitButton.style.filter = "brightness(50%)";
-  submitButton.style.cursor = "wait";
+function waitButton(button) {
+  button.disabled = true;
+  button.style.filter = "brightness(50%)";
+  button.style.cursor = "wait";
 }
 
-function enableSubmit(submitButton) {
-  submitButton.disabled = false;
-  submitButton.style.filter = "brightness(100%)";
-  submitButton.style.cursor = "pointer";
+function disableButton(button) {
+  button.disabled = true;
+  button.style.filter = "brightness(50%)";
+  button.style.cursor = "not-allowed";
+}
+
+function enableButton(button) {
+  button.disabled = false;
+  button.style.filter = "brightness(100%)";
+  button.style.cursor = "pointer";
 }
 
 const FormSubmit = (props) => {

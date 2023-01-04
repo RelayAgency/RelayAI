@@ -55,6 +55,7 @@ async function handleSubmit(e, form) {
   e.preventDefault();
   // Get the data from the form.
   const userInfo = new FormData(document.getElementById("form"));
+  const submitButton = document.getElementById("submit-button");
 
   // Get user input from the form.
   const data = {
@@ -80,6 +81,7 @@ async function handleSubmit(e, form) {
     createMessage("warning", "Emails do not match.", 1);
 
   } else {
+    waitButton(submitButton);
 
     fetch(URLS[1], {
       method: 'POST',
@@ -99,8 +101,17 @@ async function handleSubmit(e, form) {
         console.log(JSON.stringify({
           email,
         }))
-        createMessage("warning", `${data.status}`, 10);
+        if (data.status == "ok") {
+          createMessage("success", "Check your email for password reset link", 60);
+          disableButton(submitButton)
+        } else {
+          const error = data.error;
+          createMessage("error", `${data.status}`, 5);
+          enableButton(submitButton);
+        }
       })
+
+
   }
 }
 
@@ -252,6 +263,24 @@ const ErrorMessageDiv = () => {
       className=""
     />
   )
+}
+
+function waitButton(button) {
+  button.disabled = true;
+  button.style.filter = "brightness(50%)";
+  button.style.cursor = "wait";
+}
+
+function disableButton(button) {
+  button.disabled = true;
+  button.style.filter = "brightness(50%)";
+  button.style.cursor = "not-allowed";
+}
+
+function enableButton(button) {
+  button.disabled = false;
+  button.style.filter = "brightness(100%)";
+  button.style.cursor = "pointer";
 }
 
 const WarningMessageDiv = () => {
