@@ -101,7 +101,7 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
 
   // Append the response div with new responses
   // responseContainer.innerHTML += chatStripe("", uniqueId);
-  responseContainer.innerHTML += ChatStripe(currentColor, "", uniqueId);
+  responseContainer.insertAdjacentHTML("afterbegin", ChatStripe(currentColor, "", uniqueId));
 
   //Console log the uniqueId
   console.log("uniqueId: " + uniqueId)

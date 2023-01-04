@@ -99,7 +99,7 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
 
   // Append the response div with new responses
   // responseContainer.innerHTML += chatStripe("", uniqueId);
-  responseContainer.innerHTML += ChatStripe(currentColor, "", uniqueId);
+  responseContainer.insertAdjacentHTML("afterbegin", ChatStripe(currentColor, "", uniqueId));
 
   //Console log the uniqueId
   console.log("uniqueId: " + uniqueId)
@@ -149,8 +149,6 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
 
     alert(err);
   }
-
-
 }
 
 const DescriptionDiv = () => {
@@ -188,7 +186,7 @@ const FormDiv = () => {
   const checkboxMenuStyles = "flex flex-wrap flex-row -mb-4 max-w-3xl items-center"
   const checkboxDivStyles = "w-1/2 mb-2 flex items-center"
   const temp2 = ""
-  const checkboxInputStyles = `w-4 h-4 text-[${currentColor}] bg-gray-100 rounded border-gray-300 focus:ring-[${currentColor}] dark:focus:ring-[${currentColor}] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600`
+  const checkboxInputStyles = `w-4 h-4 text-[${currentColor}] bg-gray-100 rounded border-gray-300 focus:ring-[${currentColor}] dark:focus:ring-[${currentColor}] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 flex-none`
   const checkboxLabelStyles = "p-2 ml-2 inline-block text-gray-700 dark:text-gray-200 text-sm font-medium bg-white dark:bg-secondary-dark-bg capitalize"
   const temp1 = "inline-flex justify-between items-center p-2 m-2 w-full text-gray-700 bg-white rounded-lg border-2 border-gray-200 cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-200 dark:bg-secondary-dark-bg dark:hover:bg-gray-700"
 
@@ -410,7 +408,7 @@ const FormDiv = () => {
               style={{ color: currentColor }}
               className={detailStyles}
             >
-              Briefly describe the benefits of your product or service in a few sentences
+              Briefly describe your product or service in a few sentences
             </p>
           </div>
 
@@ -420,7 +418,7 @@ const FormDiv = () => {
             id="value-proposition"
             name="value-proposition"
             className={textAreaStyles}
-            placeholder="e.g. "
+            placeholder="e.g. Tesla Model S, electric sedan..."
           />
 
           {/* Labels and tooltip for user input area */}
