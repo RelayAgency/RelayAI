@@ -98,29 +98,29 @@ const App = () => {
                   <Route path="/" element={isLoggedIn == "true" ? <UserProfile /> : <UserSignIn />} />
 
                   {/* Product Descriptions */}
-                  <Route path="/product descriptions" element={isLoggedIn == "true" ? <ProductDescription /> : <UserSignIn />} />
+                  <Route path="/product-descriptions" element={isLoggedIn == "true" ? <ProductDescription /> : <UserSignIn />} />
 
                   {/* Social Media */}
-                  <Route path="/cold dms" element={isLoggedIn == "true" ? <ColdDM /> : <UserSignIn />} />
-                  <Route path="/facebook posts" element={isLoggedIn == "true" ? <FacebookPost /> : <UserSignIn />} />
-                  <Route path="/instagram posts" element={isLoggedIn == "true" ? <InstagramPost /> : <UserSignIn />} />
-                  <Route path="/linkedin posts" element={isLoggedIn == "true" ? <LinkedinPost /> : <UserSignIn />} />
-                  <Route path="/tiktok scripts" element={isLoggedIn == "true" ? <TikTokScript /> : <UserSignIn />} />
-                  <Route path="/youtube ideas" element={isLoggedIn == "true" ? <YoutubeIdea /> : <UserSignIn />} />
+                  <Route path="/cold-dms" element={isLoggedIn == "true" ? <ColdDM /> : <UserSignIn />} />
+                  <Route path="/facebook-posts" element={isLoggedIn == "true" ? <FacebookPost /> : <UserSignIn />} />
+                  <Route path="/instagram-posts" element={isLoggedIn == "true" ? <InstagramPost /> : <UserSignIn />} />
+                  <Route path="/linkedin-posts" element={isLoggedIn == "true" ? <LinkedinPost /> : <UserSignIn />} />
+                  <Route path="/tiktok-scripts" element={isLoggedIn == "true" ? <TikTokScript /> : <UserSignIn />} />
+                  <Route path="/youtube-ideas" element={isLoggedIn == "true" ? <YoutubeIdea /> : <UserSignIn />} />
 
                   {/* Email/Letter */}
-                  <Route path="/cold emails" element={isLoggedIn == "true" ? <ColdEmail /> : <UserSignIn />} />
-                  <Route path="/email marketing" element={isLoggedIn == "true" ? <EmailMarketing /> : <UserSignIn />} />
-                  <Route path="/follow up emails" element={isLoggedIn == "true" ? <FollowUpEmail /> : <UserSignIn />} />
-                  <Route path="/personalized emails" element={isLoggedIn == "true" ? <PersonalizedEmail /> : <UserSignIn />} />
-                  <Route path="/subject lines" element={isLoggedIn == "true" ? <SubjectLine /> : <UserSignIn />} />
+                  <Route path="/cold-emails" element={isLoggedIn == "true" ? <ColdEmail /> : <UserSignIn />} />
+                  <Route path="/email-marketing" element={isLoggedIn == "true" ? <EmailMarketing /> : <UserSignIn />} />
+                  <Route path="/follow-up-emails" element={isLoggedIn == "true" ? <FollowUpEmail /> : <UserSignIn />} />
+                  <Route path="/personalized-emails" element={isLoggedIn == "true" ? <PersonalizedEmail /> : <UserSignIn />} />
+                  <Route path="/subject-lines" element={isLoggedIn == "true" ? <SubjectLine /> : <UserSignIn />} />
 
                   {/* SEO */}
-                  <Route path="/image alt text" element={isLoggedIn == "true" ? <ImageAltText /> : <UserSignIn />} />
+                  <Route path="/image-alt-text" element={isLoggedIn == "true" ? <ImageAltText /> : <UserSignIn />} />
                   <Route path="/keywords" element={isLoggedIn == "true" ? <Keywords /> : <UserSignIn />} />
-                  <Route path="/meta descriptions" element={isLoggedIn == "true" ? <MetaDescription /> : <UserSignIn />} />
-                  <Route path="/titles & headings" element={isLoggedIn == "true" ? <TitlesHeadings /> : <UserSignIn />} />
-                  <Route path="/website copy" element={isLoggedIn == "true" ? <WebsiteCopy /> : <UserSignIn />} />
+                  <Route path="/meta-descriptions" element={isLoggedIn == "true" ? <MetaDescription /> : <UserSignIn />} />
+                  <Route path="/titles-&-headings" element={isLoggedIn == "true" ? <TitlesHeadings /> : <UserSignIn />} />
+                  <Route path="/website-copy" element={isLoggedIn == "true" ? <WebsiteCopy /> : <UserSignIn />} />
 
 
                   {/* USER */}

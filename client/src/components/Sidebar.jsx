@@ -69,7 +69,7 @@ const Sidebar = () => {
                 </p>
                 {item.links.map((link) => (
                   <NavLink
-                    to={`/${link.name}`}
+                    to={`/${link.link}`}
                     key={link.name}
                     onClick={HandleReload}
                     style={({ isActive }) => ({

@@ -528,6 +528,7 @@ export const links = [
     links: [
       {
         name: 'product descriptions',
+        link: 'product-descriptions',
         icon: <FiShoppingBag />,
       }
     ]
@@ -536,27 +537,33 @@ export const links = [
     title: 'Social Media',
     links: [
       {
-        name: 'cold dms',
+        name: 'cold DMs',
+        link: 'cold-dms',
         icon: <FiInbox />,
       },
       {
         name: 'facebook posts',
+        link: 'facebook-posts',
         icon: <SiFacebook />,
       },
       {
         name: 'instagram posts',
+        link: 'instagram-posts',
         icon: <SiInstagram />,
       },
       {
         name: 'linkedin posts',
+        link: 'linkedin-posts',
         icon: <SiLinkedin />,
       },
       {
         name: 'tiktok scripts',
+        link: 'tiktok-scripts',
         icon: <SiTiktok />,
       },
       {
         name: 'youtube ideas',
+        link: 'youtube-ideas',
         icon: <SiYoutube />,
       },
     ]
@@ -566,22 +573,27 @@ export const links = [
     links: [
       {
         name: 'cold emails',
+        link: 'cold-emails',
         icon: <AiOutlineMail />,
       },
       {
         name: 'email marketing',
+        link: 'email-marketing',
         icon: <BsCurrencyDollar />,
       },
       {
         name: 'follow up emails',
+        link: 'follow-up-emails',
         icon: <BsShare />,
       },
       {
         name: 'personalized emails',
+        link: 'personalized-emails',
         icon: <BsPerson />,
       },
       {
         name: 'subject lines',
+        link: 'subject-lines',
         icon: <GiFishingHook />,
       },
     ]
@@ -591,22 +603,27 @@ export const links = [
     links: [
       {
         name: 'image alt text',
+        link: 'image-alt-text',
         icon: <AiOutlineFileText />,
       },
       {
         name: 'keywords',
+        link: 'keywords',
         icon: <MdLensBlur />,
       },
       {
         name: 'meta descriptions',
+        link: 'meta-descriptions',
         icon: <SiHtml5 />,
       },
       {
         name: 'titles & headings',
+        link: 'titles-&-headings',
         icon: <MdTitle />,
       },
       {
         name: 'website copy',
+        link: 'website-copy',
         icon: <BiGlobe />,
       },
     ]
@@ -616,10 +633,12 @@ export const links = [
     links: [
       {
         name: 'profile',
+        link: 'profile',
         icon: <BsPerson />,
       },
       {
         name: 'prompts',
+        link: 'prompts',
         icon: <SiScrollreveal />,
       },
     ]

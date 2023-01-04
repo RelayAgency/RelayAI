@@ -69,15 +69,6 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
   const tone = data.get('tone-style');
   const companyR = data.get('company');
 
-
-  console.log("Target Audience: " + target);
-  console.log("Purpose: " + purposeR);
-  console.log("Value Proposition: " + valueProposition);
-  console.log("Personalization: " + personalizationR);
-  console.log("Tone: " + tone);
-  console.log("Company: " + companyR);
-
-
   //Clear the form. (Optional)
   // form.reset();
 
@@ -88,21 +79,17 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
   //Create the prompt from the user input.
   let prompt;
   if (valueProposition) {
-    prompt = `Hello, I'm looking to send a cold DM to a potential client in the ${target} industry. My goal is to ${purposeR}  them. My service is ${valueProposition}. The recipient is ${personalizationR}. My company is ${companyR}. I would like to present myself as a reliable and professional resource, and I'm looking for a short direct message that could be sent on any social media platform. I prefer ${tone} tone. Don't write it like an email. Make it as if I was sending a message on Instagram for example.`
+    prompt= `Hello AI bot, I'd like to send a direct message to someone${target} on social media. The purpose of the message is to ${purposeR} them and I'd like to highlight the ${valueProposition} of my company. Details of the recipient include, ${personalizationR}, and I want the tone of the message to be ${tone} tone. My company is ${companyR}. Can you help me draft a message that will get their attention and interest?`
 
   } else {
-    prompt = `Hello, I'm looking to send a cold DM to a potential client${target}. My goal is to ${purposeR} them. The recipient is ${personalizationR}. My company is ${companyR}. I would like to present myself as a reliable and professional resource, and I'm looking for a short direct message that could be sent on any social media platform. I prefer ${tone} tone. Don't write it like an email. Make it as if I was sending a message on Instagram for example.`
+    prompt= `Hello AI bot, I'd like to send a direct message to someone${target} on social media. The purpose of the message is to ${purposeR} them. Details of the recipient include, ${personalizationR}, and I want the tone of the message to be ${tone} tone. My company is ${companyR}. Can you help me draft a message that will get their attention and interest?`
   }
 
   // Console log the entire prompt.
   console.log("prompt: " + prompt)
 
   // Append the response div with new responses
-  // responseContainer.innerHTML += chatStripe("", uniqueId);
   responseContainer.insertAdjacentHTML("afterbegin", ChatStripe(currentColor, "", uniqueId));
-
-  //Console log the uniqueId
-  console.log("uniqueId: " + uniqueId)
 
   // Put the new response into view.
   responseContainer.scrollTop = responseContainer.scrollHeight;
@@ -111,7 +98,6 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
   const responseDiv = document.getElementById(uniqueId);
 
   isLoading = true;
-  console.log("isLoading: " + isLoading)
 
   submitButton.disabled = true;
   submitButton.style.filter = "brightness(50%)";
@@ -138,8 +124,7 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
     const parseData = data.bot.trim();
     isLoading = false;
 
-    console.log("parseData: " + parseData)
-    console.log("isLoading: " + isLoading)
+    console.log("Response: " + parseData)
 
     typeText(responseDiv, parseData, submitButton);
   } else {
@@ -185,34 +170,9 @@ const FormDiv = () => {
 
   const checkboxMenuStyles = "flex flex-wrap flex-row -mb-4 max-w-3xl items-center"
   const checkboxDivStyles = "w-1/2 mb-2 flex items-center"
-  const temp2 = ""
   const checkboxInputStyles = `w-4 h-4 text-[${currentColor}] bg-gray-100 rounded border-gray-300 focus:ring-[${currentColor}] dark:focus:ring-[${currentColor}] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 flex-none`
   const checkboxLabelStyles = "p-2 ml-2 inline-block text-gray-700 dark:text-gray-200 text-sm font-medium bg-white dark:bg-secondary-dark-bg capitalize"
-  const temp1 = "inline-flex justify-between items-center p-2 m-2 w-full text-gray-700 bg-white rounded-lg border-2 border-gray-200 cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-200 dark:bg-secondary-dark-bg dark:hover:bg-gray-700"
 
-
-  function handleInput() {
-    const textarea = document.getElementById("productName");
-    const characterCount = document.getElementById("characterCount");
-    const characterCountWarning = document.getElementById("characterCountWarning");
-
-    characterCount.textContent = `${textarea.value.length}/1000`;
-    if (textarea.value.length > 1000) {
-      characterCount.style.color = "#cc0000";
-      characterCount.textContent = `${textarea.value.length}/1000`;
-    }
-    else if (textarea.value.length < 40 && textarea.value.length > 0) {
-      characterCount.style.filter = "brightness(50%)";
-      characterCount.style.color = currentColor;
-      characterCountWarning.textContent = `⚠️ Short input. Try to provide more details for better copy results.
-    `;
-
-    } else {
-      characterCountWarning.textContent = '';
-      characterCount.style.color = currentColor;
-      characterCount.style.filter = "brightness(100%)";
-    }
-  }
   return (
     <div className="flex justify-between items-center w-full">
       <div className="w-full">
@@ -513,10 +473,6 @@ const FormDiv = () => {
             placeholder="e.g. Tesla"
             required
           />
-
-
-
-
         </form>
       </div>
     </div>

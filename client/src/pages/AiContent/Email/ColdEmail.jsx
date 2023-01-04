@@ -71,13 +71,13 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
   const targetR = data.get('target-audience');
   const companyR = data.get('company');
 
-  console.log("Recipient Name: " + recipientNameR);
-  console.log("Relationship: " + relationshipR);
-  console.log("Tone: " + tone);
-  console.log("Goal: " + goalsR);
-  console.log("Details: " + details);
-  console.log("Target Audience: " + targetR);
-  console.log("Company: " + companyR);
+  // console.log("Recipient Name: " + recipientNameR);
+  // console.log("Relationship: " + relationshipR);
+  // console.log("Tone: " + tone);
+  // console.log("Goal: " + goalsR);
+  // console.log("Details: " + details);
+  // console.log("Target Audience: " + targetR);
+  // console.log("Company: " + companyR);
 
 
   //Clear the form. (Optional)
@@ -90,10 +90,12 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
   //Create the prompt from the user input.
   let prompt;
   if (details) {
-    prompt = `Hello AI bot, I am looking to ${goalsR} a ${relationshipR}. The recipient is called ${recipientNameR}, they are a ${targetR}. My company is ${companyR}, ${details}. I would like the email to be professional and concise, with a clear call to action for the recipient to reply and a powerful and effective subject line. I prefer ${tone} tone. Thank you.`
+    // prompt = `Hello AI bot, I am looking to ${goalsR} a ${relationshipR}. The recipient is called ${recipientNameR}, they are a ${targetR}. My company is ${companyR}, ${details}. I would like the email to be professional and concise, with a clear call to action for the recipient to reply and a powerful and effective subject line. I prefer ${tone} tone. Thank you.`
+    prompt = `Hello AI bot, I'd like to write a cold email to ${recipientNameR}. They are a ${relationshipR} and I'd like the tone of the email to be ${tone}. My goal is to ${goalsR} them and some relevant details are ${details}. The target audience is ${targetR} and my company is ${companyR}. Can you help me draft an email that will get their attention?`
 
   } else {
-    prompt = `Hello AI bot, I am looking to ${goalsR} a ${relationshipR}. The recipient is called ${recipientNameR}, they are a ${targetR}. My company is ${companyR}. I would like the email to be professional and concise, with a clear call to action for the recipient to reply and a powerful and effective subject line. I prefer ${tone} tone. Thank you.`
+    // prompt = `Hello AI bot, I am looking to ${goalsR} a ${relationshipR}. The recipient is called ${recipientNameR}, they are a ${targetR}. My company is ${companyR}. I would like the email to be professional and concise, with a clear call to action for the recipient to reply and a powerful and effective subject line. I prefer ${tone} tone. Thank you.`
+    prompt = `Hello AI bot, I'd like to write a cold email to ${recipientNameR}. They are a ${relationshipR} and I'd like the tone of the email to be ${tone} tone. My goal is to ${goalsR} them. The target audience is ${targetR} and my company is ${companyR}. Can you help me draft an email that will get their attention?`
   }
 
   // Console log the entire prompt.
@@ -104,7 +106,7 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
   responseContainer.insertAdjacentHTML("afterbegin", ChatStripe(currentColor, "", uniqueId));
 
   //Console log the uniqueId
-  console.log("uniqueId: " + uniqueId)
+  // console.log("uniqueId: " + uniqueId)
 
   // Put the new response into view.
   responseContainer.scrollTop = responseContainer.scrollHeight;
@@ -113,7 +115,7 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
   const responseDiv = document.getElementById(uniqueId);
 
   isLoading = true;
-  console.log("isLoading: " + isLoading)
+  // console.log("isLoading: " + isLoading)
 
   submitButton.disabled = true;
   submitButton.style.filter = "brightness(50%)";
@@ -189,7 +191,7 @@ const FormDiv = () => {
   const checkboxMenuStyles = "flex flex-wrap flex-row -mb-4 max-w-3xl items-center"
   const checkboxDivStyles = "w-1/2 mb-2 flex items-center"
   const temp2 = ""
-  const checkboxInputStyles = `w-4 h-4 text-[${currentColor}] bg-gray-100 rounded border-gray-300 focus:ring-[${currentColor}] dark:focus:ring-[${currentColor}] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600`
+  const checkboxInputStyles = `w-4 h-4 text-[${currentColor}] bg-gray-100 rounded border-gray-300 focus:ring-[${currentColor}] dark:focus:ring-[${currentColor}] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 flex-none`
   const checkboxLabelStyles = "p-2 ml-2 inline-block text-gray-700 dark:text-gray-200 text-sm font-medium bg-white dark:bg-secondary-dark-bg capitalize"
   const temp1 = "inline-flex justify-between items-center p-2 m-2 w-full text-gray-700 bg-white rounded-lg border-2 border-gray-200 cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-200 dark:bg-secondary-dark-bg dark:hover:bg-gray-700"
 
