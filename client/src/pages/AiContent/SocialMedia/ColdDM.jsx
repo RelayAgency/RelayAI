@@ -521,25 +521,25 @@ const FormSubmit = (props) => {
 function ChatStripe(currentColor, value, uniqueId) {
   return (
     `
-              <div class="text-base gap-4 md:gap-6 p-4 md:py-6 flex lg:px-0">
-                <div class="w-[30px] flex flex-col relative items-end">
-                  <div class="relative h-[30px] w-[30px] p-2 rounded-sm text-white flex items-center justify-center" style="background-color: ${currentColor};">
-                    <svg id="a" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21.18 25"><defs><style>.b{fill:#fff;}</style></defs><path class="b" d="M21.18,25h-5.05l-7.01-7.42-.3-4.82h1.93c2.52,0,4.56-2.04,4.56-4.56s-2.04-4.53-4.56-4.53H3.67V25H0V0H10.76c4.56,0,8.23,3.67,8.23,8.2,0,3.86-2.6,7.05-6.16,7.97l8.35,8.83Z" /></svg>
-                  </div>
-                </div>
-                <div class="relative flex w-[calc(100%-50px)] md:flex-col lg:w-[calc(100%-115px)]">
-                  <div
-                    className="message"
-                    id=${uniqueId}
-                  >
-                    <p>
-                      ${value}
-                    </p>
-                  </div>
-                </div>
-                <br />
-              </div>
-              `
+    <div class="text-base gap-4 md:gap-6 md:py-6 flex bg-white dark:text-gray-200 dark:bg-secondary-dark-bg rounded-xl p-8 m-3 bg-no-repeat bg-cover bg-center">
+      <div class="w-[30px] flex flex-col relative items-end">
+        <div class="relative h-[30px] w-[30px] p-2 rounded-sm text-white flex items-center justify-center" style="background-color: ${currentColor};">
+          <svg id="a" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21.18 25"><defs><style>.b{fill:#fff;}</style></defs><path class="b" d="M21.18,25h-5.05l-7.01-7.42-.3-4.82h1.93c2.52,0,4.56-2.04,4.56-4.56s-2.04-4.53-4.56-4.53H3.67V25H0V0H10.76c4.56,0,8.23,3.67,8.23,8.2,0,3.86-2.6,7.05-6.16,7.97l8.35,8.83Z"/></svg>
+        </div>
+      </div>
+      <div class="relative flex w-[calc(100%-50px)] md:flex-col lg:w-[calc(100%-115px)]">
+      <div
+        className="message" 
+        id=${uniqueId}
+      >
+        <p>
+          ${value}
+        </p>
+      </div>
+      </div>
+      <br />
+    </div>
+    `
   );
 }
 
@@ -548,7 +548,7 @@ const ResponseDiv2 = () => {
     <div
       id="response_div"
       name="response_div"
-      className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg h-30 rounded-xl w-full lg:w-full p-8 pt-9 m-3 bg-no-repeat bg-cover bg-center"
+      className="h-30 w-full lg:w-full"
     />
 
   )
