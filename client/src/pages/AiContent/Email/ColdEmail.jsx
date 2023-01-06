@@ -48,6 +48,25 @@ function generateUniqueId() {
   return `id-${timestamp}-${hexadecimalString}`;
 }
 
+const DescriptionDiv = () => {
+  const { currentColor } = useStateContext();
+  return (
+    <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg h-30 rounded-xl w-full lg:w-full p-8 pt-9 m-3 bg-no-repeat bg-cover bg-center">
+      <div className="flex justify-between items-center ">
+        <div>
+          <p className="font-bold text-gray-700 dark:text-gray-200 text-left mb-2">Create The Perfect Cold Email Script</p>
+          <p
+            className="text-s"
+            style={{ color: currentColor }}
+          >
+            Save time creating the best cold email scripts so that you can focus on other important aspects of your business. It automates the process of crafting a powerful cold email script, taking into account the recipient's preferences and interests. With its intuitive and easy-to-use interface, this tool creates high-quality emails that will help you connect with your audience and make an impact. Get ready to make a lasting impression with Relay AI!
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 async function handleSubmit(e, currentColor, form, responseContainer, chatContainer, submitButton) {
   // Start by preventing the submission from reloading the page.
   e.preventDefault();
@@ -157,25 +176,6 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
 
 }
 
-const DescriptionDiv = () => {
-  const { currentColor } = useStateContext();
-  return (
-    <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg h-30 rounded-xl w-full lg:w-full p-8 pt-9 m-3 bg-no-repeat bg-cover bg-center">
-      <div className="flex justify-between items-center ">
-        <div>
-          <p className="font-bold text-gray-700 dark:text-gray-200 text-left mb-2">Create The Perfect Cold Email Script</p>
-          <p
-            className="text-s"
-            style={{ color: currentColor }}
-          >
-            Save time creating the best cold email scripts so that you can focus on other important aspects of your business. It automates the process of crafting a powerful cold email script, taking into account the recipient's preferences and interests. With its intuitive and easy-to-use interface, this tool creates high-quality emails that will help you connect with your audience and make an impact. Get ready to make a lasting impression with Relay AI!
-          </p>
-        </div>
-      </div>
-    </div>
-  )
-}
-
 const FormDiv = () => {
   const { currentColor } = useStateContext();
   const labelStyles = "block text-gray-700 text-sm font-bold mb-2 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg capitalize"
@@ -196,28 +196,33 @@ const FormDiv = () => {
   const temp1 = "inline-flex justify-between items-center p-2 m-2 w-full text-gray-700 bg-white rounded-lg border-2 border-gray-200 cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-200 dark:bg-secondary-dark-bg dark:hover:bg-gray-700"
 
 
-  function handleInput() {
-    const textarea = document.getElementById("productName");
+  function handleInput(e) {
+    const textarea = e.target.value;
     const characterCount = document.getElementById("characterCount");
     const characterCountWarning = document.getElementById("characterCountWarning");
+    const submitButton = document.getElementById("submit-button");
 
-    characterCount.textContent = `${textarea.value.length}/1000`;
-    if (textarea.value.length > 1000) {
+    characterCount.textContent = `${textarea.length}/1000`;
+    if (textarea.length > 1000) {
       characterCount.style.color = "#cc0000";
-      characterCount.textContent = `${textarea.value.length}/1000`;
+      characterCount.textContent = `${textarea.length}/1000`;
+
+      disableButton(submitButton);
     }
-    else if (textarea.value.length < 40 && textarea.value.length > 0) {
+    else if (textarea.length < 40 && textarea.length > 0) {
       characterCount.style.filter = "brightness(50%)";
       characterCount.style.color = currentColor;
-      characterCountWarning.textContent = `⚠️ Short input. Try to provide more details for better copy results.
-    `;
+      characterCountWarning.textContent = `⚠️ Short input. Try to provide more details for better copy results.`;
 
+      enableButton(submitButton);
     } else {
       characterCountWarning.textContent = '';
       characterCount.style.color = currentColor;
       characterCount.style.filter = "brightness(100%)";
+      enableButton(submitButton);
     }
   }
+
   return (
     <div className="flex justify-between items-center w-full">
       <div className="w-full">
@@ -602,6 +607,24 @@ const FormSubmit = (props) => {
     </div>
   )
 
+}
+
+function waitButton(button) {
+  button.disabled = true;
+  button.style.filter = "brightness(50%)";
+  button.style.cursor = "wait";
+}
+
+function disableButton(button) {
+  button.disabled = true;
+  button.style.filter = "brightness(50%)";
+  button.style.cursor = "not-allowed";
+}
+
+function enableButton(button) {
+  button.disabled = false;
+  button.style.filter = "brightness(100%)";
+  button.style.cursor = "pointer";
 }
 
 function ChatStripe(currentColor, value, uniqueId) {

@@ -62,68 +62,68 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
   // form.reset();
 
   // If within the character limit when form is submitted.
-  if (product.length <= 1000 && product.length > 0) {
-    const uniqueId = generateUniqueId();
 
-    //Create the prompt from the user input.
-    const prompt = `Hello AI bot, give me a YouTube video script for ${product}. The script can be as long or as short as it needs to be. I prefer ${tone} tone. Thank you.`;
+  const uniqueId = generateUniqueId();
 
-    // Console log the entire prompt.
-    console.log("prompt: " + prompt)
+  //Create the prompt from the user input.
+  const prompt = `Hello AI bot, give me a YouTube video script for ${product}. The script can be as long or as short as it needs to be. I prefer ${tone} tone. Thank you.`;
 
-    // Append the response div with new responses
-    // responseContainer.innerHTML += chatStripe("", uniqueId);
-    responseContainer.insertAdjacentHTML("afterbegin", ChatStripe(currentColor, "", uniqueId));
+  // Console log the entire prompt.
+  console.log("prompt: " + prompt)
 
-    //Console log the uniqueId
-    // console.log("uniqueId: " + uniqueId)
+  // Append the response div with new responses
+  // responseContainer.innerHTML += chatStripe("", uniqueId);
+  responseContainer.insertAdjacentHTML("afterbegin", ChatStripe(currentColor, "", uniqueId));
 
-    // Put the new response into view.
-    responseContainer.scrollTop = responseContainer.scrollHeight;
+  //Console log the uniqueId
+  // console.log("uniqueId: " + uniqueId)
 
-    // Get the element Id of the newly created response.
-    const responseDiv = document.getElementById(uniqueId);
+  // Put the new response into view.
+  responseContainer.scrollTop = responseContainer.scrollHeight;
 
-    isLoading = true;
+  // Get the element Id of the newly created response.
+  const responseDiv = document.getElementById(uniqueId);
+
+  isLoading = true;
+  // console.log("isLoading: " + isLoading)
+
+  submitButton.disabled = true;
+  submitButton.style.filter = "brightness(50%)";
+  submitButton.style.cursor = "wait";
+
+  clearInterval(loadInterval);
+  loader(responseDiv);
+
+  const response = await fetch('https://relayai.onrender.com', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      prompt: prompt
+    })
+  });
+
+  clearInterval(loadInterval);
+  responseDiv.innerHTML = "";
+
+  if (response.ok) {
+    const data = await response.json();
+    const parseData = data.bot.trim();
+    isLoading = false;
+
+    console.log("parseData: " + parseData)
     // console.log("isLoading: " + isLoading)
 
-    submitButton.disabled = true;
-    submitButton.style.filter = "brightness(50%)";
-    submitButton.style.cursor = "wait";
+    typeText(responseDiv, parseData, submitButton);
+  } else {
+    const err = await response.texts();
 
-    clearInterval(loadInterval);
-    loader(responseDiv);
+    responseDiv.innerHTML = "Something went wrong";
 
-    const response = await fetch('https://relayai.onrender.com', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        prompt: prompt
-      })
-    });
-
-    clearInterval(loadInterval);
-    responseDiv.innerHTML = "";
-
-    if (response.ok) {
-      const data = await response.json();
-      const parseData = data.bot.trim();
-      isLoading = false;
-
-      console.log("parseData: " + parseData)
-      // console.log("isLoading: " + isLoading)
-
-      typeText(responseDiv, parseData, submitButton);
-    } else {
-      const err = await response.texts();
-
-      responseDiv.innerHTML = "Something went wrong";
-
-      alert(err);
-    }
+    alert(err);
   }
+
 
 }
 
@@ -148,26 +148,30 @@ const DescriptionDiv = () => {
 
 const FormDiv = () => {
   const { currentColor } = useStateContext();
-  function handleInput() {
-    const textarea = document.getElementById("productName");
+  function handleInput(e) {
+    const textarea = e.target.value;
     const characterCount = document.getElementById("characterCount");
     const characterCountWarning = document.getElementById("characterCountWarning");
+    const submitButton = document.getElementById("submit-button");
 
-    characterCount.textContent = `${textarea.value.length}/1000`;
-    if (textarea.value.length > 1000) {
+    characterCount.textContent = `${textarea.length}/1000`;
+    if (textarea.length > 1000) {
       characterCount.style.color = "#cc0000";
-      characterCount.textContent = `${textarea.value.length}/1000`;
+      characterCount.textContent = `${textarea.length}/1000`;
+
+      disableButton(submitButton);
     }
-    else if (textarea.value.length < 40 && textarea.value.length > 0) {
+    else if (textarea.length < 40 && textarea.length > 0) {
       characterCount.style.filter = "brightness(50%)";
       characterCount.style.color = currentColor;
-      characterCountWarning.textContent = `⚠️ Short input. Try to provide more details for better copy results.
-    `;
+      characterCountWarning.textContent = `⚠️ Short input. Try to provide more details for better copy results.`;
 
+      enableButton(submitButton);
     } else {
       characterCountWarning.textContent = '';
       characterCount.style.color = currentColor;
       characterCount.style.filter = "brightness(100%)";
+      enableButton(submitButton);
     }
   }
 
@@ -320,6 +324,24 @@ const FormSubmit = (props) => {
     </div>
   )
 
+}
+
+function waitButton(button) {
+  button.disabled = true;
+  button.style.filter = "brightness(50%)";
+  button.style.cursor = "wait";
+}
+
+function disableButton(button) {
+  button.disabled = true;
+  button.style.filter = "brightness(50%)";
+  button.style.cursor = "not-allowed";
+}
+
+function enableButton(button) {
+  button.disabled = false;
+  button.style.filter = "brightness(100%)";
+  button.style.cursor = "pointer";
 }
 
 function ChatStripe(currentColor, value, uniqueId) {

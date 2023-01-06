@@ -48,6 +48,26 @@ function generateUniqueId() {
   return `id-${timestamp}-${hexadecimalString}`;
 }
 
+const DescriptionDiv = () => {
+  const { currentColor } = useStateContext();
+
+  return (
+    <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg h-30 rounded-xl w-full lg:w-full p-8 pt-9 m-3 bg-no-repeat bg-cover bg-center">
+      <div className="flex justify-between items-center ">
+        <div>
+          <p className="font-bold text-gray-700 dark:text-gray-200 text-left mb-2">[Title Goes Here]</p>
+          <p
+            className="text-s"
+            style={{ color: currentColor }}
+          >
+            [Description Goes Here]
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 async function handleSubmit(e, currentColor, form, responseContainer, chatContainer, submitButton) {
   // Start by preventing the submission from reloading the page.
   e.preventDefault();
@@ -55,19 +75,30 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
   const data = new FormData(form);
 
   // Get user input from the form.
-  const target = data.get('target-audience');
-  let purposeChecked = document.querySelectorAll('input[name="purpose"]');
-  let purposeR = [];
-  purposeChecked.forEach((checkbox) => {
+  const recipientNameR = data.get('recipient-name');
+  const relationshipR = data.get('relationship');
+  const tone = data.get('tone-style');
+  let goalsChecked = document.querySelectorAll('input[name="goals"]');
+  let goalsR = [];
+  goalsChecked.forEach((checkbox) => {
     if (checkbox.checked) {
-      purposeR.push(checkbox.value);
+      goalsR.push(checkbox.value);
     }
   })
-  purposeR = purposeR.join(' and ');
-  const valueProposition = data.get('value-proposition');
-  const personalizationR = data.get('personalization');
-  const tone = data.get('tone-style');
+  goalsR = goalsR.join(' and ');
+
+  const details = data.get('specific-details');
+  const targetR = data.get('target-audience');
   const companyR = data.get('company');
+
+  // console.log("Recipient Name: " + recipientNameR);
+  // console.log("Relationship: " + relationshipR);
+  // console.log("Tone: " + tone);
+  // console.log("Goal: " + goalsR);
+  // console.log("Details: " + details);
+  // console.log("Target Audience: " + targetR);
+  // console.log("Company: " + companyR);
+
 
   //Clear the form. (Optional)
   // form.reset();
@@ -76,20 +107,25 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
 
   const uniqueId = generateUniqueId();
 
+
   //Create the prompt from the user input.
   let prompt;
-  if (valueProposition) {
-    prompt= `Hello AI bot, I'd like to send a direct message to someone${target} on social media. The purpose of the message is to ${purposeR} them and I'd like to highlight the ${valueProposition} of my company. Details of the recipient include, ${personalizationR}, and I want the tone of the message to be ${tone} tone. My company is ${companyR}. Can you help me draft a message that will get their attention and interest?`
+  if (details) {
+    prompt = `Hello AI bot, I'd like to write a super personalized cold email to ${recipientNameR}. They are a ${relationshipR} and I'd like the tone of the email to be ${tone}. My goal is to ${goalsR} them and some relevant details are ${details}. This is what I know about the recipient; ${targetR}. My company is ${companyR}. Can you help me draft a super personalized email that will get their attention?`
 
   } else {
-    prompt= `Hello AI bot, I'd like to send a direct message to someone${target} on social media. The purpose of the message is to ${purposeR} them. Details of the recipient include, ${personalizationR}, and I want the tone of the message to be ${tone} tone. My company is ${companyR}. Can you help me draft a message that will get their attention and interest?`
+    prompt = `Hello AI bot, I'd like to write a super personalized cold email to ${recipientNameR}. They are a ${relationshipR} and I'd like the tone of the email to be ${tone} tone. My goal is to ${goalsR} them. This is what I know about the recipient; ${targetR}. My company is ${companyR}. Can you help me draft a super personalized email that will get their attention?`
   }
 
   // Console log the entire prompt.
   console.log("prompt: " + prompt)
 
   // Append the response div with new responses
+  // responseContainer.innerHTML += chatStripe("", uniqueId);
   responseContainer.insertAdjacentHTML("afterbegin", ChatStripe(currentColor, "", uniqueId));
+
+  //Console log the uniqueId
+  // console.log("uniqueId: " + uniqueId)
 
   // Put the new response into view.
   responseContainer.scrollTop = responseContainer.scrollHeight;
@@ -98,6 +134,7 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
   const responseDiv = document.getElementById(uniqueId);
 
   isLoading = true;
+  // console.log("isLoading: " + isLoading)
 
   submitButton.disabled = true;
   submitButton.style.filter = "brightness(50%)";
@@ -124,7 +161,8 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
     const parseData = data.bot.trim();
     isLoading = false;
 
-    console.log("Response: " + parseData)
+    console.log("parseData: " + parseData)
+    console.log("isLoading: " + isLoading)
 
     typeText(responseDiv, parseData, submitButton);
   } else {
@@ -134,26 +172,8 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
 
     alert(err);
   }
-}
 
-const DescriptionDiv = () => {
-  const { currentColor } = useStateContext();
 
-  return (
-    <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg h-30 rounded-xl w-full lg:w-full p-8 pt-9 m-3 bg-no-repeat bg-cover bg-center">
-      <div className="flex justify-between items-center ">
-        <div>
-          <p className="font-bold text-gray-700 dark:text-gray-200 text-left mb-2">[Title Goes Here]</p>
-          <p
-            className="text-s"
-            style={{ color: currentColor }}
-          >
-            [Description Goes Here]
-          </p>
-        </div>
-      </div>
-    </div>
-  )
 }
 
 const FormDiv = () => {
@@ -170,9 +190,38 @@ const FormDiv = () => {
 
   const checkboxMenuStyles = "flex flex-wrap flex-row -mb-4 max-w-3xl items-center"
   const checkboxDivStyles = "w-1/2 mb-2 flex items-center"
+  const temp2 = ""
   const checkboxInputStyles = `w-4 h-4 text-[${currentColor}] bg-gray-100 rounded border-gray-300 focus:ring-[${currentColor}] dark:focus:ring-[${currentColor}] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 flex-none`
   const checkboxLabelStyles = "p-2 ml-2 inline-block text-gray-700 dark:text-gray-200 text-sm font-medium bg-white dark:bg-secondary-dark-bg capitalize"
+  const temp1 = "inline-flex justify-between items-center p-2 m-2 w-full text-gray-700 bg-white rounded-lg border-2 border-gray-200 cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 peer-checked:border-blue-600 hover:text-gray-600 dark:peer-checked:text-gray-300 peer-checked:text-gray-600 hover:bg-gray-50 dark:text-gray-200 dark:bg-secondary-dark-bg dark:hover:bg-gray-700"
 
+
+  function handleInput(e) {
+    const textarea = e.target.value;
+    const characterCount = document.getElementById("characterCount");
+    const characterCountWarning = document.getElementById("characterCountWarning");
+    const submitButton = document.getElementById("submit-button");
+
+    characterCount.textContent = `${textarea.length}/1000`;
+    if (textarea.length > 1000) {
+      characterCount.style.color = "#cc0000";
+      characterCount.textContent = `${textarea.length}/1000`;
+
+      disableButton(submitButton);
+    }
+    else if (textarea.length < 40 && textarea.length > 0) {
+      characterCount.style.filter = "brightness(50%)";
+      characterCount.style.color = currentColor;
+      characterCountWarning.textContent = `⚠️ Short input. Try to provide more details for better copy results.`;
+
+      enableButton(submitButton);
+    } else {
+      characterCountWarning.textContent = '';
+      characterCount.style.color = currentColor;
+      characterCount.style.filter = "brightness(100%)";
+      enableButton(submitButton);
+    }
+  }
   return (
     <div className="flex justify-between items-center w-full">
       <div className="w-full">
@@ -180,7 +229,341 @@ const FormDiv = () => {
           className="max-w-full"
           id="form"
         >
-          
+          {/* Labels and tooltip for user input area */}
+          <div className="mt-4">
+            <label
+              className={labelStyles}
+            >
+              Recipient's Name?
+            </label>
+            <p
+              style={{ color: currentColor }}
+              className={detailStyles}
+            >
+              Knowing the recipient's name will allow the AI bot to personalize the email and make it more likely to be read.
+            </p>
+          </div>
+
+          {/* User text input menu */}
+          <input
+            type="text"
+            id="recipient-name"
+            name="recipient-name"
+            className={textInputStyles}
+            placeholder="e.g. John Doe"
+            required
+          />
+
+          {/* Labels and tooltip for user input area */}
+          <div className="mt-4">
+            <label
+              className={labelStyles}
+            >
+              Your relationship to the recipient?
+            </label>
+            <p
+              style={{ color: currentColor }}
+              className={detailStyles}
+            >
+              If you have a preexisting relationship with the recipient, this could influence the tone and content of the email.
+            </p>
+          </div>
+
+          {/* User dropwdown menu */}
+          <div
+            className="inline-block relative w-full"
+          >
+            <select
+              id="relationship"
+              name="relationship"
+              className={dropdownStyles}
+              required
+            >
+              <option value="colleague">💼 Colleague</option>
+              <option value="acquaintance">🤝 Acquaintance</option>
+              <option value="stranger">🫥 Stranger</option>
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <svg className="fill-current h-4 w-4 bg-white dark:text-gray-200 dark:bg-main-dark-bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+            </div>
+          </div>
+
+          {/* Labels and tooltip for user input area */}
+          <div className="mt-4">
+            <label
+              className={labelStyles}
+            >
+              Desired tone and style?
+            </label>
+            <p
+              style={{ color: currentColor }}
+              className={detailStyles}
+            >
+              You may have a particular tone or style in mind for your cold email, such as formal, casual, or friendly.
+            </p>
+          </div>
+
+          {/* User dropwdown menu */}
+          <div
+            className="inline-block relative w-full"
+          >
+            <select
+              className={dropdownStyles}
+              name="tone-style"
+              id="tone-style"
+            >
+              <option value="a normal">🚫 Default</option>
+              <option value="a formal">🤵 Formal</option>
+              <option value="a casual">👕 Casual</option>
+              <option value="a friendly">😊 Friendly</option>
+              <option value="a luxury">💎 Luxury</option>
+              <option value="a relaxed">😌 Relaxed</option>
+              <option value="a professional">💼 Professional</option>
+              <option value="a bold">💪 Bold</option>
+              <option value="an adventurous">⛺ Adventurous</option>
+              <option value="a witty">💡 Witty</option>
+              <option value="a persuasive">🧠 Persuasive</option>
+              <option value="an empathetic">🤗 Empathetic</option>
+              <option value="a short and snappy">🏃 In a Rush</option>
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <svg className="fill-current h-4 w-4 bg-white dark:text-gray-200 dark:bg-main-dark-bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+            </div>
+          </div>
+
+          {/* Labels and tooltip for user input area */}
+          <div className="mt-4">
+            <label
+              className={labelStyles}
+            >
+              Goals for the email?
+            </label>
+            <p
+              style={{ color: currentColor }}
+              className={detailStyles}
+            >
+              It's important to know what you hope to achieve with the cold email in order to tailor the script accordingly.
+            </p>
+          </div>
+
+          {/* User Checkbox */}
+          <div
+            className={checkboxMenuStyles}
+          >
+            <div className={checkboxDivStyles}>
+              <input
+                className={checkboxInputStyles}
+                type="checkbox"
+                id="schedule-meeting"
+                name="goals"
+                value="schedule a meeting with"
+                required
+              />
+              <label
+                className={checkboxLabelStyles}
+
+                htmlFor="schedule-meeting"
+              >
+                Schedule a meeting
+              </label>
+            </div>
+
+            <div className={checkboxDivStyles}>
+              <input
+                className={checkboxInputStyles}
+                type="checkbox"
+                id="request-info"
+                name="goals"
+                value="make an information request from"
+              />
+              <label
+                className={checkboxLabelStyles}
+
+                htmlFor="request-info"
+              >
+                Request information
+              </label>
+            </div>
+
+            <div className={checkboxDivStyles}>
+              <input
+                className={checkboxInputStyles}
+                type="checkbox"
+                id="pitch-product"
+                name="goals"
+                value="pitch our product to"
+              />
+              <label
+                className={checkboxLabelStyles}
+
+                htmlFor="pitch-product"
+              >
+                Pitch a product or service
+              </label>
+            </div>
+
+            <div className={checkboxDivStyles}>
+              <input
+                className={checkboxInputStyles}
+                type="checkbox"
+                id="connection"
+                name="goals"
+                value="establish a connection with"
+              />
+              <label
+                className={checkboxLabelStyles}
+
+                htmlFor="connection"
+              >
+                Establish a connection
+              </label>
+            </div>
+
+            <div className={checkboxDivStyles}>
+              <input
+                className={checkboxInputStyles}
+                type="checkbox"
+                id="referral"
+                name="goals"
+                value="request a referral or recommendation from"
+              />
+              <label
+                className={checkboxLabelStyles}
+
+                htmlFor="referral"
+              >
+                Request a referral or recommendation
+              </label>
+            </div>
+
+            <div className={checkboxDivStyles}>
+              <input
+                className={checkboxInputStyles}
+                type="checkbox"
+                id="collaboration"
+                name="goals"
+                value="partner or collaborate with"
+              />
+              <label
+                className={checkboxLabelStyles}
+
+                htmlFor="collaboration"
+              >
+                Partner or collaborate
+              </label>
+            </div>
+
+            <div className={checkboxDivStyles}>
+              <input
+                className={checkboxInputStyles}
+                type="checkbox"
+                id="assist"
+                name="goals"
+                value="offer assistance or expertise to"
+              />
+              <label
+                className={checkboxLabelStyles}
+
+                htmlFor="assist"
+              >
+                Offer assistance or expertise
+              </label>
+            </div>
+
+          </div>
+
+          {/* Labels and tooltip for user input area */}
+          <div className="mt-4">
+            <label
+              className={labelStyles}
+            >
+              Specific details or information to include?
+            </label>
+            <p
+              style={{ color: currentColor }}
+              className={detailStyles}
+            >
+              You may have specific details or information you want to include in the email, such as your company's website or a particular product or service you are offering.
+            </p>
+          </div>
+
+          {/* User text input menu */}
+          <input
+            type="text"
+            id="specific-details"
+            name="specific-details"
+            className={textInputStyles}
+            placeholder="e.g. Digital Marketing Services"
+          />
+
+          <div className="mt-4">
+            <label
+              className={labelStyles}
+            >
+              Target audience?
+            </label>
+            <p
+              style={{ color: currentColor }}
+              className={detailStyles}
+            >
+              Knowing the recipient of the cold email will help the AI bot tailor the script to be more personalized and relevant to their needs and interests.
+            </p>
+          </div>
+
+          {/* User text input menu */}
+          <textarea onInput={handleInput}
+            type="text"
+            id="target-audience"
+            name="target-audience"
+            className={textAreaStyles}
+            placeholder="Write what you know about the recipient. Pasting some details from their 'About Us' page is optimal."
+            required
+          />
+
+          {/* Tooltips below text input area */}
+          <div
+            className="flex justify-between items-center mb-4"
+          >
+            <div
+              id="characterCountWarning"
+              name="characterCountWarning"
+
+              className="text-xs font-bold text-left"
+            />
+            <div
+              id="characterCount"
+              className="text-xs font-bold text-right"
+              style={{ color: currentColor }}
+            >
+              0/1000
+            </div>
+          </div>
+
+          {/* Labels and tooltip for user input area */}
+          <div className="mt-4">
+            <label
+              className={labelStyles}
+            >
+              Your company or organization?
+            </label>
+            <p
+              style={{ color: currentColor }}
+              className={detailStyles}
+            >
+              Providing information about your company or organization will help the AI bot create a more professional and credible email.
+            </p>
+          </div>
+
+          {/* User text input menu */}
+          <input
+            type="text"
+            id="company"
+            name="company"
+            className={textInputStyles}
+            placeholder="e.g. Tesla"
+            required
+          />
+
         </form>
       </div>
     </div>
@@ -208,9 +591,42 @@ const FormSubmit = (props) => {
         onClick={(e) => handleSubmit(e, currentColor, form, responseContainer, chatContainer, submitButton)}>
         Get AI Suggestions
       </button>
+      {/* 
+      <div>
+        {isLoading ? (
+          <div className="flex justify-center">
+            <BarLoader
+              size={50}
+              color={currentColor}
+              id="loading-animation"
+            />
+          </div>
+        ) : (
+          <div className="flex justify-center">
+          </div>
+        )}
+      </div> */}
     </div>
   )
 
+}
+
+function waitButton(button) {
+  button.disabled = true;
+  button.style.filter = "brightness(50%)";
+  button.style.cursor = "wait";
+}
+
+function disableButton(button) {
+  button.disabled = true;
+  button.style.filter = "brightness(50%)";
+  button.style.cursor = "not-allowed";
+}
+
+function enableButton(button) {
+  button.disabled = false;
+  button.style.filter = "brightness(100%)";
+  button.style.cursor = "pointer";
 }
 
 function ChatStripe(currentColor, value, uniqueId) {
@@ -258,12 +674,12 @@ class PersonalizedEmail extends React.Component {
           <DescriptionDiv />
           <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg h-30 rounded-xl w-full lg:w-full p-8 pt-9 m-3 bg-no-repeat bg-cover bg-center">
             <FormDiv />
-            {/* <FormSubmit
+            <FormSubmit
               responseContainerId="response_div"
               formId="form"
               chatContainerId="chat_container"
               openaiContainerId="openai_container"
-            /> */}
+            />
           </div>
           <ResponseDiv2 />
         </div>
