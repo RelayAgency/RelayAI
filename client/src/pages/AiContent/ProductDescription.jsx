@@ -295,8 +295,8 @@ const FormSubmit = (props) => {
       <button
         id="submit-button"
         color="white"
-        style={{ backgroundColor: currentColor }}
         type="submit"
+        style={{ backgroundColor: currentColor }}
         className="text-m opacity-0.9 text-white hover:drop-shadow-xl rounded-xl p-4 mt-8"
         onClick={(e) => handleSubmit(e, currentColor, form, responseContainer, chatContainer, submitButton)}>
         Get AI Suggestions

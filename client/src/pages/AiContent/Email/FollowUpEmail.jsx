@@ -55,19 +55,18 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
   const data = new FormData(form);
 
   // Get user input from the form.
+  const email = data.get('email');
+  // let goalChecked = document.querySelectorAll('input[name="goal"]');
+  // let goal = [];
+  // goalChecked.forEach((checkbox) => {
+  //   if (checkbox.checked) {
+  //     goal.push(checkbox.value);
+  //   }
+  // })
+  // goal = goal.join(' and ');
   const target = data.get('target-audience');
-  let purposeChecked = document.querySelectorAll('input[name="purpose"]');
-  let purposeR = [];
-  purposeChecked.forEach((checkbox) => {
-    if (checkbox.checked) {
-      purposeR.push(checkbox.value);
-    }
-  })
-  purposeR = purposeR.join(' and ');
-  const valueProposition = data.get('value-proposition');
-  const personalizationR = data.get('personalization');
+  const goal = data.get('goal');
   const tone = data.get('tone-style');
-  const companyR = data.get('company');
 
   //Clear the form. (Optional)
   // form.reset();
@@ -78,12 +77,8 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
 
   //Create the prompt from the user input.
   let prompt;
-  if (valueProposition) {
-    prompt= `Hello AI bot, I'd like to send a direct message to someone${target} on social media. The purpose of the message is to ${purposeR} them and I'd like to highlight the ${valueProposition} of my company. Details of the recipient include, ${personalizationR}, and I want the tone of the message to be ${tone} tone. My company is ${companyR}. Can you help me draft a message that will get their attention and interest?`
+  prompt = `Hello AI bot, I am looking to create a follow-up email for this email: ${email}. Can you please generate a subject line and email body that will entice our target audience to learn more about our emails and encourage them to ${goal}? Our target audience is ${target}, and I want the tone of the email to be ${tone} tone. Thank you!`
 
-  } else {
-    prompt= `Hello AI bot, I'd like to send a direct message to someone${target} on social media. The purpose of the message is to ${purposeR} them. Details of the recipient include, ${personalizationR}, and I want the tone of the message to be ${tone} tone. My company is ${companyR}. Can you help me draft a message that will get their attention and interest?`
-  }
 
   // Console log the entire prompt.
   console.log("prompt: " + prompt)
@@ -158,6 +153,28 @@ const DescriptionDiv = () => {
 
 const FormDiv = () => {
   const { currentColor } = useStateContext();
+  function handleInput() {
+    const textarea = document.getElementById("email");
+    const characterCount = document.getElementById("characterCount");
+    const characterCountWarning = document.getElementById("characterCountWarning");
+
+    characterCount.textContent = `${textarea.value.length}/1000`;
+    if (textarea.value.length > 1000) {
+      characterCount.style.color = "#cc0000";
+      characterCount.textContent = `${textarea.value.length}/1000`;
+    }
+    else if (textarea.value.length < 40 && textarea.value.length > 0) {
+      characterCount.style.filter = "brightness(50%)";
+      characterCount.style.color = currentColor;
+      characterCountWarning.textContent = `⚠️ Short input. Try to provide more details for better copy results.
+    `;
+
+    } else {
+      characterCountWarning.textContent = '';
+      characterCount.style.color = currentColor;
+      characterCount.style.filter = "brightness(100%)";
+    }
+  }
   const labelStyles = "block text-gray-700 text-sm font-bold mb-2 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg capitalize"
   const detailStyles = "text-xs italic mb-2 font-bold"
   const textInputStyles = "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white dark:text-gray-200 dark:bg-main-dark-bg h-10"
@@ -180,7 +197,157 @@ const FormDiv = () => {
           className="max-w-full"
           id="form"
         >
-          
+
+          {/* Labels and tooltip for user text input area */}
+          <div>
+            <label
+              className={labelStyles}>
+              Which email do you want to follow up?
+            </label>
+            <p
+              style={{ color: currentColor }}
+              className={detailStyles}>
+              Enter as much information as possible for a more accurate responses
+            </p>
+          </div>
+
+          {/* User text input area */}
+          <textarea onInput={handleInput}
+            id="email"
+            className={textAreaStyles}
+            type="text"
+            name="email"
+            placeholder="Paste the email you want to create a follow-up response for"
+          />
+
+          {/* Tooltips below text input area */}
+          <div
+            className="flex justify-between items-center mb-4"
+          >
+            <div
+              id="characterCountWarning"
+              name="characterCountWarning"
+
+              className="text-xs font-bold text-left"
+            />
+            <div
+              id="characterCount"
+              className="text-xs font-bold text-right"
+              style={{ color: currentColor }}
+            >
+              0/1000
+            </div>
+          </div>
+
+          {/* Labels and tooltip for user input area */}
+          <div className="mt-4">
+            <label
+              className={labelStyles}
+            >
+              Target audience?
+            </label>
+            <p
+              style={{ color: currentColor }}
+              className={detailStyles}
+            >
+              It's important for the AI bot to know who you're targeting with your emails.
+            </p>
+          </div>
+
+          {/* User dropwdown menu */}
+          <div className="inline-block relative w-full"
+          >
+            <select
+              className={dropdownStyles}
+              name="target-audience"
+              id="target-audience"
+            >
+              <option value="">🚫 Default</option>
+              <option value=" in the tech industry">⚙️ Technology</option>
+              <option value=" in the healthcare industry">❤️‍🩹 Healthcare</option>
+              <option value=" in the finance industry">💱 Finance</option>
+              <option value=" in the retail industry">🛒 Retail</option>
+              <option value=" in the real estate industry">🏠 Real Estate</option>
+              <option value=" in the construction industry">🏗️ Construction</option>
+              <option value=" in the hospitality and tourism industry">🏨 Hospitality and Tourism</option>
+              <option value=" in the media and entertainment industry">📸 Media and Entertainment</option>
+              <option value=" in the manufacturing industry">🏭 Manufacturing</option>
+              <option value=" in the energy industry">⚡ Energy</option>
+              <option value=" in the agriculture industry">🌱 Agriculture</option>
+              <option value=" in the government industry">🏛️ Government</option>
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <svg className="fill-current h-4 w-4 bg-white dark:text-gray-200 dark:bg-main-dark-bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+            </div>
+          </div>
+
+          {/* Labels and tooltip for user input area */}
+          <div className="mt-4">
+            <label
+              className={labelStyles}
+            >
+              goal of the follow-up message?
+            </label>
+            <p
+              style={{ color: currentColor }}
+              className={detailStyles}
+            >
+              State the goal of your message and what you hope to accomplish.
+            </p>
+          </div>
+
+          {/* User text input menu */}
+          <input
+            type="text"
+            id="goal"
+            name="goal"
+            className={textInputStyles}
+            placeholder="Goal of the follow-up email"
+            required
+          />
+
+          {/* Labels and tooltip for user input area */}
+          <div className="mt-4">
+            <label
+              className={labelStyles}
+            >
+              Desired tone and style?
+            </label>
+            <p
+              style={{ color: currentColor }}
+              className={detailStyles}
+            >
+              You may have a particular tone or style in mind for your cold email, such as formal, casual, or friendly.
+            </p>
+          </div>
+
+          {/* User dropwdown menu */}
+          <div className="inline-block relative w-full"
+          >
+            <select
+              className={dropdownStyles}
+              name="tone-style"
+              id="tone-style"
+            >
+              <option value="a normal">🚫 Default</option>
+              <option value="a formal">🤵 Formal</option>
+              <option value="a casual">👕 Casual</option>
+              <option value="a friendly">😊 Friendly</option>
+              <option value="a luxury">💎 Luxury</option>
+              <option value="a relaxed">😌 Relaxed</option>
+              <option value="a professional">💼 Professional</option>
+              <option value="a bold">💪 Bold</option>
+              <option value="an adventurous">⛺ Adventurous</option>
+              <option value="a witty">💡 Witty</option>
+              <option value="a persuasive">🧠 Persuasive</option>
+              <option value="an empathetic">🤗 Empathetic</option>
+              <option value="a short and snappy">🏃 In a Rush</option>
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <svg className="fill-current h-4 w-4 bg-white dark:text-gray-200 dark:bg-main-dark-bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+            </div>
+          </div>
+
         </form>
       </div>
     </div>
@@ -258,12 +425,12 @@ class FollowUpEmail extends React.Component {
           <DescriptionDiv />
           <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg h-30 rounded-xl w-full lg:w-full p-8 pt-9 m-3 bg-no-repeat bg-cover bg-center">
             <FormDiv />
-            {/* <FormSubmit
+            <FormSubmit
               responseContainerId="response_div"
               formId="form"
               chatContainerId="chat_container"
               openaiContainerId="openai_container"
-            /> */}
+            />
           </div>
           <ResponseDiv2 />
         </div>

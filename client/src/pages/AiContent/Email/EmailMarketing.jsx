@@ -249,7 +249,7 @@ const FormDiv = () => {
               style={{ color: currentColor }}
               className={detailStyles}
             >
-              It's important for the AI bot to know who you're targeting with your cold DMs.
+              It's important for the AI bot to know who you're targeting with your emails.
             </p>
           </div>
 

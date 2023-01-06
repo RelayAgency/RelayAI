@@ -530,6 +530,7 @@ export const links = [
         name: 'product descriptions',
         link: 'product-descriptions',
         icon: <FiShoppingBag />,
+        description: '[INSERT DESCRIPTION]',
       }
     ]
   },
@@ -540,31 +541,37 @@ export const links = [
         name: 'cold DMs',
         link: 'cold-dms',
         icon: <FiInbox />,
+        description: '[INSERT DESCRIPTION]',
       },
       {
         name: 'facebook posts',
         link: 'facebook-posts',
         icon: <SiFacebook />,
+        description: '[INSERT DESCRIPTION]',
       },
       {
         name: 'instagram posts',
         link: 'instagram-posts',
         icon: <SiInstagram />,
+        description: '[INSERT DESCRIPTION]',
       },
       {
         name: 'linkedin posts',
         link: 'linkedin-posts',
         icon: <SiLinkedin />,
+        description: '[INSERT DESCRIPTION]',
       },
       {
         name: 'tiktok scripts',
         link: 'tiktok-scripts',
         icon: <SiTiktok />,
+        description: '[INSERT DESCRIPTION]',
       },
       {
         name: 'youtube ideas',
         link: 'youtube-ideas',
         icon: <SiYoutube />,
+        description: '[INSERT DESCRIPTION]',
       },
     ]
   },
@@ -575,26 +582,31 @@ export const links = [
         name: 'cold emails',
         link: 'cold-emails',
         icon: <AiOutlineMail />,
+        description: '[INSERT DESCRIPTION]',
       },
       {
         name: 'email marketing',
         link: 'email-marketing',
         icon: <BsCurrencyDollar />,
+        description: '[INSERT DESCRIPTION]',
       },
       {
         name: 'follow up emails',
         link: 'follow-up-emails',
         icon: <BsShare />,
+        description: '[INSERT DESCRIPTION]',
       },
       {
         name: 'personalized emails',
         link: 'personalized-emails',
         icon: <BsPerson />,
+        description: '[INSERT DESCRIPTION]',
       },
       {
         name: 'subject lines',
         link: 'subject-lines',
         icon: <GiFishingHook />,
+        description: '[INSERT DESCRIPTION]',
       },
     ]
   },
@@ -605,26 +617,31 @@ export const links = [
         name: 'image alt text',
         link: 'image-alt-text',
         icon: <AiOutlineFileText />,
+        description: '[INSERT DESCRIPTION]',
       },
       {
         name: 'keywords',
         link: 'keywords',
         icon: <MdLensBlur />,
+        description: '[INSERT DESCRIPTION]',
       },
       {
         name: 'meta descriptions',
         link: 'meta-descriptions',
         icon: <SiHtml5 />,
+        description: '[INSERT DESCRIPTION]',
       },
       {
         name: 'titles & headings',
         link: 'titles-&-headings',
         icon: <MdTitle />,
+        description: '[INSERT DESCRIPTION]',
       },
       {
         name: 'website copy',
         link: 'website-copy',
         icon: <BiGlobe />,
+        description: '[INSERT DESCRIPTION]',
       },
     ]
   },
@@ -635,11 +652,13 @@ export const links = [
         name: 'profile',
         link: 'profile',
         icon: <BsPerson />,
+        description: '[INSERT DESCRIPTION]',
       },
       {
         name: 'prompts',
         link: 'prompts',
         icon: <SiScrollreveal />,
+        description: '[INSERT DESCRIPTION]',
       },
     ]
   },

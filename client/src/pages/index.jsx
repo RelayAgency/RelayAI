@@ -27,5 +27,5 @@ export { default as UserProfile } from './User/UserProfile';
 export { default as UserPrompts } from './User/UserPrompts';
 export { default as ForgotPassword } from './User/ForgotPassword';
 
-
+export { default as HomePage } from './HomePage';
 
