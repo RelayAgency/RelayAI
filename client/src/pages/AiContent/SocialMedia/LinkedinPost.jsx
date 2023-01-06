@@ -200,7 +200,7 @@ const FormDiv = () => {
             </label>
             <p
               style={{ color: currentColor }}
-              class={detailStyles}
+              className={detailStyles}
             >
               This will help the AI understand what you want the post to convey.
             </p>
@@ -226,7 +226,7 @@ const FormDiv = () => {
             </label>
             <p
               style={{ color: currentColor }}
-              class={detailStyles}
+              className={detailStyles}
             >
               For example, if you are promoting an event, you may want to include the date, time, and location.
             </p>
@@ -251,7 +251,7 @@ const FormDiv = () => {
             </label>
             <p
               style={{ color: currentColor }}
-              class={detailStyles}
+              className={detailStyles}
             >
               Do you want the AI to create a text-based post, or would you prefer a post that includes a mix of text and images?
             </p>
@@ -261,7 +261,7 @@ const FormDiv = () => {
           <div className="inline-block relative w-full"
           >
             <select
-              class={dropdownStyles}
+              className={dropdownStyles}
               name="post-format"
               id="post-format"
             >
@@ -270,7 +270,7 @@ const FormDiv = () => {
               <option value="text and a visually appealing image">Text and Images</option>
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-              <svg class="fill-current h-4 w-4 bg-white dark:text-gray-200 dark:bg-main-dark-bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+              <svg className="fill-current h-4 w-4 bg-white dark:text-gray-200 dark:bg-main-dark-bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
             </div>
           </div>
 
@@ -284,7 +284,7 @@ const FormDiv = () => {
             </label>
             <p
               style={{ color: currentColor }}
-              class={detailStyles}
+              className={detailStyles}
             >
               Should it be formal or casual, serious or humorous?
             </p>
@@ -294,7 +294,7 @@ const FormDiv = () => {
           <div className="inline-block relative w-full"
           >
             <select
-              class={dropdownStyles}
+              className={dropdownStyles}
               name="tone-style"
               id="tone-style"
             >
@@ -313,7 +313,7 @@ const FormDiv = () => {
               <option value="a short and snappy">🏃 In a Rush</option>
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-              <svg class="fill-current h-4 w-4 bg-white dark:text-gray-200 dark:bg-main-dark-bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+              <svg className="fill-current h-4 w-4 bg-white dark:text-gray-200 dark:bg-main-dark-bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
             </div>
           </div>
 
@@ -327,7 +327,7 @@ const FormDiv = () => {
             </label>
             <p
               style={{ color: currentColor }}
-              class={detailStyles}
+              className={detailStyles}
             >
               Understanding the demographics and interests of the intended audience will help the AI create content that resonates with them.
             </p>
@@ -356,7 +356,7 @@ const FormDiv = () => {
               <option value=" in the government industry">🏛️ Government</option>
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-              <svg class="fill-current h-4 w-4 bg-white dark:text-gray-200 dark:bg-main-dark-bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+              <svg className="fill-current h-4 w-4 bg-white dark:text-gray-200 dark:bg-main-dark-bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
             </div>
           </div>
 
@@ -370,7 +370,7 @@ const FormDiv = () => {
             </label>
             <p
               style={{ color: currentColor }}
-              class={detailStyles}
+              className={detailStyles}
             >
               What kind of action should the AI encourage (e.g. liking, commenting, sharing)?
             </p>
@@ -391,7 +391,7 @@ const FormDiv = () => {
               />
               <label
                 className={checkboxLabelStyles}
-                for="like-and-share"
+                htmlFor="like-and-share"
               >
                 Like & Share
               </label>
@@ -408,7 +408,7 @@ const FormDiv = () => {
               />
               <label
                 className={checkboxLabelStyles}
-                for="tag-a-friend"
+                htmlFor="tag-a-friend"
               >
                 Tag a friend
               </label>
@@ -425,7 +425,7 @@ const FormDiv = () => {
               />
               <label
                 className={checkboxLabelStyles}
-                for="comment"
+                htmlFor="comment"
               >
                 Comment
               </label>
@@ -442,7 +442,7 @@ const FormDiv = () => {
               />
               <label
                 className={checkboxLabelStyles}
-                for="follow"
+                htmlFor="follow"
               >
                 Follow
               </label>
@@ -459,7 +459,7 @@ const FormDiv = () => {
               />
               <label
                 className={checkboxLabelStyles}
-                for="join-list"
+                htmlFor="join-list"
               >
                 Join mailing list
               </label>
@@ -476,7 +476,7 @@ const FormDiv = () => {
               />
               <label
                 className={checkboxLabelStyles}
-                for="website"
+                htmlFor="website"
               >
                 Go to website
               </label>
@@ -493,7 +493,7 @@ const FormDiv = () => {
               />
               <label
                 className={checkboxLabelStyles}
-                for="store"
+                htmlFor="store"
               >
                 Go to store
               </label>
@@ -510,7 +510,7 @@ const FormDiv = () => {
               />
               <label
                 className={checkboxLabelStyles}
-                for="book"
+                htmlFor="book"
               >
                 Book a meeting/consultation
               </label>
@@ -527,7 +527,7 @@ const FormDiv = () => {
               />
               <label
                 className={checkboxLabelStyles}
-                for="app"
+                htmlFor="app"
               >
                 Download app
               </label>
@@ -544,7 +544,7 @@ const FormDiv = () => {
               />
               <label
                 className={checkboxLabelStyles}
-                for="event"
+                htmlFor="event"
               >
                 Join event/webinar
               </label>
@@ -561,7 +561,7 @@ const FormDiv = () => {
               />
               <label
                 className={checkboxLabelStyles}
-                for="eBook"
+                htmlFor="eBook"
               >
                 Download eBook
               </label>
@@ -578,7 +578,7 @@ const FormDiv = () => {
             </label>
             <p
               style={{ color: currentColor }}
-              class={detailStyles}
+              className={detailStyles}
             >
               The AI will need to know the desired time and time zone to ensure that the post is published at the appropriate time.
             </p>
@@ -589,7 +589,7 @@ const FormDiv = () => {
             id="date-picker"
             name="date-picker"
             type="date"
-            class={dateInputStyles}
+            className={dateInputStyles}
             placeholder="Select the date and time you want the post to go live"
           />
 
@@ -637,7 +637,7 @@ function ChatStripe(currentColor, value, uniqueId) {
       </div>
       <div class="relative flex w-[calc(100%-50px)] md:flex-col lg:w-[calc(100%-115px)]">
       <div
-        className="message" 
+        class="message" 
         id=${uniqueId}
       >
         <p>

@@ -205,7 +205,7 @@ const FormDiv = () => {
             </label>
             <p
               style={{ color: currentColor }}
-              class={detailStyles}>
+              className={detailStyles}>
               Enter as much information as possible for more accurate descriptions
             </p>
           </div>
@@ -227,11 +227,11 @@ const FormDiv = () => {
               id="characterCountWarning"
               name="characterCountWarning"
 
-              class="text-xs font-bold text-left"
+              className="text-xs font-bold text-left"
             />
             <div
               id="characterCount"
-              class="text-xs font-bold text-right"
+              className="text-xs font-bold text-right"
               style={{ color: currentColor }}
             >
               0/1000
@@ -276,7 +276,7 @@ const FormDiv = () => {
               <option value=" in the government industry">🏛️ Government</option>
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-              <svg class="fill-current h-4 w-4 bg-white dark:text-gray-200 dark:bg-main-dark-bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+              <svg className="fill-current h-4 w-4 bg-white dark:text-gray-200 dark:bg-main-dark-bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
             </div>
           </div>
 
@@ -310,7 +310,7 @@ const FormDiv = () => {
               />
               <label
                 className={checkboxLabelStyles}
-                for="purchase"
+                htmlFor="purchase"
               >
                 Make a purchase
               </label>
@@ -326,7 +326,7 @@ const FormDiv = () => {
               />
               <label
                 className={checkboxLabelStyles}
-                for="learn-more"
+                htmlFor="learn-more"
               >
                 Learn more about our product
               </label>
@@ -344,7 +344,7 @@ const FormDiv = () => {
             </label>
             <p
               style={{ color: currentColor }}
-              class={detailStyles}
+              className={detailStyles}
             >
               You may have a particular tone or style in mind for your cold email, such as formal, casual, or friendly.
             </p>
@@ -354,7 +354,7 @@ const FormDiv = () => {
           <div className="inline-block relative w-full"
           >
             <select
-              class={dropdownStyles}
+              className={dropdownStyles}
               name="tone-style"
               id="tone-style"
             >
@@ -373,7 +373,7 @@ const FormDiv = () => {
               <option value="a short and snappy">🏃 In a Rush</option>
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-              <svg class="fill-current h-4 w-4 bg-white dark:text-gray-200 dark:bg-main-dark-bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+              <svg className="fill-current h-4 w-4 bg-white dark:text-gray-200 dark:bg-main-dark-bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
             </div>
           </div>
 
@@ -420,7 +420,7 @@ function ChatStripe(currentColor, value, uniqueId) {
       </div>
       <div class="relative flex w-[calc(100%-50px)] md:flex-col lg:w-[calc(100%-115px)]">
       <div
-        className="message" 
+        class="message" 
         id=${uniqueId}
       >
         <p>

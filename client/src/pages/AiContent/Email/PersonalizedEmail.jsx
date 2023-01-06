@@ -224,7 +224,7 @@ function ChatStripe(currentColor, value, uniqueId) {
       </div>
       <div class="relative flex w-[calc(100%-50px)] md:flex-col lg:w-[calc(100%-115px)]">
       <div
-        className="message" 
+        class="message" 
         id=${uniqueId}
       >
         <p>

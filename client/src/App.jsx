@@ -94,7 +94,7 @@ const App = () => {
               <div onClick={() => setActiveProfile(false)}>
                 <Routes >
                   {/* Dashboard */}
-                  {/* <Route path="/" element={<Ecommerce />} /> */}
+                  <Route path="/ecommerce" element={<Ecommerce />} />
                   <Route path="/" element={isLoggedIn == "true" ? <UserProfile /> : <UserSignIn />} />
 
                   {/* Product Descriptions */}

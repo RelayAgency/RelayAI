@@ -157,7 +157,7 @@ const FormDiv = () => {
             </label>
             <p
               style={{ color: currentColor }}
-              class={detailStyles}
+              className={detailStyles}
             >
             </p>
           </div>

@@ -218,7 +218,7 @@ const FormDiv = () => {
               <option value=" in the government industry">🏛️ Government</option>
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-              <svg class="fill-current h-4 w-4 bg-white dark:text-gray-200 dark:bg-main-dark-bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+              <svg className="fill-current h-4 w-4 bg-white dark:text-gray-200 dark:bg-main-dark-bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
             </div>
           </div>
 
@@ -252,7 +252,7 @@ const FormDiv = () => {
               />
               <label
                 className={checkboxLabelStyles}
-                for="schedule-meeting"
+                htmlFor="schedule-meeting"
               >
                 Schedule a meeting
               </label>
@@ -268,7 +268,7 @@ const FormDiv = () => {
               />
               <label
                 className={checkboxLabelStyles}
-                for="request-info"
+                htmlFor="request-info"
               >
                 Request information
               </label>
@@ -284,7 +284,7 @@ const FormDiv = () => {
               />
               <label
                 className={checkboxLabelStyles}
-                for="pitch-product"
+                htmlFor="pitch-product"
               >
                 Pitch a product or service
               </label>
@@ -300,7 +300,7 @@ const FormDiv = () => {
               />
               <label
                 className={checkboxLabelStyles}
-                for="connection"
+                htmlFor="connection"
               >
                 Establish a connection
               </label>
@@ -316,7 +316,7 @@ const FormDiv = () => {
               />
               <label
                 className={checkboxLabelStyles}
-                for="referral"
+                htmlFor="referral"
               >
                 Request a referral or recommendation
               </label>
@@ -332,7 +332,7 @@ const FormDiv = () => {
               />
               <label
                 className={checkboxLabelStyles}
-                for="collaboration"
+                htmlFor="collaboration"
               >
                 Partner or collaborate
               </label>
@@ -348,7 +348,7 @@ const FormDiv = () => {
               />
               <label
                 className={checkboxLabelStyles}
-                for="assist"
+                htmlFor="assist"
               >
                 Offer assistance or expertise
               </label>
@@ -414,7 +414,7 @@ const FormDiv = () => {
             </label>
             <p
               style={{ color: currentColor }}
-              class={detailStyles}
+              className={detailStyles}
             >
               You may have a particular tone or style in mind for your cold email, such as formal, casual, or friendly.
             </p>
@@ -424,7 +424,7 @@ const FormDiv = () => {
           <div className="inline-block relative w-full"
           >
             <select
-              class={dropdownStyles}
+              className={dropdownStyles}
               name="tone-style"
               id="tone-style"
             >
@@ -443,7 +443,7 @@ const FormDiv = () => {
               <option value="a short and snappy">🏃 In a Rush</option>
             </select>
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-              <svg class="fill-current h-4 w-4 bg-white dark:text-gray-200 dark:bg-main-dark-bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+              <svg className="fill-current h-4 w-4 bg-white dark:text-gray-200 dark:bg-main-dark-bg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
             </div>
           </div>
 
@@ -456,7 +456,7 @@ const FormDiv = () => {
             </label>
             <p
               style={{ color: currentColor }}
-              class={detailStyles}
+              className={detailStyles}
             >
               Providing information about your company or organization will help the AI bot create a more professional and credible email.
             </p>
@@ -529,7 +529,7 @@ function ChatStripe(currentColor, value, uniqueId) {
       </div>
       <div class="relative flex w-[calc(100%-50px)] md:flex-col lg:w-[calc(100%-115px)]">
       <div
-        className="message" 
+        class="message" 
         id=${uniqueId}
       >
         <p>
