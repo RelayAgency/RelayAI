@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useStateContext } from '../../../contexts/ContextProvider';
 
 let loadInterval;
@@ -291,32 +291,6 @@ const FormDiv = () => {
   )
 }
 
-const FormSubmit = (props) => {
-  const { currentColor } = useStateContext();
-  const responseContainer = document.getElementById(props.responseContainerId);
-  const chatContainer = document.getElementById(props.chatContainerId);
-  const openaiContainer = document.getElementById(props.openaiContainerId);
-  const submitButton = document.getElementById("submit-button");
-  const form = document.getElementById(props.formId);
-
-
-  return (
-    <div>
-      <button
-        id="submit-button"
-        color="white"
-        style={{ backgroundColor: currentColor }}
-        type="submit"
-        className="text-m opacity-0.9 text-white hover:drop-shadow-xl rounded-xl p-4
-      mt-8"
-        onClick={(e) => handleSubmit(e, currentColor, form, responseContainer, chatContainer, submitButton)}>
-        Get AI Suggestions
-      </button>
-    </div>
-  )
-
-}
-
 function waitButton(button) {
   button.disabled = true;
   button.style.filter = "brightness(50%)";
@@ -333,6 +307,33 @@ function enableButton(button) {
   button.disabled = false;
   button.style.filter = "brightness(100%)";
   button.style.cursor = "pointer";
+}
+
+const FormSubmit = (props) => {
+  const { currentColor } = useStateContext();
+  const responseContainer = document.getElementById(props.responseContainerId);
+  const chatContainer = document.getElementById(props.chatContainerId);
+  const openaiContainer = document.getElementById(props.openaiContainerId);
+
+  const form = document.getElementById(props.formId);
+  const submitButton = document.getElementById("submit-button");
+
+  
+
+  return (
+    <div>
+      <button
+        id="submit-button"
+        color="white"
+        type="submit"
+        style={{ backgroundColor: currentColor }}
+        className="text-m opacity-0.9 text-white hover:drop-shadow-xl rounded-xl p-4 mt-8"
+        onClick={(e) => handleSubmit(e, currentColor, form, responseContainer, chatContainer, submitButton)}>
+        Get AI Suggestions
+      </button>
+    </div>
+  )
+
 }
 
 function ChatStripe(currentColor, value, uniqueId) {

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useStateContext } from '../../../contexts/ContextProvider';
 
 let loadInterval;
@@ -568,6 +568,24 @@ const FormDiv = () => {
   )
 }
 
+function waitButton(button) {
+  button.disabled = true;
+  button.style.filter = "brightness(50%)";
+  button.style.cursor = "wait";
+}
+
+function disableButton(button) {
+  button.disabled = true;
+  button.style.filter = "brightness(50%)";
+  button.style.cursor = "not-allowed";
+}
+
+function enableButton(button) {
+  button.disabled = false;
+  button.style.filter = "brightness(100%)";
+  button.style.cursor = "pointer";
+}
+
 const FormSubmit = (props) => {
   const { currentColor } = useStateContext();
   const responseContainer = document.getElementById(props.responseContainerId);
@@ -609,23 +627,6 @@ const FormSubmit = (props) => {
 
 }
 
-function waitButton(button) {
-  button.disabled = true;
-  button.style.filter = "brightness(50%)";
-  button.style.cursor = "wait";
-}
-
-function disableButton(button) {
-  button.disabled = true;
-  button.style.filter = "brightness(50%)";
-  button.style.cursor = "not-allowed";
-}
-
-function enableButton(button) {
-  button.disabled = false;
-  button.style.filter = "brightness(100%)";
-  button.style.cursor = "pointer";
-}
 
 function ChatStripe(currentColor, value, uniqueId) {
   return (

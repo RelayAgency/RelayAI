@@ -187,6 +187,24 @@ const FormDiv = () => {
   )
 }
 
+function waitButton(button) {
+  button.disabled = true;
+  button.style.filter = "brightness(50%)";
+  button.style.cursor = "wait";
+}
+
+function disableButton(button) {
+  button.disabled = true;
+  button.style.filter = "brightness(50%)";
+  button.style.cursor = "not-allowed";
+}
+
+function enableButton(button) {
+  button.disabled = false;
+  button.style.filter = "brightness(100%)";
+  button.style.cursor = "pointer";
+}
+
 const FormSubmit = (props) => {
   const { currentColor } = useStateContext();
   const form = document.getElementById(props.formId);
@@ -265,23 +283,6 @@ const ErrorMessageDiv = () => {
   )
 }
 
-function waitButton(button) {
-  button.disabled = true;
-  button.style.filter = "brightness(50%)";
-  button.style.cursor = "wait";
-}
-
-function disableButton(button) {
-  button.disabled = true;
-  button.style.filter = "brightness(50%)";
-  button.style.cursor = "not-allowed";
-}
-
-function enableButton(button) {
-  button.disabled = false;
-  button.style.filter = "brightness(100%)";
-  button.style.cursor = "pointer";
-}
 
 const WarningMessageDiv = () => {
   // const { currentColor } = useStateContext();

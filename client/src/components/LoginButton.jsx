@@ -1,7 +1,7 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import { useStateContext } from '../contexts/ContextProvider';
 
-import React from 'react'
+import React, { useEffect } from 'react'
 
 const LoginButton = () => {
   // const { loginWithRedirect, isAuthenticated } = useAuth0();
