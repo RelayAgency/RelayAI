@@ -131,21 +131,22 @@ const ProfileMenuButtons = () => {
     <>
       <div>
         {userProfileData.map((item, index) => (
-          <div onClick={() => setActiveProfile(!activeProfile)}>
+          <div
+            key={index}
+            onClick={() => setActiveProfile(!activeProfile)}
+          >
             <NavLink
               to={`/${item.name}`}
               key={item.name}
               onClick={handleCloseSideBar}
             >
-              <div key={index}
-                className="flex gap-5 border-b-1 border-color p-4 hover:bg-light-gray cursor-pointer  dark:hover:bg-[#42464D]"
-
+              <div
+                className="flex gap-5 border-b-1 border-color p-4 hover:bg-light-gray cursor-pointer  dark:hover:bg-secondary-dark-bg"
               >
                 <button
                   type="button"
                   style={{ color: item.iconColor, backgroundColor: item.iconBg }}
                   className=" text-xl rounded-lg p-3 hover:bg-light-gray"
-
                 >
                   {item.icon}
                 </button>
@@ -158,7 +159,8 @@ const ProfileMenuButtons = () => {
             </NavLink>
           </div>
         ))}
-      </div></>
+      </div>
+    </>
   )
 }
 
