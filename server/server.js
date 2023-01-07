@@ -7,6 +7,8 @@ import nodemailer from 'nodemailer';
 
 import { format } from 'date-fns';
 
+// import postRoutes from './routes/posts.js';
+
 dotenv.config();
 
 // console.log(process.env.OPENAI_API_KEY);
@@ -29,14 +31,14 @@ const openai = new OpenAIApi(configuration);
 const mongoUrl = process.env.MONGO_URL
 
 mongoose.connect(mongoUrl, {
-  useNewUrlParser: true,
+  useNewUrlParser: true, useUnifiedTopology: true,
 })
   .then(() => {
     console.log("Connected to MongoDB");
   })
-  .catch((err) => { console.log(err) });
+  .catch((err) => { console.log(err.message) });
 
-
+// mongoose.set('useFindAndModify', false);
 
 
 
@@ -51,6 +53,7 @@ app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
+// app.use('/posts', postRoutes);
 
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: false }));
@@ -78,7 +81,7 @@ app.post('/', async (req, res) => {
       presence_penalty: 0,
     })
 
-    const output = response.data.choices[0].text;
+    const output = response.data.choiceS[1].text;
 
     console.log("Prompt: " + prompt);
     console.log("Response: " + output);
