@@ -3,8 +3,8 @@ import { useStateContext } from '../../../contexts/ContextProvider';
 
 let loadInterval;
 let isLoading = false;
-const url1 = `http://localhost:5000`;
-const url2 = `https://relayai.onrender.com`;
+const url1 = `http://localhost:5000/openai`;
+const url2 = `https://relayai.onrender.com/openai`;
 const URLS = [url1, url2];
 
 function loader(element) {
@@ -31,9 +31,7 @@ function typeText(element, text, submitButton) {
       timeout = setTimeout(printNextChar, 10);
     } else {
       setTimeout(() => {
-        submitButton.disabled = false;
-        submitButton.style.filter = "brightness(100%)";
-        submitButton.style.cursor = "pointer";
+        enableButton(submitButton);
       }, 1000);
     }
   }
@@ -96,9 +94,7 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
 
   isLoading = true;
 
-  submitButton.disabled = true;
-  submitButton.style.filter = "brightness(50%)";
-  submitButton.style.cursor = "wait";
+  waitButton(submitButton);
 
   clearInterval(loadInterval);
   loader(responseDiv);
@@ -125,10 +121,10 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
 
     typeText(responseDiv, parseData, submitButton);
   } else {
+    typeText(responseDiv, "Something went wrong, please try again later.", submitButton);
+    disableButton(submitButton);
+
     const err = await response.texts();
-
-    responseDiv.innerHTML = "Something went wrong";
-
     alert(err);
   }
 }

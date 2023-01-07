@@ -63,8 +63,14 @@ app.get('/', async (req, res) => {
   })
 });
 
+app.get('/openai', async (req, res) => {
+  res.status(200).send({
+    message: 'Hello from OpenAIAPI',
+  })
+});
+
 // App to OpenAI Api
-app.post('/', async (req, res) => {
+app.post('/openai', async (req, res) => {
   try {
     const prompt = req.body.prompt;
 
