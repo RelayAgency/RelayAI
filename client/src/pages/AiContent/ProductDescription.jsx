@@ -177,9 +177,11 @@ const FormDiv = () => {
 
   const labelStyles = "block text-gray-700 text-sm font-bold mb-2 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg capitalize"
   const detailStyles = "text-xs italic mb-2 font-bold"
-  const textInputStyles = "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white dark:text-gray-200 dark:bg-main-dark-bg h-10"
-  const textAreaStyles = "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white dark:text-gray-200 dark:bg-main-dark-bg h-32"
-  const dropdownStyles = "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white dark:text-gray-200 dark:bg-main-dark-bg h-10"
+  const textInputStyles =
+    `shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white dark:text-gray-200 dark:bg-main-dark-bg h-10 focus:ring-2 focus:ring-[${currentColor}]`;
+  const textAreaStyles =
+    `shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white dark:text-gray-200 dark:bg-main-dark-bg h-32 focus:ring-2 focus:ring-[${currentColor}]`;
+  const dropdownStyles = `shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white dark:text-gray-200 dark:bg-main-dark-bg h-10 focus:ring-2 focus:ring-[${currentColor}]`
 
   const radioMenuStyles = "flex flex-wrap -mb-4 max-w-3xl"
   const radioButtonStyles = "w-1/3 mb-4"
@@ -190,7 +192,7 @@ const FormDiv = () => {
   const checkboxInputStyles = `w-4 h-4 text-[${currentColor}] bg-gray-100 rounded border-gray-300 focus:ring-[${currentColor}] dark:focus:ring-[${currentColor}] dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600 flex-none`
   const checkboxLabelStyles = "p-2 ml-2 inline-block text-gray-700 dark:text-gray-200 text-sm font-medium bg-white dark:bg-secondary-dark-bg capitalize"
 
-  const dateInputStyles = "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white dark:text-gray-200 dark:bg-main-dark-bg h-12"
+  const dateInputStyles = `shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-white dark:text-gray-200 dark:bg-main-dark-bg h-12 focus:ring-2 focus:ring-[${currentColor}]`
 
 
   return (
@@ -368,7 +370,7 @@ const ResponseDiv2 = () => {
 }
 
 // Class-Based component
-class ProductDescription extends React.Component {
+export default class ProductDescription extends React.Component {
   render() {
     return (
       <div className="mt-10">
@@ -390,4 +392,3 @@ class ProductDescription extends React.Component {
   }
 }
 
-export default ProductDescription;

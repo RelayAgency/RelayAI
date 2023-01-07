@@ -8,7 +8,7 @@ import { Ecommerce, Orders, Calendar, Employees, Stacked, Pyramid, Customers, Ka
 
 import { HomePage } from './pages';
 
-import { ProductDescription, ColdDM, FacebookPost, InstagramPost, LinkedinPost, TikTokScript, YoutubeIdea, ColdEmail, EmailMarketing, FollowUpEmail, PersonalizedEmail, SubjectLine, ImageAltText, Keywords, MetaDescription, TitlesHeadings, WebsiteCopy } from './pages';
+import { ProductDescription, ColdDM, FacebookPost, InstagramPost, LinkedinPost, TikTokScript, YoutubeIdea, ColdEmail, EmailMarketing, FollowUpEmail, EmailReply, PersonalizedEmail, SubjectLine, ImageAltText, Keywords, MetaDescription, TitlesHeadings, WebsiteCopy } from './pages';
 
 import { UserProfile, UserPrompts, UserSignUp, UserSignIn, ForgotPassword } from './pages';
 
@@ -114,6 +114,7 @@ const App = () => {
                   <Route path="/cold-emails" element={isLoggedIn == "true" ? <ColdEmail /> : <UserSignIn />} />
                   <Route path="/email-marketing" element={isLoggedIn == "true" ? <EmailMarketing /> : <UserSignIn />} />
                   <Route path="/follow-up-emails" element={isLoggedIn == "true" ? <FollowUpEmail /> : <UserSignIn />} />
+                  <Route path="/email-reply" element={isLoggedIn == "true" ? <EmailReply /> : <UserSignIn />} />
                   <Route path="/personalized-emails" element={isLoggedIn == "true" ? <PersonalizedEmail /> : <UserSignIn />} />
                   <Route path="/subject-lines" element={isLoggedIn == "true" ? <SubjectLine /> : <UserSignIn />} />
 

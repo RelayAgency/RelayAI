@@ -13,7 +13,7 @@ dotenv.config();
 
 // console.log(process.env.AUTH0_DOMAIN);
 // console.log(process.env.AUTH0_CLIENT_ID);
-const LOCALORSERVERS = [`http://localhost:5000`,`https://relayai.onrender.com`]
+const LOCALORSERVERS = [`http://localhost:5000`, `https://relayai.onrender.com`]
 const url1 = `http://localhost:3000/`;
 const url2 = `https://relay-ai.vercel.app/`;
 const URLS = [url1, url2];
@@ -94,7 +94,6 @@ app.post('/', async (req, res) => {
 
 // App to Mongodb
 import bcrypt from 'bcryptjs';
-
 import User from "./controllers/userDetails.js";
 app.post("/signup", async (req, res) => {
   const { fname, lname, email, mobile, password } = req.body;

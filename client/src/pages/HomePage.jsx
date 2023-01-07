@@ -28,6 +28,9 @@ const ProjectList = () => {
 
   const newProjectButtonStyles = "hover:border-blue-500 hover:border-solid hover:bg-white hover:text-blue-500 group w-full flex flex-col items-center justify-center rounded-md border-2 border-dashed border-slate-300 text-sm leading-6 text-slate-900 font-medium py-3 dark:hover:bg-main-dark-bg"
 
+  const [brightness, setBrightness] = useState(50);
+
+
   return (
     <div
       className="w-full"
@@ -48,6 +51,8 @@ const ProjectList = () => {
                   <div
                     className="p-4 bg-white sm:px-8 sm:pt-6 sm:pb-8 lg:p-4 xl:px-8 xl:pt-6 xl:pb-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-4 text-sm leading-6  dark:text-gray-200 dark:bg-secondary-dark-bg h-30 rounded-xl m-3"
                   >
+
+
                     <li x-for="project in projects">
                       <div className=" justify-left ">
                         <div
@@ -62,7 +67,7 @@ const ProjectList = () => {
                       </div>
                       <p
                         className="text-s text-gray-700 dark:text-gray-200"
-                        // style={{ color: currentColor }}
+                      // style={{ color: currentColor }}
                       >
                         {link.description}
                       </p>
@@ -71,9 +76,11 @@ const ProjectList = () => {
 
                     <li className="flex pt-4">
                       <a
-                        style={{ backgroundColor: currentColor, brightness: "200%" }}
+                        style={{ backgroundColor: currentColor, filter: `brightness(${brightness}%)` }}
                         href={`/${link.link}`}
                         className={newProjectButtonStyles}
+                        // onMouseEnter={() => setBrightness(100)}
+                        // onMouseLeave={() => setBrightness(50)}
                       >
                         <svg
                           className="group-hover:text-blue-500 mb-1 text-slate-400"

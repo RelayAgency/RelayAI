@@ -12,6 +12,7 @@ export { default as YoutubeIdea } from './AiContent/SocialMedia/YoutubeIdea';
 export { default as ColdEmail } from './AiContent/Email/ColdEmail';
 export { default as EmailMarketing } from './AiContent/Email/EmailMarketing';
 export { default as FollowUpEmail } from './AiContent/Email/FollowUpEmail';
+export { default as EmailReply } from './AiContent/Email/EmailReply';
 export { default as PersonalizedEmail } from './AiContent/Email/PersonalizedEmail';
 export { default as SubjectLine } from './AiContent/Email/SubjectLine';
 

@@ -5,7 +5,7 @@ import { AiOutlineMail, AiOutlineFileText } from 'react-icons/ai';
 import { FiShoppingBag, FiBarChart, FiCreditCard, FiStar, FiShoppingCart, FiInbox } from 'react-icons/fi';
 
 // import { BsKanban, BsBarChart, BsBoxSeam, BsCurrencyDollar, BsShield, BsChatLeft, BsFileEarmarkText, BsGoogle, BsFacebook, BsInstagram, BsLinkedin, BsYoutube, BsPhone, BsEmojiAngryFill, BsSpellcheck, BsHandIndexThumb, BsShare, BsPerson, BsEyeglasses } from 'react-icons/bs';
-import { BsBoxSeam, BsCurrencyDollar, BsShield, BsChatLeft, BsShare, BsPerson } from 'react-icons/bs';
+import { BsBoxSeam, BsCurrencyDollar, BsShield, BsChatLeft, BsShare, BsPerson, BsReply } from 'react-icons/bs';
 // import { BiColorFill, BiGlobe, BiGlobeAlt } from 'react-icons/bi';
 import { BiGlobe } from 'react-icons/bi';
 // import { IoMdContacts } from 'react-icons/io';
@@ -594,6 +594,12 @@ export const links = [
         name: 'follow up emails',
         link: 'follow-up-emails',
         icon: <BsShare />,
+        description: '[INSERT DESCRIPTION]',
+      },
+      {
+        name: 'reply emails',
+        link: 'email-reply',
+        icon: <BsReply />,
         description: '[INSERT DESCRIPTION]',
       },
       {
