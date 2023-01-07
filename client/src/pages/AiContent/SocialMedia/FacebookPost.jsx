@@ -6,6 +6,9 @@ import '../../../App.css';
 
 let loadInterval;
 let isLoading = false;
+const url1 = `http://localhost:5000`;
+const url2 = `https://relayai.onrender.com`;
+const URLS = [url1, url2];
 
 function loader(element) {
   element.textContent = '';
@@ -113,7 +116,7 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
   clearInterval(loadInterval);
   loader(responseDiv);
 
-  const response = await fetch('https://relayai.onrender.com', {
+  const response = await fetch(URLS[1], {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

@@ -3,6 +3,9 @@ import { useStateContext } from '../../contexts/ContextProvider';
 
 let loadInterval;
 let isLoading = false;
+const url1 = `http://localhost:5000`;
+const url2 = `https://relayai.onrender.com`;
+const URLS = [url1, url2];
 
 function loader(element) {
   element.textContent = '';
@@ -87,14 +90,12 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
   isLoading = true;
   // console.log("isLoading: " + isLoading)
 
-  submitButton.disabled = true;
-  submitButton.style.filter = "brightness(50%)";
-  submitButton.style.cursor = "wait";
+  waitButton(submitButton);
 
   clearInterval(loadInterval);
   loader(responseDiv);
 
-  const response = await fetch('https://relayai.onrender.com', {
+  const response = await fetch(URLS[1], {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -120,7 +121,7 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
     const err = await response.texts();
 
     responseDiv.innerHTML = "Something went wrong";
-
+    disableButton(submitButton);
     alert(err);
   }
 
@@ -314,7 +315,7 @@ const FormSubmit = (props) => {
   const form = document.getElementById(props.formId);
   const submitButton = document.getElementById("submit-button");
 
-  
+
 
   return (
     <div>
@@ -350,12 +351,29 @@ function ChatStripe(currentColor, value, uniqueId) {
         <p>
           ${value}
         </p>
+        <SaveResponseToProfile />
       </div>
       </div>
       <br />
     </div>
     `
   );
+}
+
+const SaveResponseToProfile = () => {
+  const { currentColor } = useStateContext();
+  const textLinkStyles = "cursor-pointer"
+
+  return (
+    <>
+      <a
+        className={textLinkStyles}
+        style={{ color: currentColor }}
+      >
+        Save
+      </a>
+    </>
+  )
 }
 
 const ResponseDiv2 = () => {

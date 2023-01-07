@@ -3,6 +3,9 @@ import { useStateContext } from "../../../contexts/ContextProvider";
 
 let loadInterval;
 let isLoading = false;
+const url1 = `http://localhost:5000`;
+const url2 = `https://relayai.onrender.com`;
+const URLS = [url1, url2];
 
 function loader(element) {
   element.textContent = "";

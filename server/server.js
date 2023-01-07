@@ -7,15 +7,13 @@ import nodemailer from 'nodemailer';
 
 import { format } from 'date-fns';
 
-// import postRoutes from './routes/posts.js';
-
 dotenv.config();
 
 // console.log(process.env.OPENAI_API_KEY);
 
 // console.log(process.env.AUTH0_DOMAIN);
 // console.log(process.env.AUTH0_CLIENT_ID);
-const LOCALORSERVERS = [`http://localhost:5000`, `https://relayai.onrender.com`]
+const LOCALORSERVERS = [`http://localhost:5000`,`https://relayai.onrender.com`]
 const url1 = `http://localhost:3000/`;
 const url2 = `https://relay-ai.vercel.app/`;
 const URLS = [url1, url2];
@@ -31,14 +29,14 @@ const openai = new OpenAIApi(configuration);
 const mongoUrl = process.env.MONGO_URL
 
 mongoose.connect(mongoUrl, {
-  useNewUrlParser: true, useUnifiedTopology: true,
+  useNewUrlParser: true,
 })
   .then(() => {
     console.log("Connected to MongoDB");
   })
-  .catch((err) => { console.log(err.message) });
+  .catch((err) => { console.log(err) });
 
-// mongoose.set('useFindAndModify', false);
+
 
 
 
@@ -53,7 +51,6 @@ app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
-// app.use('/posts', postRoutes);
 
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: false }));
@@ -81,7 +78,7 @@ app.post('/', async (req, res) => {
       presence_penalty: 0,
     })
 
-    const output = response.data.choiceS[1].text;
+    const output = response.data.choices[0].text;
 
     console.log("Prompt: " + prompt);
     console.log("Response: " + output);
@@ -90,13 +87,14 @@ app.post('/', async (req, res) => {
       bot: output,
     });
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
     res.status(500).send({ error });
   }
 })
 
 // App to Mongodb
 import bcrypt from 'bcryptjs';
+
 import User from "./controllers/userDetails.js";
 app.post("/signup", async (req, res) => {
   const { fname, lname, email, mobile, password } = req.body;
