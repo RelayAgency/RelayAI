@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, forwardRef } from 'react'
 import { useStateContext } from '../../contexts/ContextProvider';
+import ReactDOM from 'react-dom';
 
 let loadInterval;
 let isLoading = false;
@@ -20,9 +21,26 @@ function loader(element) {
   }, 300);
 }
 
-function typeText(element, text, submitButton) {
+function typeText(element, text, submitButton, saveDiv) {
   let index = 0;
   let timeout;
+
+  const SaveResponseToProfile = forwardRef((props, ref) => {
+    const { currentColor } = useStateContext();
+    const textLinkStyles = "cursor-pointer"
+
+    return (
+      <>
+        <a
+          className={textLinkStyles}
+          style={{ color: currentColor }}
+          ref={ref}
+        >
+          Save
+        </a>
+      </>
+    )
+  })
 
   function printNextChar() {
     if (index < text.length) {
@@ -32,6 +50,12 @@ function typeText(element, text, submitButton) {
     } else {
       setTimeout(() => {
         enableButton(submitButton);
+
+        // Create a ref to the element
+        const elementRef = React.createRef();
+
+        // Append the SaveResponseToProfile component to the element
+        ReactDOM.render(<SaveResponseToProfile ref={elementRef} />, saveDiv);
       }, 1000);
     }
   }
@@ -65,6 +89,7 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
   // If within the character limit when form is submitted.
 
   const uniqueId = generateUniqueId();
+  const uniqueIdSave = generateUniqueId();
 
   //Create the prompt from the user input.
   const prompt = `Hello AI bot, I am looking to write a product description for ${product}. I prefer ${tone} tone. Thank you.`;
@@ -74,7 +99,7 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
 
   // Append the response div with new responses
   // responseContainer.innerHTML += chatStripe("", uniqueId);
-  responseContainer.insertAdjacentHTML("afterbegin", ChatStripe(currentColor, "", uniqueId));
+  responseContainer.insertAdjacentHTML("afterbegin", ChatStripe(currentColor, "", uniqueId, uniqueIdSave));
 
   //Console log the uniqueId
   // console.log("uniqueId: " + uniqueId)
@@ -84,6 +109,7 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
 
   // Get the element Id of the newly created response.
   const responseDiv = document.getElementById(uniqueId);
+  const saveResponseDiv = document.getElementById(uniqueIdSave);
 
   isLoading = true;
 
@@ -113,13 +139,13 @@ async function handleSubmit(e, currentColor, form, responseContainer, chatContai
     console.log("parseData: " + parseData)
     // console.log("isLoading: " + isLoading)
 
-    typeText(responseDiv, parseData, submitButton);
+    typeText(responseDiv, parseData, submitButton, saveResponseDiv);
   } else {
-    typeText(responseDiv, "Something went wrong, please try again later.", submitButton);
+    typeText(responseDiv, "Something went wrong, server might be at capacity. Please try again later.", submitButton, null);
     disableButton(submitButton);
 
-    const err = await response.texts();
-    alert(err);
+    // const err = await response.texts();
+    // alert(err);
   }
 
 
@@ -331,7 +357,7 @@ const FormSubmit = (props) => {
 }
 
 
-function ChatStripe(currentColor, value, uniqueId) {
+function ChatStripe(currentColor, value, uniqueId, uniqueIdSave) {
   return (
     `
     <div class="text-base gap-4 md:gap-6 md:py-6 flex bg-white dark:text-gray-200 dark:bg-secondary-dark-bg rounded-xl p-8 m-3 bg-no-repeat bg-cover bg-center">
@@ -340,7 +366,7 @@ function ChatStripe(currentColor, value, uniqueId) {
           <svg id="a" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 21.18 25"><defs><style>.b{fill:#fff;}</style></defs><path class="b" d="M21.18,25h-5.05l-7.01-7.42-.3-4.82h1.93c2.52,0,4.56-2.04,4.56-4.56s-2.04-4.53-4.56-4.53H3.67V25H0V0H10.76c4.56,0,8.23,3.67,8.23,8.2,0,3.86-2.6,7.05-6.16,7.97l8.35,8.83Z"/></svg>
         </div>
       </div>
-      <div class="relative flex w-[calc(100%-50px)] md:flex-col lg:w-[calc(100%-115px)]">
+      <div class="relative flex w-[calc(100%-50px)] md:flex-col lg:w-[calc(100%-115px)] flex-col">
       <div
         class="message" 
         id=${uniqueId}
@@ -349,28 +375,17 @@ function ChatStripe(currentColor, value, uniqueId) {
           ${value}
         </p>
       </div>
+      <div
+        class="mt-8"
+        id=${uniqueIdSave}
+      />
       </div>
-      <br />
     </div>
     `
   );
 }
 
-const SaveResponseToProfile = () => {
-  const { currentColor } = useStateContext();
-  const textLinkStyles = "cursor-pointer"
 
-  return (
-    <>
-      <a
-        className={textLinkStyles}
-        style={{ color: currentColor }}
-      >
-        Save
-      </a>
-    </>
-  )
-}
 
 const ResponseDiv2 = () => {
   return (

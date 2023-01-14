@@ -10,11 +10,15 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import GppBadIcon from '@mui/icons-material/GppBad';
 
+import logoDark from '../../data/white_text_transparent_background.png';
+import logo from '../../data/dark_text_transparent_background.png';
 
 const URL = '/login-user'
 const url1 = `http://localhost:5000${URL}`;
 const url2 = `https://relayai.onrender.com${URL}`;
 const URLS = [url1, url2];
+
+
 
 function createMessage(type, message, time) {
   const errorMessageStyles = "h-[6rem] p-8 bg-white dark:text-gray-200 dark:bg-secondary-dark-bg  rounded-xl w-full lg:w-full  m-3 bg-no-repeat bg-cover bg-center text-white text-center font-bold truncate";
@@ -69,7 +73,7 @@ async function handleSubmit(e, form) {
   const email = data.email;
   const password = data.password;
 
-  
+
   // console.log(submitButton);
 
   // Check if all form fields have a value.
@@ -80,7 +84,7 @@ async function handleSubmit(e, form) {
   } else {
 
     waitButton(submitButton);
-    
+
 
     fetch(URLS[1], {
       method: 'POST',
@@ -114,18 +118,31 @@ async function handleSubmit(e, form) {
         } else {
           createMessage("error", "Check email and password", 1);
           enableButton(submitButton);
-          
+
         }
       })
   }
 }
 
 const DescriptionDiv = () => {
-  const { currentColor } = useStateContext();
+  const { currentColor, activeMenu, setActiveMenu, screenSize, currentMode } = useStateContext();
+
+  const imgSrc = currentMode === 'Light' ? logo : logoDark;
+
   return (
     <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg h-30 rounded-xl w-full lg:w-full p-8 pt-9 m-3 bg-no-repeat bg-cover bg-center">
       <div className="flex justify-between items-center ">
         <div className="w-full">
+          <div
+            className="flex justify-center"
+          >
+            <img
+              className="object-cover w-[10rem] h-[7rem] mb-4"
+              src={imgSrc}
+              alt=""
+            />
+          </div>
+
           <p className="font-bold text-gray-700 dark:text-gray-200 text-center mb-2">Sign In</p>
           <p
             className="text-s text-center"
@@ -135,7 +152,7 @@ const DescriptionDiv = () => {
           </p>
         </div>
       </div>
-    </div>
+    </div >
   )
 }
 

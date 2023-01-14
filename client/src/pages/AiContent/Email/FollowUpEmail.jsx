@@ -135,8 +135,8 @@ async function handleSubmit(
     typeText(responseDiv, "Something went wrong, please try again later.", submitButton);
     disableButton(submitButton);
 
-    const err = await response.texts();
-    alert(err);
+    // const err = await response.texts();
+    // alert(err);
   }
 }
 

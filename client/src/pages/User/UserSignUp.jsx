@@ -12,6 +12,9 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
+import logoDark from '../../data/white_text_transparent_background.png';
+import logo from '../../data/dark_text_transparent_background.png';
+
 const URL = '/signup'
 const url1 = `http://localhost:5000${URL}`;
 const url2 = `https://relayai.onrender.com${URL}`;
@@ -245,11 +248,23 @@ async function handleSubmit(e, form) {
 }
 
 const DescriptionDiv = () => {
-  const { currentColor } = useStateContext();
+  const { currentColor, activeMenu, setActiveMenu, screenSize, currentMode } = useStateContext();
+
+  const imgSrc = currentMode === 'Light' ? logo : logoDark;
+
   return (
     <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg h-30 rounded-xl w-full lg:w-full p-8 pt-9 m-3 bg-no-repeat bg-cover bg-center">
       <div className="flex justify-between items-center ">
         <div className="w-full">
+          <div
+            className="flex justify-center"
+          >
+            <img
+              className="object-cover w-[10rem] h-[7rem] mb-4"
+              src={imgSrc}
+              alt=""
+            />
+          </div>
           <p className="font-bold text-gray-700 dark:text-gray-200 text-center mb-2">Sign Up</p>
           <p
             className="text-s text-center"
