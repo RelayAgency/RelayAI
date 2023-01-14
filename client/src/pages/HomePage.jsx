@@ -76,23 +76,24 @@ const ProjectList = () => {
 
                     <li className="flex pt-4">
                       <a
-                        style={{ backgroundColor: currentColor, filter: `brightness(${brightness}%)` }}
+                        // style={{ backgroundColor: currentColor, filter: `brightness(${brightness}%)` }}
                         href={`/${link.link}`}
                         className={newProjectButtonStyles}
                         // onMouseEnter={() => setBrightness(100)}
                         // onMouseLeave={() => setBrightness(50)}
                       >
                         <svg
-                          className="group-hover:text-blue-500 mb-1 text-slate-400"
+                          className="group-hover:fill-blue-500 mb-1 dark:fill-gray-200"
                           width="20"
                           height="20"
-                          fill="white"
+                          fill="gray-40"
                           aria-hidden="true"
                         >
                           <path d="M10 5a1 1 0 0 1 1 1v3h3a1 1 0 1 1 0 2h-3v3a1 1 0 1 1-2 0v-3H6a1 1 0 1 1 0-2h3V6a1 1 0 0 1 1-1Z" />
                         </svg>
                         <p
-                          style={{ color: "white" }}
+                          // style={{ color: "white" }}
+                          className="group-hover:text-blue-500 text-slate-40 dark:text-gray-200 uppercase"
                         >
                           New project
                         </p>
