@@ -41,7 +41,7 @@ const Sidebar = () => {
             <Link to="/" onClick={handleCloseSideBar} className="items-center gap-3 ml-3 mt-4 flex text-xl font-extrabold tracking-tight dark:text-white text-slate-900 w-full place-content-left">
               {/* <SiShopware /> <span>Relay AI</span> */}
               <img
-                className="object-cover w-20 h-8"
+                className="object-cover w-[6rem] h-[4rem]"
                 src={imgSrc}
                 alt=""
               />
