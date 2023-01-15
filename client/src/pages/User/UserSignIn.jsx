@@ -113,7 +113,7 @@ async function handleSubmit(e, form) {
           window.localStorage.setItem('loggedIn', true);
 
           createMessage("success", "Login Success", 10);
-          window.location.href = "./profile";
+          window.location.href = "./";
 
         } else {
           createMessage("error", "Check email and password", 1);
