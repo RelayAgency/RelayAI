@@ -135,12 +135,12 @@ const DescriptionDiv = () => {
     <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg h-30 rounded-xl w-full lg:w-full p-8 pt-9 m-3 bg-no-repeat bg-cover bg-center">
       <div className="flex justify-between items-center ">
         <div>
-          <p className="font-bold text-gray-700 dark:text-gray-200 text-left mb-2">[Title Goes Here]</p>
+          <p className="font-bold text-gray-700 dark:text-gray-200 text-left mb-2 capitalize">Create the perfect email subject line</p>
           <p
             className="text-s"
             style={{ color: currentColor }}
           >
-            [Description Goes Here]
+            Introducing the breakthrough in email subject lines: Relay AI's copywriter, generated with AI. Free yourself from the hassle of crafting perfect email subject lines—let our copywriter do the work for you. With AI-generated copy specific to each recipient, you can be sure that every email you send is ready to take on the competition and stand out in the inbox. Get ready to see higher open rates and engage more people with fantastically crafted emails. Try Relay AI's copywriter today and take your email game to the next level.
           </p>
         </div>
       </div>
@@ -319,7 +319,7 @@ const FormSubmit = (props) => {
   const form = document.getElementById(props.formId);
   const submitButton = document.getElementById("submit-button");
 
-  
+
 
   return (
     <div>

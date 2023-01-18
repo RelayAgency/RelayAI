@@ -376,7 +376,7 @@ function ChatStripe(currentColor, value, uniqueId, uniqueIdSave) {
         </p>
       </div>
       <div
-        class="mt-8"
+        class=""
         id=${uniqueIdSave}
       />
       </div>

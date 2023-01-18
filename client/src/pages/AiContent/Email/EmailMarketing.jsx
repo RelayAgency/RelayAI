@@ -136,12 +136,12 @@ const DescriptionDiv = () => {
     <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg h-30 rounded-xl w-full lg:w-full p-8 pt-9 m-3 bg-no-repeat bg-cover bg-center">
       <div className="flex justify-between items-center ">
         <div>
-          <p className="font-bold text-gray-700 dark:text-gray-200 text-left mb-2">[Title Goes Here]</p>
+          <p className="font-bold text-gray-700 dark:text-gray-200 text-left mb-2 capitalize">Create the perfect email marketing campaign</p>
           <p
             className="text-s"
             style={{ color: currentColor }}
           >
-            [Description Goes Here]
+            Relay AI's email marketing campaign copy writer, powered by AI is the perfect way to get your message out to the world in a captivating and powerful way. With our advanced artificial intelligence and natural language processing technology, we create persuasive, optimized email copy that speaks directly to your target audience. Our AI-powered process allows you to customize your content in minutes with unlimited variations and guidance on how to best craft successful emails. With Relay AI, you can be sure that your emails will reach their intended recipients, while also using persuasive language to drive conversions. Get ready for maximum reach and engagement with Relay AI's email marketing campaign copy writer!
           </p>
         </div>
       </div>
@@ -333,7 +333,7 @@ const FormDiv = () => {
               </label>
             </li>
 
-            
+
           </ul>
 
           {/* Labels and tooltip for user input area */}
@@ -411,7 +411,7 @@ const FormSubmit = (props) => {
   const form = document.getElementById(props.formId);
   const submitButton = document.getElementById("submit-button");
 
-  
+
 
   return (
     <div>
